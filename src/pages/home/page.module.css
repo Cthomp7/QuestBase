@@ -1,0 +1,163 @@
+header {
+  align-content: center;
+  background-color: rgb(58, 58, 58);
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+}
+
+.sections {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem 2rem;
+  height: 100%;
+}
+
+.session_highlights {
+  max-width: 390px;
+  display: flex;
+  flex-direction: column;
+}
+
+.session_highlights.expanded {
+  height: calc(100vh - 120px);
+}
+
+.sections section h2 {
+  font-size: 1.9rem;
+  margin: 1rem 0;
+}
+
+.sessions_container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px 12px 4px 12px;
+  margin: -4px -4px -4px -14px;
+}
+
+.show_more_button {
+  margin-top: 1rem;
+  background-color: transparent;
+  border: 1px solid #6b6b6b;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-family: "Montserrat", sans-serif;
+  padding: 0.9rem;
+  transition: all 0.2s ease-in-out;
+  width: 100%;
+}
+
+.show_more_button:hover {
+  background-color: #333333;
+}
+
+.session_item {
+  background-color: var(--primary-);
+  border: 1px solid #6b6b6b;
+  border-radius: 7px;
+  cursor: pointer;
+  padding: 1rem;
+  text-align: left;
+  width: 100%;
+  transform-origin: center;
+  transition: transform 0.2s ease-in-out;
+  will-change: transform;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.session_item:hover {
+  transform: scale(1.03);
+  z-index: 1;
+}
+
+.session_title {
+  font-weight: 600;
+  font-size: 1.4rem;
+}
+
+.session_date {
+  font-size: 1rem;
+}
+
+.session_description {
+  font-size: 0.9rem;
+}
+
+.session_hr {
+  background-color: #6b6b6b;
+  height: 1px;
+  margin: 0.6rem 0;
+}
+
+.upcoming_container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.upcoming_item {
+  border: 1px solid #6b6b6b;
+  border-radius: 7px;
+  padding: 1rem;
+}
+
+.upcoming_date {
+  font-size: 1.2rem;
+  font-weight: 600;
+  min-width: 330px;
+}
+
+.session_popup_item {
+  border: 1px solid #6b6b6b;
+  border-radius: 7px;
+  background-color: var(--primary-);
+  left: 50%;
+  top: 50%;
+  padding: 1rem;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  max-width: 800px;
+  width: 90%;
+  z-index: 1000;
+}
+
+.popup_header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.popup_close {
+  background-color: transparent;
+  border: none;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.popup_close img {
+  width: 100%;
+  height: 100%;
+}
+
+/* Add custom scrollbar styling */
+.sessions_container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sessions_container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sessions_container::-webkit-scrollbar-thumb {
+  background-color: #6b6b6b;
+  border-radius: 4px;
+}
