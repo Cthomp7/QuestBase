@@ -11,6 +11,8 @@
 
   --primary-: #242424;
 
+  --border-: 1px solid #6b6b6b;
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -23,7 +25,6 @@
   box-sizing: border-box;
   font-family: "Montserrat", sans-serif;
 }
-
 
 /* @media (prefers-color-scheme: light) {
   :root {
