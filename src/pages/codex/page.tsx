@@ -141,7 +141,7 @@ const Codex = () => {
     const loadContent = async () => {
       setLoading(true);
       try {
-        const currentPath = path ?? "The Codex";
+        const currentPath = path ?? "codex.md";
         const response = await fetch(
           `http://localhost:3001/api/codex/content?path=${encodeURIComponent(
             currentPath

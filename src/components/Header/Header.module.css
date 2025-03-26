@@ -1,0 +1,31 @@
+.title {
+  /* background: transparent;
+  border: none; */
+  text-decoration: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.icon {
+  height: fit-content;
+}
+
+.navigation {
+  margin: auto 0;
+  display: flex;
+  gap: 10px;
+}
+
+.navigation a {
+  color: white;
+  font-size: 1.2rem;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.navigation a:hover {
+  text-decoration: underline;
+}
