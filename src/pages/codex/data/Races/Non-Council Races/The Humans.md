@@ -8,7 +8,7 @@ tags:
 ---
 
 # The Humans
-![The Humans](../../../src/assets/media/humans.png)
+![The Humans](../../../src/assets/media/humans.jpg)
 
 Humans, from the planet Earth, are the newest sentient species of notable size to enter the galactic stage and are the most rapidly expanding and developing. They independently discovered a Prothean data cache on Mars in 2148, and the mass relay networks shortly thereafter.
 

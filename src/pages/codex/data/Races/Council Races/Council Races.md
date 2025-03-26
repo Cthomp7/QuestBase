@@ -8,6 +8,6 @@ tags:
 ---
 
 # Council Races
-![Council Races](../../../src/assets/media/council-races.png)
+![Council Races](../../../src/assets/media/council-races.jpg)
 
 The Citadel Council is the governing body of the Citadel. Convening in the impressive Citadel Tower, the Council is the ultimate authority in Citadel space, passing judgement for violations of Council law, settling disputes between governments, and maintaining law and order, often through the use of its own covert intelligence service, the Spectres.
