@@ -69,8 +69,10 @@ function readDirectoryRecursively(dirPath) {
 // API to get codex
 app.get("/api/codex", (req, res) => {
   const codexPath = path.join(process.cwd(), "src/pages/codex/data");
+  console.log("codexPath: ", codexPath)
   try {
     const codexEntries = readDirectoryRecursively(codexPath);
+    console.log("codexEntries: ", codexEntries)
     res.json(codexEntries);
   } catch (error) {
     console.error("Error reading codex directory:", error);
