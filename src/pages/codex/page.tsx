@@ -4,6 +4,8 @@ import downArrow from "../../assets/chevron-down.svg";
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 
+const API_BASE_URL = process.env.VITE_API_BASE_URL;
+
 interface CodexEntry {
   name: string;
   path: string;
@@ -121,7 +123,7 @@ const Codex = () => {
   useEffect(() => {
     const getCodexEntries = async () => {
       try {
-        const response = await fetch("http://localhost:3001/api/codex");
+        const response = await fetch(`${API_BASE_URL}/api/codex`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -143,7 +145,7 @@ const Codex = () => {
       try {
         const currentPath = path ?? "codex.md";
         const response = await fetch(
-          `http://localhost:3001/api/codex/content?path=${encodeURIComponent(
+          `${API_BASE_URL}/api/codex/content?path=${encodeURIComponent(
             currentPath
           )}`
         );

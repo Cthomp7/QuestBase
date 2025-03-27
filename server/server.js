@@ -4,6 +4,8 @@ import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import cors from "cors";
 import https from "https"; // Import https for serving via SSL
+import dotenv from "dotenv";
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
