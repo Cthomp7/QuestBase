@@ -98,13 +98,13 @@ app.get("/api/codex/content", (req, res) => {
   }
 });
 
+// Serve static files from the "dist" folder
+app.use(express.static(appDirectory));
+
 // Fallback to index.html for client-side routing
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "dist", "index.html"));
 });
-
-// Serve static files from the "dist" folder
-app.use(express.static(appDirectory));
 
 // if (isProduction) {
   // Production setup with HTTPS
