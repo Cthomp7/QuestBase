@@ -2,12 +2,15 @@ import express from "express";
 import fs from "fs";
 import path from "path";
 import cors from "cors";
+import https from "https"; // Import https for serving via SSL
 
 const app = express();
-const PORT = 3001; // Make sure this port is different from Vite's default (5173)
+const PORT = 3001; // Your API backend port
 
-app.use(cors()); // Allow Vite frontend to fetch from this API
+// Enable CORS
+app.use(cors());
 
+// Read directory recursively (same as before)
 function readDirectoryRecursively(dirPath) {
   const entries = fs.readdirSync(dirPath);
   return entries
@@ -38,6 +41,7 @@ function readDirectoryRecursively(dirPath) {
     .filter(Boolean);
 }
 
+// API to get codex
 app.get("/api/codex", (req, res) => {
   const codexPath = path.join(process.cwd(), "src/pages/codex/data");
   try {
@@ -49,6 +53,7 @@ app.get("/api/codex", (req, res) => {
   }
 });
 
+// API to get content of markdown file
 app.get("/api/codex/content", (req, res) => {
   try {
     const { path: requestedPath } = req.query;
@@ -57,22 +62,13 @@ app.get("/api/codex/content", (req, res) => {
       return res.status(400).json({ message: "Path parameter is required" });
     }
 
-    // Remove the /codex/ prefix if it exists
     const cleanPath = requestedPath.replace(/^\/codex\//, "");
+    const fullPath = path.join(process.cwd(), "src/pages/codex/data", cleanPath);
 
-    // Construct the full path to the markdown file
-    const fullPath = path.join(
-      process.cwd(),
-      "src/pages/codex/data",
-      cleanPath
-    );
-
-    // Check if file exists
     if (!fs.existsSync(fullPath)) {
       return res.status(404).json({ message: "File not found" });
     }
 
-    // Read the markdown file
     const content = fs.readFileSync(fullPath, "utf-8");
     res.send(content);
   } catch (error) {
@@ -81,6 +77,20 @@ app.get("/api/codex/content", (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+// SSL Certificates (Certbot paths)
+const privateKey = fs.readFileSync("/etc/letsencrypt/live/yourdomain.com/privkey.pem", "utf8");
+const certificate = fs.readFileSync("/etc/letsencrypt/live/yourdomain.com/cert.pem", "utf8");
+const ca = fs.readFileSync("/etc/letsencrypt/live/yourdomain.com/chain.pem", "utf8");
+
+// Credentials for HTTPS
+const credentials = { key: privateKey, cert: certificate, ca: ca };
+
+// Create an HTTPS server and start it
+https.createServer(credentials, app).listen(443, () => {
+  console.log("HTTPS server running on port 443");
+});
+
+// Also listen on HTTP for redirect to HTTPS (optional, you can skip this if you only need HTTPS)
+app.listen(80, () => {
+  console.log("HTTP server running on port 80");
 });
