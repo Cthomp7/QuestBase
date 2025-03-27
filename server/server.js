@@ -1,8 +1,13 @@
 import express from "express";
 import fs from "fs";
-import path from "path";
+import path, { dirname } from "path";
+import { fileURLToPath } from 'url';
 import cors from "cors";
 import https from "https"; // Import https for serving via SSL
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const appDirectory = path.join(__dirname, 'dist');
 
 const app = express();
 const PORT = 3001; // Your API backend port
@@ -11,7 +16,7 @@ const PORT = 3001; // Your API backend port
 app.use(cors());
 
 // Serve static files from the "dist" folder
-app.use(express.static(path.join(__dirname, "dist")));
+app.use(express.static(appDirectory));
 
 // Read directory recursively (same as before)
 function readDirectoryRecursively(dirPath) {
@@ -84,19 +89,11 @@ app.get("/api/codex/content", (req, res) => {
   }
 });
 
-// SSL Certificates (Certbot paths)
-const privateKey = fs.readFileSync(
-  "/etc/letsencrypt/live/questbase.net/privkey.pem",
-  "utf8"
-);
-const certificate = fs.readFileSync(
-  "/etc/letsencrypt/live/questbase.net/cert.pem",
-  "utf8"
-);
-const ca = fs.readFileSync(
-  "/etc/letsencrypt/live/questbase.net/chain.pem",
-  "utf8"
-);
+const certPath = '/etc/letsencrypt/live/questbase.net/';
+
+const privateKey = fs.readFileSync(path.join(certPath, 'privkey.pem'), 'utf8');
+const certificate = fs.readFileSync(path.join(certPath, 'cert.pem'), 'utf8');
+const ca = fs.readFileSync(path.join(certPath, 'chain.pem'), 'utf8');
 
 // Credentials for HTTPS
 const credentials = { key: privateKey, cert: certificate, ca: ca };
