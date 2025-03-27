@@ -36,7 +36,7 @@ function readDirectoryRecursively(dirPath) {
       const fullPath = path.join(dirPath, entry);
       const stats = fs.statSync(fullPath);
       const relativePath = path.relative(
-        path.join(process.cwd(), "src/pages/codex/data"),
+        path.join(process.cwd(), "..", "src/pages/codex/data"),
         fullPath
       );
 
@@ -61,7 +61,7 @@ function readDirectoryRecursively(dirPath) {
 
 // API to get codex
 app.get("/api/codex", (req, res) => {
-  const codexPath = path.join(process.cwd(), "src/pages/codex/data");
+  const codexPath = path.join(process.cwd(), "..", "src/pages/codex/data");
   try {
     const codexEntries = readDirectoryRecursively(codexPath);
     res.json(codexEntries);
