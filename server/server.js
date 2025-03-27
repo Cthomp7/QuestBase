@@ -25,14 +25,7 @@ app.use(cors());
 app.use(express.static(appDirectory));
 
 app.use("/api", (req, res) => {
-  const requestedPath = req.url;
-  // Check if the path starts with /api, then call your existing API handler
-  if (requestedPath.startsWith("/api")) {
-    app.handle(req, res); // Forward the request to the relevant API handlers
-  } else {
-    // Handle non-API requests
-    res.status(404).send("Not found");
-  }
+  app.handle(req, res); 
 });
 
 // Read directory recursively (same as before)
