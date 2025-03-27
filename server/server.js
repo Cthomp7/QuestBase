@@ -21,13 +21,6 @@ const isProduction = process.env.NODE_ENV === "production";
 // Enable CORS
 app.use(cors());
 
-// Serve static files from the "dist" folder
-app.use(express.static(appDirectory));
-
-app.use("/api", (req, res) => {
-  app.handle(req, res); 
-});
-
 // Read directory recursively (same as before)
 function readDirectoryRecursively(dirPath) {
   const entries = fs.readdirSync(dirPath);
@@ -61,6 +54,7 @@ function readDirectoryRecursively(dirPath) {
 
 // API to get codex
 app.get("/api/codex", (req, res) => {
+  console.log("this is b")
   const codexPath = path.join(process.cwd(), "src/pages/codex/data");
   console.log("codexPath: ", codexPath)
   try {
@@ -108,6 +102,9 @@ app.get("/api/codex/content", (req, res) => {
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "dist", "index.html"));
 });
+
+// Serve static files from the "dist" folder
+app.use(express.static(appDirectory));
 
 // if (isProduction) {
   // Production setup with HTTPS
