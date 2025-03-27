@@ -21,6 +21,11 @@ app.use(cors());
 // Serve static files from the "dist" folder
 app.use(express.static(appDirectory));
 
+// Fallback to index.html for client-side routing
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
+});
+
 // Read directory recursively (same as before)
 function readDirectoryRecursively(dirPath) {
   const entries = fs.readdirSync(dirPath);
