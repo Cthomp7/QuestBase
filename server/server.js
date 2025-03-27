@@ -15,7 +15,8 @@ console.log("__dirname:", __dirname);
 console.log("appDirectory:", appDirectory);
 
 const app = express();
-const PORT = 3001; // Your API backend port
+const PORT = process.env.PORT || 3001; // Use PORT from env or default to 3001
+const isProduction = process.env.NODE_ENV === "production";
 
 // Enable CORS
 app.use(cors());
@@ -96,34 +97,44 @@ app.get("/api/codex/content", (req, res) => {
   }
 });
 
-const certPath = "/etc/letsencrypt/live/questbase.net/";
-
-const privateKey = fs.readFileSync(path.join(certPath, "privkey.pem"), "utf8");
-const certificate = fs.readFileSync(path.join(certPath, "cert.pem"), "utf8");
-const ca = fs.readFileSync(path.join(certPath, "chain.pem"), "utf8");
-
-// Credentials for HTTPS
-const credentials = { key: privateKey, cert: certificate, ca: ca };
-
-// Redirect HTTP to HTTPS
-app.use((req, res, next) => {
-  if (!req.secure) {
-    return res.redirect(["https://", req.get("Host"), req.url].join(""));
-  }
-  next();
-});
-
 // Fallback to index.html for client-side routing
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "dist", "index.html"));
 });
 
-// Create an HTTPS server and start it (port 443)
-https.createServer(credentials, app).listen(443, () => {
-  console.log("HTTPS server running on port 443");
-});
+if (isProduction) {
+  // Production setup with HTTPS
+  const certPath = "/etc/letsencrypt/live/questbase.net/";
+  const privateKey = fs.readFileSync(
+    path.join(certPath, "privkey.pem"),
+    "utf8"
+  );
+  const certificate = fs.readFileSync(path.join(certPath, "cert.pem"), "utf8");
+  const ca = fs.readFileSync(path.join(certPath, "chain.pem"), "utf8");
 
-// Also listen on HTTP (port 80) for redirect to HTTPS
-app.listen(80, () => {
-  console.log("HTTP server running on port 80");
-});
+  // Credentials for HTTPS
+  const credentials = { key: privateKey, cert: certificate, ca: ca };
+
+  // Redirect HTTP to HTTPS
+  app.use((req, res, next) => {
+    if (!req.secure) {
+      return res.redirect(["https://", req.get("Host"), req.url].join(""));
+    }
+    next();
+  });
+
+  // Create an HTTPS server and start it (port 443)
+  https.createServer(credentials, app).listen(443, () => {
+    console.log("HTTPS server running on port 443");
+  });
+
+  // Also listen on HTTP (port 80) for redirect to HTTPS
+  app.listen(80, () => {
+    console.log("HTTP server running on port 80");
+  });
+} else {
+  // Development setup - simple HTTP server
+  app.listen(PORT, () => {
+    console.log(`Development server running on http://localhost:${PORT}`);
+  });
+}

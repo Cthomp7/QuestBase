@@ -124,8 +124,12 @@ const Codex = () => {
     const getCodexEntries = async () => {
       try {
         const response = await fetch(`${API_BASE_URL}/api/codex`);
+        const contentType = response.headers.get("content-type");
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        if (!contentType || !contentType.includes("application/json")) {
+          throw new Error("Expected JSON response, but got something else.");
         }
         const data = await response.json();
         setEntries(data);
