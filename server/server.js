@@ -111,7 +111,7 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "dist", "index.html"));
 });
 
-if (isProduction) {
+// if (isProduction) {
   // Production setup with HTTPS
   const certPath = "/etc/letsencrypt/live/questbase.net/";
   const privateKey = fs.readFileSync(
@@ -141,9 +141,9 @@ if (isProduction) {
   app.listen(80, () => {
     console.log("HTTP server running on port 80");
   });
-} else {
-  // Development setup - simple HTTP server
-  app.listen(PORT, () => {
-    console.log(`Development server running on http://localhost:${PORT}`);
-  });
-}
+// } else {
+//   // Development setup - simple HTTP server
+//   app.listen(PORT, () => {
+//     console.log(`Development server running on http://localhost:${PORT}`);
+//   });
+// }
