@@ -78,9 +78,9 @@ app.get("/api/codex/content", (req, res) => {
 });
 
 // SSL Certificates (Certbot paths)
-const privateKey = fs.readFileSync("/etc/letsencrypt/live/yourdomain.com/privkey.pem", "utf8");
-const certificate = fs.readFileSync("/etc/letsencrypt/live/yourdomain.com/cert.pem", "utf8");
-const ca = fs.readFileSync("/etc/letsencrypt/live/yourdomain.com/chain.pem", "utf8");
+const privateKey = fs.readFileSync("/etc/letsencrypt/live/questbase.net/privkey.pem", "utf8");
+const certificate = fs.readFileSync("/etc/letsencrypt/live/questbase.net/cert.pem", "utf8");
+const ca = fs.readFileSync("/etc/letsencrypt/live/questbase.net/chain.pem", "utf8");
 
 // Credentials for HTTPS
 const credentials = { key: privateKey, cert: certificate, ca: ca };
