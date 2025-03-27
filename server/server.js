@@ -24,7 +24,16 @@ app.use(cors());
 // Serve static files from the "dist" folder
 app.use(express.static(appDirectory));
 
-console.log("current directory:", process.cwd());
+app.use("/api", (req, res) => {
+  const requestedPath = req.url;
+  // Check if the path starts with /api, then call your existing API handler
+  if (requestedPath.startsWith("/api")) {
+    app.handle(req, res); // Forward the request to the relevant API handlers
+  } else {
+    // Handle non-API requests
+    res.status(404).send("Not found");
+  }
+});
 
 // Read directory recursively (same as before)
 function readDirectoryRecursively(dirPath) {
