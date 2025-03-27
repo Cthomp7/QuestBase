@@ -5,7 +5,6 @@ import { fileURLToPath } from "url";
 import cors from "cors";
 import https from "https"; // Import https for serving via SSL
 import dotenv from "dotenv";
-import { createProxyMiddleware } from "http-proxy-middleware";
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -21,27 +20,10 @@ const PORT = 3001; // Your API backend port
 // Enable CORS
 app.use(cors());
 
-// Proxy API requests to the API server
-app.use(
-  "/api",
-  createProxyMiddleware({
-    target: `http://localhost:${PORT}`,
-    changeOrigin: true,
-    pathRewrite: {
-      "^/api": "/api", // rewrite path
-    },
-  })
-);
-
 // Serve static files from the "dist" folder
 app.use(express.static(appDirectory));
 
-// Fallback to index.html for client-side routing
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "dist", "index.html"));
-});
-
-console.log("current directory:", process.cwd())
+console.log("current directory:", process.cwd());
 
 // Read directory recursively (same as before)
 function readDirectoryRecursively(dirPath) {
@@ -123,17 +105,25 @@ const ca = fs.readFileSync(path.join(certPath, "chain.pem"), "utf8");
 // Credentials for HTTPS
 const credentials = { key: privateKey, cert: certificate, ca: ca };
 
+// Redirect HTTP to HTTPS
+app.use((req, res, next) => {
+  if (!req.secure) {
+    return res.redirect(["https://", req.get("Host"), req.url].join(""));
+  }
+  next();
+});
+
+// Fallback to index.html for client-side routing
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "dist", "index.html"));
+});
+
 // Create an HTTPS server and start it (port 443)
 https.createServer(credentials, app).listen(443, () => {
   console.log("HTTPS server running on port 443");
 });
 
-// Also listen on HTTP (port 80) for redirect to HTTPS (optional)
+// Also listen on HTTP (port 80) for redirect to HTTPS
 app.listen(80, () => {
   console.log("HTTP server running on port 80");
-});
-
-// Explicitly listen on your API port (3001)
-app.listen(PORT, () => {
-  console.log(`Backend API running on port ${PORT}`);
 });
