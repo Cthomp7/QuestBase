@@ -9,6 +9,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const appDirectory = path.join(__dirname, 'dist');
 
+console.log('__dirname:', __dirname);
+console.log('appDirectory:', appDirectory);
+
 const app = express();
 const PORT = 3001; // Your API backend port
 
