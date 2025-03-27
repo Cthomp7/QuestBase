@@ -10,6 +10,9 @@ const PORT = 3001; // Your API backend port
 // Enable CORS
 app.use(cors());
 
+// Serve static files from the "dist" folder
+app.use(express.static(path.join(__dirname, "dist")));
+
 // Read directory recursively (same as before)
 function readDirectoryRecursively(dirPath) {
   const entries = fs.readdirSync(dirPath);
@@ -63,7 +66,11 @@ app.get("/api/codex/content", (req, res) => {
     }
 
     const cleanPath = requestedPath.replace(/^\/codex\//, "");
-    const fullPath = path.join(process.cwd(), "src/pages/codex/data", cleanPath);
+    const fullPath = path.join(
+      process.cwd(),
+      "src/pages/codex/data",
+      cleanPath
+    );
 
     if (!fs.existsSync(fullPath)) {
       return res.status(404).json({ message: "File not found" });
@@ -78,19 +85,33 @@ app.get("/api/codex/content", (req, res) => {
 });
 
 // SSL Certificates (Certbot paths)
-const privateKey = fs.readFileSync("/etc/letsencrypt/live/questbase.net/privkey.pem", "utf8");
-const certificate = fs.readFileSync("/etc/letsencrypt/live/questbase.net/cert.pem", "utf8");
-const ca = fs.readFileSync("/etc/letsencrypt/live/questbase.net/chain.pem", "utf8");
+const privateKey = fs.readFileSync(
+  "/etc/letsencrypt/live/questbase.net/privkey.pem",
+  "utf8"
+);
+const certificate = fs.readFileSync(
+  "/etc/letsencrypt/live/questbase.net/cert.pem",
+  "utf8"
+);
+const ca = fs.readFileSync(
+  "/etc/letsencrypt/live/questbase.net/chain.pem",
+  "utf8"
+);
 
 // Credentials for HTTPS
 const credentials = { key: privateKey, cert: certificate, ca: ca };
 
-// Create an HTTPS server and start it
+// Create an HTTPS server and start it (port 443)
 https.createServer(credentials, app).listen(443, () => {
   console.log("HTTPS server running on port 443");
 });
 
-// Also listen on HTTP for redirect to HTTPS (optional, you can skip this if you only need HTTPS)
+// Also listen on HTTP (port 80) for redirect to HTTPS (optional)
 app.listen(80, () => {
   console.log("HTTP server running on port 80");
+});
+
+// Explicitly listen on your API port (3001)
+app.listen(PORT, () => {
+  console.log(`Backend API running on port ${PORT}`);
 });
