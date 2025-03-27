@@ -88,11 +88,14 @@ app.get("/api/codex/content", (req, res) => {
     }
 
     const cleanPath = requestedPath.replace(/^\/codex\//, "");
+    console.log("cleanPath: ", cleanPath)
     const fullPath = path.join(
       process.cwd(),
       "src/pages/codex/data",
       cleanPath
     );
+
+    console.log("fullPath: ", fullPath)
 
     if (!fs.existsSync(fullPath)) {
       return res.status(404).json({ message: "File not found" });
