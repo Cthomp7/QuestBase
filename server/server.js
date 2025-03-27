@@ -5,6 +5,7 @@ import { fileURLToPath } from "url";
 import cors from "cors";
 import https from "https"; // Import https for serving via SSL
 import dotenv from "dotenv";
+import { createProxyMiddleware } from "http-proxy-middleware";
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -20,6 +21,18 @@ const PORT = 3001; // Your API backend port
 // Enable CORS
 app.use(cors());
 
+// Proxy API requests to the API server
+app.use(
+  "/api",
+  createProxyMiddleware({
+    target: `http://localhost:${PORT}`,
+    changeOrigin: true,
+    pathRewrite: {
+      "^/api": "/api", // rewrite path
+    },
+  })
+);
+
 // Serve static files from the "dist" folder
 app.use(express.static(appDirectory));
 
@@ -27,6 +40,8 @@ app.use(express.static(appDirectory));
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "dist", "index.html"));
 });
+
+console.log("current directory:", process.cwd())
 
 // Read directory recursively (same as before)
 function readDirectoryRecursively(dirPath) {
@@ -36,7 +51,7 @@ function readDirectoryRecursively(dirPath) {
       const fullPath = path.join(dirPath, entry);
       const stats = fs.statSync(fullPath);
       const relativePath = path.relative(
-        path.join(process.cwd(), "..", "src/pages/codex/data"),
+        path.join(process.cwd(), "src/pages/codex/data"),
         fullPath
       );
 
@@ -61,7 +76,7 @@ function readDirectoryRecursively(dirPath) {
 
 // API to get codex
 app.get("/api/codex", (req, res) => {
-  const codexPath = path.join(process.cwd(), "..", "src/pages/codex/data");
+  const codexPath = path.join(process.cwd(), "src/pages/codex/data");
   try {
     const codexEntries = readDirectoryRecursively(codexPath);
     res.json(codexEntries);
