@@ -106,8 +106,10 @@ const renderCodexEntries = (
 );
 
 const stripFrontmatter = (content: string): string => {
-  const frontmatterRegex = /^---\n[\s\S]*?\n---\n/;
-  return content.replace(frontmatterRegex, "");
+  if (!content) return content;
+  const frontmatterRegex = /^---\s*\n[\s\S]*?\n---\s*\n/;
+  const stripped = content.replace(frontmatterRegex, "");
+  return stripped;
 };
 
 const Codex = () => {
@@ -119,6 +121,32 @@ const Codex = () => {
   const [expandedFolders, setExpandedFolders] = useState<Set<string>>(
     new Set()
   );
+  const [allExpanded, setAllExpanded] = useState(false);
+
+  // Function to get all folder paths
+  const getAllFolderPaths = (entries: CodexEntry[]): string[] => {
+    const paths: string[] = [];
+    entries.forEach((entry) => {
+      if (entry.type === "folder") {
+        paths.push(entry.path);
+        if (entry.children) {
+          paths.push(...getAllFolderPaths(entry.children));
+        }
+      }
+    });
+    return paths;
+  };
+
+  // Function to toggle all folders
+  const toggleAllFolders = () => {
+    if (allExpanded) {
+      setExpandedFolders(new Set());
+    } else {
+      const allPaths = getAllFolderPaths(entries);
+      setExpandedFolders(new Set(allPaths));
+    }
+    setAllExpanded(!allExpanded);
+  };
 
   useEffect(() => {
     const getCodexEntries = async () => {
@@ -244,6 +272,9 @@ const Codex = () => {
     <div className={styles.container}>
       <div className={styles.table_of_contents}>
         <h1>Table of Contents</h1>
+        <button onClick={toggleAllFolders} className={styles.toggle_all_button}>
+          {allExpanded ? "Collapse All" : "Expand All"}
+        </button>
         {error && <p className={styles.error}>{error}</p>}
         {entries.length > 0 ? (
           renderCodexEntries(entries, path, expandedFolders, setExpandedFolders)
