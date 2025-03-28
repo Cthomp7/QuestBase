@@ -16,6 +16,20 @@ function Home() {
   const [popup, setPopup] = useState<SessionHighlight | null>(null);
   const [showMore, setShowMore] = useState<boolean>(false);
 
+  // Filter upcoming sessions to only show future dates
+  const filteredUpcomingSessions = upcomingSessions.filter((session) => {
+    // Parse date string like "Thursday, October 24th 2024"
+    const dateParts = session.date.split(", ")[1].split(" "); // ["October", "24th", "2024"]
+    const month = dateParts[0];
+    const day = parseInt(dateParts[1].replace(/(?:st|nd|rd|th)/, ""));
+    const year = parseInt(dateParts[2]);
+
+    const sessionDate = new Date(year, new Date(month + " 1").getMonth(), day);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Reset time to start of day for fair comparison
+    return sessionDate >= today;
+  });
+
   const Session = (props: SessionHighlight) => {
     const { title, date, description } = props;
     return (
@@ -82,8 +96,8 @@ function Home() {
       <section>
         <h2>Upcoming Sessions</h2>
         <div className={styles.upcoming_container}>
-          {upcomingSessions.map((session) => (
-            <UpcomingSession {...session} />
+          {filteredUpcomingSessions.map((session) => (
+            <UpcomingSession key={session.date} {...session} />
           ))}
         </div>
       </section>

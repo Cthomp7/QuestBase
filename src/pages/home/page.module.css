@@ -98,6 +98,8 @@ header {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
+  max-height: calc(100vh - 250px);
+  overflow-y: auto;
 }
 
 .upcoming_item {
@@ -160,4 +162,9 @@ header {
 .sessions_container::-webkit-scrollbar-thumb {
   background-color: #6b6b6b;
   border-radius: 4px;
+}
+
+.past_session {
+  opacity: 0.6;
+  background-color: #f5f5f52c;
 }

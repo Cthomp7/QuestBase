@@ -16,7 +16,7 @@ console.log("appDirectory:", appDirectory);
 
 const app = express();
 const PORT = process.env.PORT || 3001; // Use PORT from env or default to 3001
-const isProduction = process.env.NODE_ENV === "production";
+const isProduction = process.env.NODE_ENV === "production" || false;
 
 // Enable CORS
 app.use(cors());
@@ -54,12 +54,9 @@ function readDirectoryRecursively(dirPath) {
 
 // API to get codex
 app.get("/api/codex", (req, res) => {
-  console.log("this is b")
   const codexPath = path.join(process.cwd(), "src/pages/codex/data");
-  console.log("codexPath: ", codexPath)
   try {
     const codexEntries = readDirectoryRecursively(codexPath);
-    console.log("codexEntries: ", codexEntries)
     res.json(codexEntries);
   } catch (error) {
     console.error("Error reading codex directory:", error);
@@ -77,14 +74,11 @@ app.get("/api/codex/content", (req, res) => {
     }
 
     const cleanPath = requestedPath.replace(/^\/codex\//, "");
-    console.log("cleanPath: ", cleanPath)
     const fullPath = path.join(
       process.cwd(),
       "src/pages/codex/data",
       cleanPath
     );
-
-    console.log("fullPath: ", fullPath)
 
     if (!fs.existsSync(fullPath)) {
       return res.status(404).json({ message: "File not found" });
@@ -106,7 +100,7 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "dist", "index.html"));
 });
 
-// if (isProduction) {
+if (isProduction) {
   // Production setup with HTTPS
   const certPath = "/etc/letsencrypt/live/questbase.net/";
   const privateKey = fs.readFileSync(
@@ -136,9 +130,9 @@ app.get("*", (req, res) => {
   app.listen(80, () => {
     console.log("HTTP server running on port 80");
   });
-// } else {
-//   // Development setup - simple HTTP server
-//   app.listen(PORT, () => {
-//     console.log(`Development server running on http://localhost:${PORT}`);
-//   });
-// }
+} else {
+  // Development setup - simple HTTP server
+  app.listen(PORT, () => {
+    console.log(`Development server running on http://localhost:${PORT}`);
+  });
+}
