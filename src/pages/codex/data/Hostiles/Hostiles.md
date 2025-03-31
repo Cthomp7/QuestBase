@@ -9,4 +9,6 @@ tags:
 
 # Hostiles
 
+![Campaign Image](/media/hostiles.jpg)
+
 The next chapter will cover the various hostile lifeforms the party has encountered

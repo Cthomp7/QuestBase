@@ -8,6 +8,9 @@ tags:
 ---
 
 # Spectres
+
+![Campaign Image](/media/spectres.jpg)
+
 Spectres (**S**pecial **T**actics and **R**econnaissance, also abbreviated as **ST&R**) are agents entrusted with extraordinary authority by the Citadel Council, including the power of life and death over the inhabitants of the galaxy. They form an elite group selected from a number of different species, and their primary responsibility is to preserve galactic stability by whatever means necessary. Though they are generally considered as being above the law and have complete discretion as to the methods used to accomplish their mission, an individual's status as a Spectre can be revoked by the Council in a case of gross misconduct. Spectres work either alone or in small groups according to the nature of a particular task and to their personal preference.
 
 **Known Spectres**

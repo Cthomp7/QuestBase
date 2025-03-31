@@ -8,6 +8,9 @@ tags:
 ---
 
 # Expansion, Conflict, and Humanity
+
+![Campaign Image](/media/expansion-conflict.webp)
+
 The next thousand years were relatively peaceful ones for the Council, interrupted only by some minor galactic incidents and the Geth War of 1895 CE. In that conflict, the quarians were driven from their worlds by the geth, machines created to serve the quarians that had achieved artificial intelligence and rebelled. With invasion by the geth an immediate threat, the Council refused the quarians' pleas for help and revoked their Citadel embassy, and also implemented restrictive laws on AI research and development.
 
 During this time the Council continued to explore the galaxy, encountering new races with varied success. One diplomatic failure occurred with the yahg, a pre-spaceflight race discovered by Council surveyors in 2125 CE. A Council delegation was dispatched to the yahg homeworld Parnack, expecting to quickly establish diplomatic relations. Unfortunately, the predatory yahg misinterpreted the delegation's non-subservient behaviors as an attitude of contempt and promptly slaughtered the delegates. The Council responded by cutting off contact with the yahg and declaring Parnack off-limits to Citadel races; the Council asserted that the extremely aggressive yahg were poorly suited to integrate with the galactic community.

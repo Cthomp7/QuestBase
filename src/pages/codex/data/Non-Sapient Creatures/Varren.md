@@ -1,4 +1,6 @@
-# Varren 
+# Varren
+
+![Campaign Image](/media/varren.webp)
 
 Varren are omnivores with a preference for living prey. Originally native to the krogan homeworld of Tuchanka, they are, like most life from Tuchanka, savage, clannish, and consummate survivors. They are pack hunters when vulnerable prey is readily available and become scavengers when outnumbered or outclassed.
 

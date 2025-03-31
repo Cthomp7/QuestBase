@@ -8,6 +8,9 @@ tags:
 ---
 
 # The Krogan Rebellion and the Turians
+
+![Campaign Image](/media/krogan-rebellion.webp)
+
 The Krogan Rebellions and the Turians
 
 Some 400 years after the end of the Rachni Wars, the Council once again found itself embroiled in a galaxy-wide conflict. The krogan, having exploded in numbers and encroaching on the territories of other races, were asked by the Council to withdraw from the asari colony of Lusia. Outraged, the krogan refused. The Council ordered the recently-formed Special Tactics and Reconnaissance division to make a preemptive strike against krogan infrastructures, and the Krogan Rebellions began.

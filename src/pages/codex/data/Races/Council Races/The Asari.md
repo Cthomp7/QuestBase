@@ -8,7 +8,7 @@ tags:
 ---
 
 # The Asari
-![The Asari](/media/asari.png)
+![The Asari](/media/asari.jpg)
 
 Long-lived, blue-skinned monogendered race (they use female pronouns). They are known for their biotics. They are also known for their odd method of reproduction, which involves attuning their nervous system to that of another individual of any gender, and of any species. They tend to serve as diplomats or other such positions due to their longevity.
 

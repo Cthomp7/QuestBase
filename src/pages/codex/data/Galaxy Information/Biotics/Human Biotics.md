@@ -1,4 +1,7 @@
 # Human Biotics
+
+![Campaign Image](/media/human-biotics.jpg)
+
 After a series of starship accidents in the 2150s that dispersed element zero over populated areas, the first human biotics were born, though their abilities were not recognized right away. The first known human biotic was female, dubbed "Subject White", and had a subsequently violent history.
 
 By the time these children were teenagers, the Alliance had made contact with the Citadel and learned of the effects of in-utero eezo exposure. A company called Conatix Industries was founded to track down exposed individuals and develop implants for humans. There are rumours that, after the link between eezo and biotics was discovered, some human colonies were deliberately exposed to dust-form element zero to create more biotic children.

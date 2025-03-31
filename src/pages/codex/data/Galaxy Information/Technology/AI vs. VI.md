@@ -1,4 +1,7 @@
 # Artificial Intelligence
+
+![Campaign Image](/media/ai-vs-vi.webp)
+
 An artificial intelligence is a self-aware computing system capable of learning and independent decision making. Creation of conscious AI requires adaptive code, a slow, expensive education, and a specialized quantum computer called a "blue box".
 
 An AI cannot be transmitted across a communication channel or computer network. Without its blue box, an AI is no more than data files. Loading these files into a new blue box will create a new personality, as variations in the quantum hardware and runtime results create unpredictable variations.

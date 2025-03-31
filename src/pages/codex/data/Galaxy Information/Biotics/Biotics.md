@@ -1,5 +1,7 @@
 # Intro to Biotics
 
+![Campaign Image](/media/biotics.webp)
+
 Biotics is the ability of some lifeforms to create mass effect fields using element zero nodules embedded in body tissues. These powers are both accessed and augmented by using bio-amps. Biotic individuals can knock enemies over from a distance, lift them into the air, generate gravitational vortices to tear obstacles or enemies apart, or create protective barriers.
 
 Background

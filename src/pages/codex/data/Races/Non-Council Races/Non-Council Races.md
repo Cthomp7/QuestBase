@@ -8,6 +8,6 @@ tags:
 ---
 
 # Non-Council Races
-![Non-Council Races](/media/non-council-races.png)
+![Non-Council Races](/media/non-council-races.jpg)
 
 Spacefaring species without the political power to set galactic policy.

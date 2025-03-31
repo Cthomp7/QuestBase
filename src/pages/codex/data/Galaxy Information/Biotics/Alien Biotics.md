@@ -1,4 +1,7 @@
 # Alien Biotics
+
+![Campaign Image](/media/alien-biotics.webp)
+
 Biotic abilities are of varying rarity and status in other species:
 
 ### Asari

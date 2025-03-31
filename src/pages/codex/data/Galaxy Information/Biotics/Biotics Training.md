@@ -1,4 +1,7 @@
 # Biotics Training
+
+![Campaign Image](/media/biotics-training.jpg)
+
 Biotic implants and amplifiers only provide the potential to create coherent mass effect fields. Whether biotics can actually do so is largely determined by their training.
 
 Biotics must develop conscious control over their nervous systems, sending specific electrical impulses to the element zero nodules embedded in their nerves. They are taught to use their implants and amps with biofeedback devices and physical mnemonics. Specific gestures or muscle movements fire the proper sequence of nerves to activate a certain skill.

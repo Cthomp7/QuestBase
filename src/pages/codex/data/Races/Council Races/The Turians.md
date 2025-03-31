@@ -8,7 +8,7 @@ tags:
 ---
 
 # The Turians
-![The Turians](/media/turians.png)
+![The Turians](/media/turians.jpg)
 
 Armored avian/lizard race. Society is an autocratic one that values discipline and possesses a strong sense of personal and collective honor. All Turians serve in the military starting at age 15. Turians serve as the military might of the Council and have the largest fleet in Citadel space.
 

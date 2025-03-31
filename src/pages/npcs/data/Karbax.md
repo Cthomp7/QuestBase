@@ -1,4 +1,7 @@
 # Karbax: Shuttle Pilot: ACTIVE
+
+![Campaign Image](/media/npcs/karbax.webp)
+
 Karbax is a hard worker, and as far as batarians go pretty nice. He has picked up a lot of slack from Jaleels mismanagement, and has become a patron for the other miners.
 
 Since being rescued, Karbax has revealed a son. His name is Scott Renner, currently on Eden Prime. His safety is uncertain.

@@ -1,4 +1,7 @@
 # Element Zero
+
+![Campaign Image](/media/element-zero.webp)
+
 Element Zero, also known as "eezo", is a rare material that, when subjected to an electrical current, releases dark energy which can be manipulated into a mass effect field, raising or lowering the mass of all objects within that field.
 
 Eezo is generated when solid matter, such as a planet, is affected by the energy of a star going supernova. The material is common in the asteroid debris that orbits neutron stars and pulsars. These are dangerous places to mine, requiring extensive use of robotics, telepresence, and shielding to survive the intense radiation from the dead star. Only a few major corporations can afford the set-up costs required to work these primary sources. Some planets have small eezo deposits or coalesced around a larger deposit during their formation. While these secondary sources are safer to mine, the yield from the ore is not as large. There are rumours that the Nemean Abyss has particularly rich eezo deposits.

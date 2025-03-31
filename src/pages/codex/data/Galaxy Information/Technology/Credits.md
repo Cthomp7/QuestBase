@@ -1,4 +1,7 @@
 # Credits ("Creds")
+
+![Campaign Image](/media/credits.webp)
+
 The standard credit was established by the Citadel's Unified Banking Act as the currency of interstellar trade. The credit has a managed floating exchange rate, calculated in real time by the central bank to maintain the average value of all participating currencies. Some regional currencies are worth more than a credit and some less.
 
 Hard currency can be stolen or counterfeited, so electronic fund transfers are the norm. More importantly physical transactions cannot easily be tracked, making them ideal for tax evasion or the purchase of illegal goods.

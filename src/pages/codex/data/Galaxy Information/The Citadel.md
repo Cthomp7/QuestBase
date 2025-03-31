@@ -1,4 +1,7 @@
 # The Citadel
+
+![Campaign Image](/media/the-citadel.jpg)
+
 Supposedly constructed by the long-extinct Protheans, this colossal deep-space station serves as the capital of the Citadel Council. Gravity is simulated through rotation, and is a comfortable 1.02 standard G's on the Wards and a light 0.3 standard G's on the Presidium Ring.
 
 Total Length (Open): 44.7 km

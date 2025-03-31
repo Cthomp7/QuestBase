@@ -1,5 +1,7 @@
 # Pyjaks
 
+![Campaign Image](/media/pyjak.jpg)
+
 Pyjaks, sometimes referred to as "space monkeys", are a primitive species found on several planets including Eletania, Tuchanka, and Zorya.
 
 The fact that they are able to thrive in such varied ecosystems suggests a very high ability to adapt. They live in small colonies of rough shelters, and appear to do little more than wander around in groups. They are apparently a somewhat curious species, and have been known to scavenge pieces of technology.

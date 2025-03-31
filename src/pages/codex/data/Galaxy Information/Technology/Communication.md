@@ -1,4 +1,7 @@
 # Communications
+
+![Campaign Image](/media/communication.jpg)
+
 Real-time communication is possible thanks to networks of expensive mass relay comm buoys that can daisy-chain a transmission via lasers.
 
 Comm buoys are maintained in patterns built outward from each mass relay. The buoys are little more than a cluster of primitive, miniature mass relays. Each individual buoy is connected to a partner on another buoy in the network, forming a corridor of low-mass space. Tightbeam communications lasers are piped through these "tubes" of FTL space, allowing virtually instantaneous communication to anywhere on the network. The networks connect across regions by communications lasers through the mass relays.

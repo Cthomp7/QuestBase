@@ -8,7 +8,7 @@ tags:
 ---
 
 # The Volus
-![The Volus](/media/volus.png)
+![The Volus](/media/volus.jpg)
 
 **The volus** are a member species of the Citadel with their own embassy, but they are also a client race of the turians. Centuries ago, they were voluntarily absorbed into the Hierarchy, effectively trading their mercantile prowess for turian military protection. Irune, their homeworld, lies far beyond the normal life zone of its star. However, the world has a high-pressure greenhouse atmosphere that traps enough heat to support an ammonia-based biochemistry. As a result, the volus must wear pressure suits and breathers when dealing with other species as conventional nitrogen/oxygen air mixtures are poisonous to them, and in the low pressure atmospheres tolerable to most species, their flesh will actually split open. Volus culture is tribal, bartering lands and even people to gain status. This culture of exchange inclines them to economic pursuits. It was the volus who authored the Unified Banking Act, and they continue to monitor and balance the Citadel economy.
 

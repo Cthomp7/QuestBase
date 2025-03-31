@@ -1,5 +1,7 @@
 # Space Cow
 
+![Campaign Image](/media/space-cow.webp)
+
 Space Cows are orange-and-white herbivores with orange irises, four legs, and two small arm-like forelimbs with two fingers each.
 
 Space Cows naturally graze in herds. There are wild herds on Chasca, Nodacrux and Ontarom, as well as on Aite.

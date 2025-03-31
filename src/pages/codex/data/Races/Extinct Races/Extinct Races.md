@@ -8,6 +8,6 @@ tags:
 ---
 
 # Extinct Races
-![Extinct Races](/media/extinct-races.png)
+![Extinct Races](/media/extinct-races.jpg)
 
 This Section goes into further detail into the extinct species

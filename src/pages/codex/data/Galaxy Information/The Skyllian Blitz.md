@@ -1,5 +1,7 @@
 # Skyllian Blitz
 
+![Campaign Image](/media/the-skyllian-blitz.jpg)
+
 The Skyllian Blitz was a major assault on the human colony of Elysium in 2176 CE. A huge band of pirates, slavers, and batarian warlords, partly funded by batarian financiers, launched an attack into the Skyllian Verge, intending to destroy Elysium. The attack was partly a batarian reprisal for humanity's expansion in the Verge, and partly the result of tensions from the Alliance's pirate suppression campaigns. The decision to finally launch the Blitz was instigated by one person, Elanos Haliat. He intended to use the prestige of the Blitz to cement his position as leader of the Terminus Systems' many pirate bands.
 
 The people of Elysium and the Alliance rallied to defend the colony. Small ground teams made up of Alliance Marines on leave and Elysium's civilians managed to hold off the pirates, while the Alliance Navy, including the SSV Agincourt, engaged their vessels overhead. Navigator Pressly claims that the pirate ships were no match for the Alliance: he couldn't even keep track of how many ships the Agincourt destroyed. The ground teams had a much harder fight, but still managed to hold out for several hours. When reinforcements finally arrived, the enemy turned tail and fled in what vessels they had left.

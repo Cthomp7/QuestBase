@@ -1,4 +1,8 @@
 # Blue Suns
+
+![Campaign Image](/media/blue-suns.png)
+
+
 The Blue Suns are a "private security organization," in reality a mercenary outfit, operating in the Skyllian Verge. The Blue Suns have a reputation for being both discreet and ruthlessly efficient, and as such charge a sizable fee.
 
 Blue Suns mercenaries often have a tattoo of a blue sun somewhere on their body. During high-risk jobs, the tattoo would be removed with an acid wash to prevent them being identified, then reapplied once the job was finished.

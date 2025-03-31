@@ -1,4 +1,7 @@
 # The Blood Pack
+
+![Campaign Image](/media/blood-pack.webp)
+
 The Blood Pack are a mercenary group primarily composed of krogan troops and vorcha cannon fodder. They prefer simple and brutish solutions to conflicts that come their way: beating enemies into submission.
 
 # Overview
