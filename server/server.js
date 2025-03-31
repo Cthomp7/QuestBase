@@ -32,28 +32,28 @@ const PORT = process.env.PORT || 3001; // Use PORT from env or default to 3001
 app.use(cors());
 
 // Read directory recursively (same as before)
-function readDirectoryRecursively(dirPath) {
+function readDirectoryRecursively(dir, dirPath) {
   const entries = fs.readdirSync(dirPath);
   return entries
     .map((entry) => {
       const fullPath = path.join(dirPath, entry);
       const stats = fs.statSync(fullPath);
       const relativePath = path.relative(
-        path.join(process.cwd(), "src/pages/codex/data"),
+        path.join(process.cwd(), `src/pages/${dir}/data`),
         fullPath
       );
 
       if (stats.isDirectory()) {
         return {
           name: entry,
-          path: `/codex/${relativePath}`,
+          path: `/${dir}/${relativePath}`,
           type: "folder",
-          children: readDirectoryRecursively(fullPath),
+          children: readDirectoryRecursively(dir, fullPath),
         };
       } else if (entry.endsWith(".md")) {
         return {
           name: entry.replace(".md", ""),
-          path: `/codex/${relativePath}`,
+          path: `/${dir}/${relativePath}`,
           type: ".md",
         };
       }
@@ -66,7 +66,7 @@ function readDirectoryRecursively(dirPath) {
 app.get("/api/codex", (req, res) => {
   const codexPath = path.join(process.cwd(), "src/pages/codex/data");
   try {
-    const codexEntries = readDirectoryRecursively(codexPath);
+    const codexEntries = readDirectoryRecursively("codex", codexPath);
     res.json(codexEntries);
   } catch (error) {
     console.error("Error reading codex directory:", error);
@@ -101,6 +101,47 @@ app.get("/api/codex/content", (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
+// API to get codex
+app.get("/api/npcs", (req, res) => {
+  const npcPath = path.join(process.cwd(), "src/pages/npcs/data");
+  try {
+    const npcEntries = readDirectoryRecursively("npcs", npcPath);
+    res.json(npcEntries);
+  } catch (error) {
+    console.error("Error reading codex directory:", error);
+    res.status(500).json([]);
+  }
+});
+
+// API to get content of markdown file
+app.get("/api/npcs/content", (req, res) => {
+  try {
+    const { path: requestedPath } = req.query;
+
+    if (!requestedPath || typeof requestedPath !== "string") {
+      return res.status(400).json({ message: "Path parameter is required" });
+    }
+
+    const cleanPath = requestedPath.replace(/^\/npcs\//, "");
+    const fullPath = path.join(
+      process.cwd(),
+      "src/pages/npcs/data",
+      cleanPath
+    );
+
+    if (!fs.existsSync(fullPath)) {
+      return res.status(404).json({ message: "File not found" });
+    }
+
+    const content = fs.readFileSync(fullPath, "utf-8");
+    res.send(content);
+  } catch (error) {
+    console.error("Error reading markdown file:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 
 // Serve static files from the "dist" folder
 app.use(express.static(appDirectory));

@@ -6,16 +6,16 @@ import TableOfContents from "../../components/TableOfContents/TableOfContents";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-interface CodexEntry {
+interface NPCsEntry {
   name: string;
   path: string;
   type: string;
-  children?: CodexEntry[];
+  children?: NPCsEntry[];
 }
 
 marked.setOptions({
-  gfm: true, // Enables GitHub-Flavored Markdown
-  breaks: true, // Enables line breaks with a single newline
+  gfm: true,
+  breaks: true,
 });
 
 const stripFrontmatter = (content: string): string => {
@@ -25,17 +25,16 @@ const stripFrontmatter = (content: string): string => {
   return stripped;
 };
 
-const Codex = () => {
+const NPCs = () => {
   const { "*": path } = useParams();
-  const [entries, setEntries] = useState<CodexEntry[]>([]);
+  const [entries, setEntries] = useState<NPCsEntry[]>([]);
   const [content, setContent] = useState<string>("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getCodexEntries = async () => {
       try {
-        console.log(`${API_BASE_URL}/api/codex`);
-        const response = await fetch(`${API_BASE_URL}/api/codex`);
+        const response = await fetch(`${API_BASE_URL}/api/npcs`);
         const contentType = response.headers.get("content-type");
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -58,14 +57,14 @@ const Codex = () => {
     const loadContent = async () => {
       setLoading(true);
       try {
-        const currentPath = path ?? "codex.md";
+        const currentPath = path ?? "introduction.md";
         console.log(
-          `${API_BASE_URL}/api/codex/content?path=${encodeURIComponent(
+          `${API_BASE_URL}/api/npcs/content?path=${encodeURIComponent(
             currentPath
           )}`
         );
         const response = await fetch(
-          `${API_BASE_URL}/api/codex/content?path=${encodeURIComponent(
+          `${API_BASE_URL}/api/npcs/content?path=${encodeURIComponent(
             currentPath
           )}`
         );
@@ -104,4 +103,4 @@ const Codex = () => {
   );
 };
 
-export default Codex;
+export default NPCs;

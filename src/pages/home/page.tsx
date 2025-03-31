@@ -5,6 +5,7 @@ import upcomingSessions from "../../data/upcoming.json";
 import closeIcon from "../../assets/x.svg";
 import { Link } from "react-router-dom";
 import bookOpen from "../../assets/book-marked.svg";
+import bookUser from "../../assets/book-user.svg";
 import stretchHorizontal from "../../assets/stretch-horizontal.svg"
 import map from "../../assets/map.svg"
 
@@ -100,7 +101,16 @@ function Home() {
             <img src={bookOpen} alt="book icon" />
           </div>
           <div className={styles.resource_info}>
-            <p>One-stop spot for all your D&D information</p>
+            <p>Lore regarding our campaign that includes Setting, Races, Technology, History, and more!</p>
+          </div>
+        </Link>
+        <Link to="/npcs" className={styles.resource}>
+          <div className={styles.resource_title}>
+            <p>NPCs</p>
+            <img src={bookUser} alt="book icon" />
+          </div>
+          <div className={styles.resource_info}>
+            <p>Characters either mentioned or met along the way.</p>
           </div>
         </Link>
         <Link to="/" className={styles.resource}>

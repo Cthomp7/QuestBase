@@ -12,6 +12,7 @@ const Header = () => {
       <div className={styles.navigation}>
         <Link to="/">Base</Link>
         <Link to="/codex">Codex</Link>
+        <Link to="/npcs">NPCs</Link>
       </div>
     </header>
   );
