@@ -111,7 +111,8 @@ header {
 .upcoming_date {
   font-size: 1.2rem;
   font-weight: 600;
-  min-width: 330px;
+  max-width: 330px;
+  width: 100%;
 }
 
 .session_popup_item {
@@ -211,6 +212,7 @@ header {
   font-weight: 700;
   display: flex;
   justify-content: space-between;
+  gap: 10px;
 }
 
 .resource_title img {
