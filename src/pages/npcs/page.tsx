@@ -43,7 +43,10 @@ const NPCs = () => {
           throw new Error("Expected JSON response, but got something else.");
         }
         const data = await response.json();
-        setEntries(data);
+        const filteredData = data.filter(
+          (entry: NPCsEntry) => entry.name !== "Introduction"
+        );
+        setEntries(filteredData);
       } catch (error) {
         console.error("Error fetching codex entries:", error);
         setEntries([]);

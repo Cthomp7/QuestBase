@@ -44,7 +44,10 @@ const Codex = () => {
           throw new Error("Expected JSON response, but got something else.");
         }
         const data = await response.json();
-        setEntries(data);
+        const filteredData = data.filter(
+          (entry: CodexEntry) => entry.name !== "codex"
+        );
+        setEntries(filteredData);
       } catch (error) {
         console.error("Error fetching codex entries:", error);
         setEntries([]);
