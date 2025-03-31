@@ -60,7 +60,7 @@ const NPCs = () => {
     const loadContent = async () => {
       setLoading(true);
       try {
-        const currentPath = path ?? "introduction.md";
+        const currentPath = path ?? "Introduction.md";
         console.log(
           `${API_BASE_URL}/api/npcs/content?path=${encodeURIComponent(
             currentPath
