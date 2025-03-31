@@ -8,7 +8,7 @@ tags:
 ---
 
 # The Salarians
-![The Salarians](../../../src/assets/media/salarians.png)
+![The Salarians](/src/assets/media/salarians.png)
 
 Warm-blooded amphibians with hyperactive metabolism. Relatively short-lived Tend to have an aptitude for research and espionage. Salarians were responsible for uplifting the krogan and for developing the Krogan Genophage during the Krogan Rebellions.
 

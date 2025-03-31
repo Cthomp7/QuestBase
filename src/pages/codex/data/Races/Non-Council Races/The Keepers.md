@@ -8,7 +8,7 @@ tags:
 ---
 
 # The Keepers
-![The Keepers](../../../src/assets/media/keepers.jpg)
+![The Keepers](/src/assets/media/keepers.jpg)
 
 The keepers are a bio-engineered, insectoid race found only on the Citadel. They are completely docile and harmless, and appear to exist for no other reason than to maintain the Citadel and its systems.
 

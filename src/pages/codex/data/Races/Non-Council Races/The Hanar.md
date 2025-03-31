@@ -8,7 +8,7 @@ tags:
 ---
 
 # The Hanar
-![Hanar](../../../src/assets/media/hanar.jpg)
+![Hanar](/src/assets/media/hanar.jpg)
 
 **The hanar** are a Citadel species known for excessive politeness. They speak with scrupulous precision, and take offense at improper language. Hanar that expect to deal with other species take special courses to help them unlearn their tendency to take offense at improper speech. All hanar have two names. The Face Name is known to the world; the Soul Name is kept for use among close friends and relations. Hanar never refer to themselves in the first person in conversation with someone they know on a Face Name basis. To do so is considered egotistical, so instead they refer to themselves as "this one", or the impersonal "it". Their homeworld, Kahje, has 90% ocean cover and orbits an energetic white star, resulting in a permanent blanket of clouds. Due to the presence of Prothean ruins on the world, many hanar worship them, and hanar myths often speak of an elder race that civilized them by teaching them language.
 

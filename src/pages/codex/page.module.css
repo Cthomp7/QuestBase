@@ -244,3 +244,10 @@
   background-color: var(--hover-color);
   color: var(--primary-color, #007bff);
 }
+
+/* Media Queries */
+@media screen and (max-width: 1200px) {
+  .table_of_contents {
+    padding: 1rem;
+  }
+}

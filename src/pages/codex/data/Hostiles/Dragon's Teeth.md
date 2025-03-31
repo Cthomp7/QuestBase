@@ -8,7 +8,7 @@ tags:
 ---
 
 # Dragon's Teeth
-![Dragon's Teeth](../../src/assets/media/dragons-teeth.png)
+![Dragon's Teeth](/src/assets/media/dragons-teeth.png)
 
 **Dragon's teeth** is the nickname Alliance marines have given to the huge spikes that geth use to turn human corpses – and unfortunate living victims – into husks. Their function resembles ancient methods of execution by impalement. The name comes from Greek mythology, specifically Jason and the Argonauts; when a field was sowed with the teeth of a dragon, each tooth sprang up as a soldier.
 
