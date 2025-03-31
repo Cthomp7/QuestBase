@@ -4,6 +4,9 @@ import sessions from "../../data/sessions.json";
 import upcomingSessions from "../../data/upcoming.json";
 import closeIcon from "../../assets/x.svg";
 import { Link } from "react-router-dom";
+import bookOpen from "../../assets/book-marked.svg";
+import stretchHorizontal from "../../assets/stretch-horizontal.svg"
+import map from "../../assets/map.svg"
 
 interface SessionHighlight {
   title: string;
@@ -90,8 +93,34 @@ function Home() {
           {showMore ? "show less" : "show more"}
         </button>
       </section>
-      <section style={{ display: "flex", alignItems: "center" }}>
-        <Link to="/codex">Go to Codex</Link>
+      <section className={styles.resources_container}>
+        <Link to="/codex" className={styles.resource}>
+          <div className={styles.resource_title}>
+            <p>Codex</p>
+            <img src={bookOpen} alt="book icon" />
+          </div>
+          <div className={styles.resource_info}>
+            <p>One-stop spot for all your D&D information</p>
+          </div>
+        </Link>
+        <Link to="/" className={styles.resource}>
+          <div className={styles.resource_title}>
+            <p>Inventory</p>
+            <img src={stretchHorizontal} alt="book icon" />
+          </div>
+          <div className={styles.resource_info}>
+            <p>Coming Soon!</p>
+          </div>
+        </Link>
+        <Link to="/" className={styles.resource}>
+          <div className={styles.resource_title}>
+            <p>Map</p>
+            <img src={map} alt="book icon" />
+          </div>
+          <div className={styles.resource_info}>
+            <p>Coming Soon!</p>
+          </div>
+        </Link>
       </section>
       <section>
         <h2>Upcoming Sessions</h2>
