@@ -8,6 +8,6 @@ tags:
 ---
 
 # Geth Subjugator
-![Geth Subjugator](/media/geth.png)
+![Geth Subjugator](/media/geth.jpg)
 
 The first variant of geth encountered on Kelvin-1b. These synthetic lifeforms serve a singular purpose. To abduct and impale their victims onto "Dragon's Teeth".

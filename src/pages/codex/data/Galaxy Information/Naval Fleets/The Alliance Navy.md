@@ -1,6 +1,6 @@
 # The Alliance Navy
 
-![Campaign Image](/media/the-alliance-feelt.jpg)
+![Campaign Image](/media/the-alliance-navy.jpg)
 
 The Alliance Navy is the branch of the Systems Alliance military responsible for naval operations. The Alliance Marines, the ground operations branch of the Alliance military, are a specialized branch of the Navy.
 
