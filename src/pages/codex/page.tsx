@@ -1,8 +1,11 @@
 import { marked } from "marked";
 import styles from "./page.module.css";
 import downArrow from "../../assets/chevron-down.svg";
+import chevronsDownUp from "../../assets/chevrons-down-up.svg";
+import chevronsUpDown from "../../assets/chevrons-up-down.svg";
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import Fuse from "fuse.js";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -49,7 +52,10 @@ const renderCodexEntries = (
         .replace(/^\/codex\//, "");
 
       const isActive = normalizedCurrentPath === normalizedEntryPath;
-      const isExpanded = expandedFolders.has(entry.path);
+      const normalizedExpandedPath = entry.path
+        .replace(/\\/g, "/")
+        .replace(/^\/codex\//, "");
+      const isExpanded = expandedFolders.has(normalizedExpandedPath);
 
       return (
         <li key={entry.path} className={styles.entry_item}>
@@ -65,9 +71,9 @@ const renderCodexEntries = (
                     e.stopPropagation();
                     const newExpandedFolders = new Set(expandedFolders);
                     if (isExpanded) {
-                      newExpandedFolders.delete(entry.path);
+                      newExpandedFolders.delete(normalizedExpandedPath);
                     } else {
-                      newExpandedFolders.add(entry.path);
+                      newExpandedFolders.add(normalizedExpandedPath);
                     }
                     setExpandedFolders(newExpandedFolders);
                   }}
@@ -122,13 +128,18 @@ const Codex = () => {
     new Set()
   );
   const [allExpanded, setAllExpanded] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<CodexEntry[]>([]);
 
   // Function to get all folder paths
   const getAllFolderPaths = (entries: CodexEntry[]): string[] => {
     const paths: string[] = [];
     entries.forEach((entry) => {
       if (entry.type === "folder") {
-        paths.push(entry.path);
+        const normalizedPath = entry.path
+          .replace(/\\/g, "/")
+          .replace(/^\/codex\//, "");
+        paths.push(normalizedPath);
         if (entry.children) {
           paths.push(...getAllFolderPaths(entry.children));
         }
@@ -147,6 +158,108 @@ const Codex = () => {
     }
     setAllExpanded(!allExpanded);
   };
+
+  // Function to flatten entries for search
+  const flattenEntries = (entries: CodexEntry[]): CodexEntry[] => {
+    return entries.reduce((acc: CodexEntry[], entry) => {
+      acc.push(entry);
+      if (entry.children) {
+        acc.push(...flattenEntries(entry.children));
+      }
+      return acc;
+    }, []);
+  };
+
+  // Function to get all parent paths for a given path
+  const getAllParentPaths = (path: string): string[] => {
+    // Normalize the path by replacing backslashes with forward slashes and removing leading /codex/
+    const normalizedPath = path.replace(/\\/g, "/").replace(/^\/codex\//, "");
+    const parts = normalizedPath.split("/");
+    const parents: string[] = [];
+    let currentPath = "";
+
+    for (let i = 0; i < parts.length - 1; i++) {
+      currentPath += (i === 0 ? "" : "/") + parts[i];
+      parents.push(currentPath);
+    }
+
+    return parents;
+  };
+
+  // Function to filter entries based on search
+  const filterEntries = (
+    entries: CodexEntry[],
+    searchQuery: string
+  ): CodexEntry[] => {
+    if (!searchQuery.trim()) {
+      // Reset expanded folders to default state when search is empty
+      setExpandedFolders(new Set());
+      // Return the original entries without any filtering
+      return entries;
+    }
+
+    const flattenedEntries = flattenEntries(entries);
+    const fuse = new Fuse(flattenedEntries, {
+      keys: ["name"],
+      threshold: 0.3,
+      includeScore: true,
+    });
+
+    const results = fuse.search(searchQuery);
+    const matchedPaths = new Set(results.map((result) => result.item.path));
+
+    // Get all parent paths for matched items
+    const parentPaths = new Set<string>();
+    results.forEach((result) => {
+      const parents = getAllParentPaths(result.item.path);
+      parents.forEach((parent) => parentPaths.add(parent));
+    });
+
+    // Function to filter entries while preserving structure
+    const filterEntriesRecursive = (entries: CodexEntry[]): CodexEntry[] => {
+      return entries.filter((entry) => {
+        // If this entry matches, keep it and its children
+        if (matchedPaths.has(entry.path)) {
+          if (entry.children) {
+            entry.children = filterEntriesRecursive(entry.children);
+          }
+          return true;
+        }
+
+        // If this is a folder with children
+        if (entry.children) {
+          // Filter its children
+          entry.children = filterEntriesRecursive(entry.children);
+          // Keep the folder if it has any matching children
+          return entry.children.length > 0;
+        }
+
+        // If this is a file and doesn't match, remove it
+        return false;
+      });
+    };
+
+    // Create a deep copy of entries to avoid mutating the original
+    const entriesCopy = JSON.parse(JSON.stringify(entries));
+    const filtered = filterEntriesRecursive(entriesCopy);
+
+    // Update expanded folders to include all parents of matched items
+    const newExpandedFolders = new Set(expandedFolders);
+    parentPaths.forEach((path) => {
+      // Normalize the path before adding it to the set
+      const normalizedPath = path.replace(/\\/g, "/").replace(/^\/codex\//, "");
+      newExpandedFolders.add(normalizedPath);
+    });
+    setExpandedFolders(newExpandedFolders);
+
+    return filtered;
+  };
+
+  // Update search results when query changes
+  useEffect(() => {
+    const filtered = filterEntries(entries, searchQuery);
+    setSearchResults(filtered);
+  }, [searchQuery, entries]);
 
   useEffect(() => {
     const getCodexEntries = async () => {
@@ -272,12 +385,33 @@ const Codex = () => {
     <div className={styles.container}>
       <div className={styles.table_of_contents}>
         <h1>Table of Contents</h1>
-        <button onClick={toggleAllFolders} className={styles.toggle_all_button}>
-          {allExpanded ? "Collapse All" : "Expand All"}
-        </button>
+        <div className={styles.search_container}>
+          <input
+            type="text"
+            className={styles.search_input}
+            placeholder="Search..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button
+            onClick={toggleAllFolders}
+            className={styles.toggle_all_button}
+          >
+            <img
+              src={allExpanded ? chevronsDownUp : chevronsUpDown}
+              alt={allExpanded ? "Collapse all" : "Expand all"}
+              className={styles.toggle_icon}
+            />
+          </button>
+        </div>
         {error && <p className={styles.error}>{error}</p>}
         {entries.length > 0 ? (
-          renderCodexEntries(entries, path, expandedFolders, setExpandedFolders)
+          renderCodexEntries(
+            searchResults,
+            path,
+            expandedFolders,
+            setExpandedFolders
+          )
         ) : (
           <p>Loading...</p>
         )}
