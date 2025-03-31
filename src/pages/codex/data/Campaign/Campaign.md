@@ -8,6 +8,6 @@ tags:
 ---
 
 # Campaign
-![Campaign Image](/src/assets/media/campaign.png)
+![Campaign Image](/media/campaign.png)
 
 The next section aims to speak on the discoveries within our campaign

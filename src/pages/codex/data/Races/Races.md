@@ -8,6 +8,6 @@ tags:
 ---
 
 # Races
-![Races](/src/assets/media/races.png)
+![Races](/media/races.png)
 
 The next pages will discuss the Council Races, and Non-Council Races in greater detail

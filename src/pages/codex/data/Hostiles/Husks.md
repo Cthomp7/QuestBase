@@ -8,7 +8,7 @@ tags:
 ---
 
 # Husks
-![Husks](/src/assets/media/husk.png)
+![Husks](/media/husk.png)
 
 When a target person is captured, they are placed on impaling devices, huge spikes that Alliance marines have nicknamed "dragon's teeth". Over time the body's organs, skin, and water content are converted into cybernetic materials; blood is changed to a sickly green fluid, and the body generates an electrical charge.
 

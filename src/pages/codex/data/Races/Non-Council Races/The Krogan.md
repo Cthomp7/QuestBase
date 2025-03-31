@@ -8,7 +8,7 @@ tags:
 ---
 
 # The Krogan
-![The Krogan](/src/assets/media/krogan.jpg)
+![The Krogan](/media/krogan.jpg)
 
 **The krogan** evolved in a hostile and vicious environment. Until the invention of gunpowder weapons, "eaten by predators" was still the number one cause of krogan fatalities. Afterwards, it was "death by gunshot". When the salarians discovered them, the krogan were a brutal, primitive species struggling to survive a self-inflicted nuclear winter. The salarians culturally uplifted them, teaching them to use and build modern technology so they could serve as soldiers in the Rachni War. Liberated from the harsh conditions of their homeworld, the quick-breeding krogan experienced an unprecedented population explosion. They began to colonize nearby worlds, even though these worlds were already inhabited. The Krogan Rebellions lasted nearly a century, only ending when the turians unleashed the genophage, a salarian-developed bioweapon that crushed all krogan resistance. The genophage makes only one in 1,000 pregnancies viable, and today the krogan are a slowly dying breed. Understandably, the krogan harbor a grudge against all other species, especially the turians.
 
