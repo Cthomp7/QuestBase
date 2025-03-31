@@ -23,88 +23,97 @@ const renderCodexEntries = (
   currentPath: string | undefined,
   expandedFolders: Set<string>,
   setExpandedFolders: (folders: Set<string>) => void
-) => (
-  <ul className={styles.entries_list}>
-    {entries.map((entry) => {
-      // Find matching file if entry is a folder
-      const matchingFile =
-        entry.type === "folder" &&
-        entry.children?.find(
-          (child) => child.type === ".md" && child.name === entry.name
+) => {
+  // Sort entries to put folders first
+  const sortedEntries = [...entries].sort((a, b) => {
+    if (a.type === "folder" && b.type !== "folder") return -1;
+    if (a.type !== "folder" && b.type === "folder") return 1;
+    return a.name.localeCompare(b.name);
+  });
+
+  return (
+    <ul className={styles.entries_list}>
+      {sortedEntries.map((entry) => {
+        // Find matching file if entry is a folder
+        const matchingFile =
+          entry.type === "folder" &&
+          entry.children?.find(
+            (child) => child.type === ".md" && child.name === entry.name
+          );
+
+        // Filter out the matching file from children if it exists
+        const filteredChildren = entry.children?.filter(
+          (child) => !(child.type === ".md" && child.name === entry.name)
         );
 
-      // Filter out the matching file from children if it exists
-      const filteredChildren = entry.children?.filter(
-        (child) => !(child.type === ".md" && child.name === entry.name)
-      );
+        const entryPath = matchingFile ? matchingFile.path : entry.path;
 
-      const entryPath = matchingFile ? matchingFile.path : entry.path;
+        // Normalize paths by replacing backslashes with forward slashes and removing leading /codex/
+        const normalizedCurrentPath = currentPath?.replace(/\\/g, "/");
+        const normalizedEntryPath = entryPath
+          .replace(/\\/g, "/")
+          .replace(/^\/codex\//, "");
 
-      // Normalize paths by replacing backslashes with forward slashes and removing leading /codex/
-      const normalizedCurrentPath = currentPath?.replace(/\\/g, "/");
-      const normalizedEntryPath = entryPath
-        .replace(/\\/g, "/")
-        .replace(/^\/codex\//, "");
+        const isActive = normalizedCurrentPath === normalizedEntryPath;
+        const normalizedExpandedPath = entry.path
+          .replace(/\\/g, "/")
+          .replace(/^\/codex\//, "");
+        const isExpanded = expandedFolders.has(normalizedExpandedPath);
 
-      const isActive = normalizedCurrentPath === normalizedEntryPath;
-      const normalizedExpandedPath = entry.path
-        .replace(/\\/g, "/")
-        .replace(/^\/codex\//, "");
-      const isExpanded = expandedFolders.has(normalizedExpandedPath);
-
-      return (
-        <li key={entry.path} className={styles.entry_item}>
-          <Link className={styles.entry} to={entryPath}>
-            {entry.type === "folder" &&
-              filteredChildren &&
-              filteredChildren.length > 0 && (
-                <button
-                  type="button"
-                  className={styles.folder_icon_button}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    const newExpandedFolders = new Set(expandedFolders);
-                    if (isExpanded) {
-                      newExpandedFolders.delete(normalizedExpandedPath);
-                    } else {
-                      newExpandedFolders.add(normalizedExpandedPath);
-                    }
-                    setExpandedFolders(newExpandedFolders);
-                  }}
-                >
-                  <img
-                    src={downArrow}
-                    alt="down arrow"
-                    className={`${styles.folder_icon} ${
-                      isExpanded ? styles.expanded : ""
-                    }`}
-                  />
-                </button>
-              )}
-            <p
-              className={`${styles.entry_link} ${
-                entry.type === "folder" ? styles.folder : styles.file
-              } ${isActive ? styles.active_link : ""}`}
-            >
-              {entry.name}
-            </p>
-          </Link>
-          {filteredChildren && filteredChildren.length > 0 && isExpanded && (
-            <div className={styles.children}>
-              {renderCodexEntries(
-                filteredChildren,
-                currentPath,
-                expandedFolders,
-                setExpandedFolders
-              )}
-            </div>
-          )}
-        </li>
-      );
-    })}
-  </ul>
-);
+        return (
+          <li key={entry.path} className={styles.entry_item}>
+            <Link className={styles.entry} to={entryPath}>
+              {entry.type === "folder" &&
+                filteredChildren &&
+                filteredChildren.length > 0 && (
+                  <button
+                    type="button"
+                    className={styles.folder_icon_button}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      const newExpandedFolders = new Set(expandedFolders);
+                      if (isExpanded) {
+                        newExpandedFolders.delete(normalizedExpandedPath);
+                      } else {
+                        newExpandedFolders.add(normalizedExpandedPath);
+                      }
+                      setExpandedFolders(newExpandedFolders);
+                    }}
+                  >
+                    <img
+                      src={downArrow}
+                      alt="down arrow"
+                      className={`${styles.folder_icon} ${
+                        isExpanded ? styles.expanded : ""
+                      }`}
+                    />
+                  </button>
+                )}
+              <p
+                className={`${styles.entry_link} ${
+                  entry.type === "folder" ? styles.folder : styles.file
+                } ${isActive ? styles.active_link : ""}`}
+              >
+                {entry.name}
+              </p>
+            </Link>
+            {filteredChildren && filteredChildren.length > 0 && isExpanded && (
+              <div className={styles.children}>
+                {renderCodexEntries(
+                  filteredChildren,
+                  currentPath,
+                  expandedFolders,
+                  setExpandedFolders
+                )}
+              </div>
+            )}
+          </li>
+        );
+      })}
+    </ul>
+  );
+};
 
 // Function to get all folder paths
 const getAllFolderPaths = (entries: CodexEntry[]): string[] => {
