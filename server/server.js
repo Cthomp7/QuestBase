@@ -5,18 +5,23 @@ import { fileURLToPath } from "url";
 import cors from "cors";
 import https from "https"; // Import https for serving via SSL
 import dotenv from "dotenv";
-dotenv.config();
+
+// Load the appropriate .env file based on NODE_ENV
+const envFile =
+  process.env.NODE_ENV === "production"
+    ? ".env.production"
+    : ".env.development";
+dotenv.config({ path: envFile });
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const appDirectory = path.join(__dirname, "..", "dist");
 
-console.log("__dirname:", __dirname);
-console.log("appDirectory:", appDirectory);
+console.log("Environment:", process.env.NODE_ENV);
 
 const app = express();
 const PORT = process.env.PORT || 3001; // Use PORT from env or default to 3001
-const isProduction = process.env.NODE_ENV === "production" || false;
+const isProduction = process.env.NODE_ENV === "production";
 
 // Enable CORS
 app.use(cors());
