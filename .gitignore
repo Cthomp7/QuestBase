@@ -23,3 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 .env*
+
+# temporary user information
+server/users.json

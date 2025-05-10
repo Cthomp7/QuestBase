@@ -6,8 +6,10 @@ import closeIcon from "../../assets/x.svg";
 import { Link } from "react-router-dom";
 import bookOpen from "../../assets/book-marked.svg";
 import bookUser from "../../assets/book-user.svg";
-import stretchHorizontal from "../../assets/stretch-horizontal.svg"
-import map from "../../assets/map.svg"
+import stretchHorizontal from "../../assets/stretch-horizontal.svg";
+import map from "../../assets/map.svg";
+import userIcon from "@/assets/user-icon.jpg";
+import { useAuth } from "@/context/AuthContext";
 
 interface SessionHighlight {
   title: string;
@@ -17,6 +19,7 @@ interface SessionHighlight {
 }
 
 function Home() {
+  const { loggedIn, userName } = useAuth();
   const [popup, setPopup] = useState<SessionHighlight | null>(null);
   const [showMore, setShowMore] = useState<boolean>(false);
 
@@ -75,72 +78,83 @@ function Home() {
   };
 
   return (
-    <div className={styles.sections}>
-      <section
-        className={`${styles.session_highlights} ${
-          showMore ? styles.expanded : ""
-        }`}
-      >
-        <h2>Session Highlights</h2>
-        <div className={styles.sessions_container}>
-          {sessions.slice(0, showMore ? undefined : 3).map((session) => (
-            <Session key={session.title} {...session} />
-          ))}
+    <div>
+      {loggedIn && userName && (
+        <div className={styles.home_header}>
+          <img src={userIcon} alt="user icon" />
+          <h1>Welcome back, {userName}!</h1>
         </div>
-        <button
-          className={styles.show_more_button}
-          onClick={() => setShowMore(!showMore)}
+      )}
+      <div className={styles.sections}>
+        <section
+          className={`${styles.session_highlights} ${
+            showMore ? styles.expanded : ""
+          }`}
         >
-          {showMore ? "show less" : "show more"}
-        </button>
-      </section>
-      <section className={styles.resources_container}>
-        <Link to="/codex" className={styles.resource}>
-          <div className={styles.resource_title}>
-            <p>Codex</p>
-            <img src={bookOpen} alt="book icon" />
+          <h2>Session Highlights</h2>
+          <div className={styles.sessions_container}>
+            {sessions.slice(0, showMore ? undefined : 3).map((session) => (
+              <Session key={session.title} {...session} />
+            ))}
           </div>
-          <div className={styles.resource_info}>
-            <p>Lore regarding our campaign that includes Setting, Races, Technology, History, and more!</p>
+          <button
+            className={styles.show_more_button}
+            onClick={() => setShowMore(!showMore)}
+          >
+            {showMore ? "show less" : "show more"}
+          </button>
+        </section>
+        <section className={styles.resources_container}>
+          <Link to="/codex" className={styles.resource}>
+            <div className={styles.resource_title}>
+              <p>Codex</p>
+              <img src={bookOpen} alt="book icon" />
+            </div>
+            <div className={styles.resource_info}>
+              <p>
+                Lore regarding our campaign that includes Setting, Races,
+                Technology, History, and more!
+              </p>
+            </div>
+          </Link>
+          <Link to="/npcs" className={styles.resource}>
+            <div className={styles.resource_title}>
+              <p>NPCs</p>
+              <img src={bookUser} alt="book icon" />
+            </div>
+            <div className={styles.resource_info}>
+              <p>Characters either mentioned or met along the way.</p>
+            </div>
+          </Link>
+          <Link to="/" className={styles.resource}>
+            <div className={styles.resource_title}>
+              <p>Inventory</p>
+              <img src={stretchHorizontal} alt="book icon" />
+            </div>
+            <div className={styles.resource_info}>
+              <p>Coming Soon!</p>
+            </div>
+          </Link>
+          <Link to="/" className={styles.resource}>
+            <div className={styles.resource_title}>
+              <p>Map</p>
+              <img src={map} alt="book icon" />
+            </div>
+            <div className={styles.resource_info}>
+              <p>Coming Soon!</p>
+            </div>
+          </Link>
+        </section>
+        <section>
+          <h2>Upcoming Sessions</h2>
+          <div className={styles.upcoming_container}>
+            {filteredUpcomingSessions.map((session) => (
+              <UpcomingSession key={session.date} {...session} />
+            ))}
           </div>
-        </Link>
-        <Link to="/npcs" className={styles.resource}>
-          <div className={styles.resource_title}>
-            <p>NPCs</p>
-            <img src={bookUser} alt="book icon" />
-          </div>
-          <div className={styles.resource_info}>
-            <p>Characters either mentioned or met along the way.</p>
-          </div>
-        </Link>
-        <Link to="/" className={styles.resource}>
-          <div className={styles.resource_title}>
-            <p>Inventory</p>
-            <img src={stretchHorizontal} alt="book icon" />
-          </div>
-          <div className={styles.resource_info}>
-            <p>Coming Soon!</p>
-          </div>
-        </Link>
-        <Link to="/" className={styles.resource}>
-          <div className={styles.resource_title}>
-            <p>Map</p>
-            <img src={map} alt="book icon" />
-          </div>
-          <div className={styles.resource_info}>
-            <p>Coming Soon!</p>
-          </div>
-        </Link>
-      </section>
-      <section>
-        <h2>Upcoming Sessions</h2>
-        <div className={styles.upcoming_container}>
-          {filteredUpcomingSessions.map((session) => (
-            <UpcomingSession key={session.date} {...session} />
-          ))}
-        </div>
-      </section>
-      {popup && <SessionPopup {...popup} />}
+        </section>
+        {popup && <SessionPopup {...popup} />}
+      </div>
     </div>
   );
 }

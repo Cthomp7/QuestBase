@@ -6,6 +6,17 @@ header {
   padding: 1rem 2rem;
 }
 
+.home_header {
+  margin: 2rem;
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 1.5rem;
+}
+
+.home_header img {
+  width: 50px;
+}
+
 .sections {
   display: flex;
   justify-content: space-between;

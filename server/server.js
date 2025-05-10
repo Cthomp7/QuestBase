@@ -5,6 +5,8 @@ import { fileURLToPath } from "url";
 import cors from "cors";
 import https from "https"; // Import https for serving via SSL
 import dotenv from "dotenv";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 // Load environment variables
 const isProduction = process.env.NODE_ENV === "production";
@@ -30,6 +32,80 @@ const PORT = process.env.PORT || 3001; // Use PORT from env or default to 3001
 
 // Enable CORS
 app.use(cors());
+app.use(express.json());
+
+// Register
+app.post("/api/register", async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).json({ message: "Email and password are required" });
+  }
+  const usersFile = path.join(process.cwd(), "server/users.json");
+  let users = [];
+  try {
+    if (fs.existsSync(usersFile)) {
+      const data = fs.readFileSync(usersFile, "utf-8");
+      users = JSON.parse(data || "[]");
+    }
+  } catch (err) {
+    return res.status(500).json({ message: "Error reading users file" });
+  }
+  if (users.find((u) => u.email === email)) {
+    return res.status(409).json({ message: "User already exists" });
+  }
+  const hashed = await bcrypt.hash(password, 10);
+  users.push({ email, password: hashed });
+  try {
+    fs.writeFileSync(usersFile, JSON.stringify(users, null, 2));
+  } catch (err) {
+    return res.status(500).json({ message: "Error saving user" });
+  }
+  res.status(201).json({ message: "User registered" });
+});
+
+// Login
+app.post("/api/login", async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).json({ message: "Email and password are required" });
+  }
+  const usersFile = path.join(process.cwd(), "server/users.json");
+  let users = [];
+  try {
+    if (fs.existsSync(usersFile)) {
+      const data = fs.readFileSync(usersFile, "utf-8");
+      users = JSON.parse(data || "[]");
+    }
+  } catch (err) {
+    return res.status(500).json({ message: "Error reading users file" });
+  }
+  const user = users.find((u) => u.email === email);
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    return res.status(401).json({ message: "Invalid credentials" });
+  }
+  const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET, {
+    expiresIn: "1h",
+  });
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "Strict",
+    maxAge: 3600000, // 1 hour
+  });
+  res.json({ token, name: user.name });
+});
+
+app.get("/api/check-auth", (req, res) => {
+  const token = req.cookies.token;
+  if (!token) return res.status(401).json({ authenticated: false });
+
+  try {
+    const user = jwt.verify(token, process.env.JWT_SECRET);
+    res.json({ authenticated: true, user });
+  } catch (err) {
+    res.status(401).json({ authenticated: false });
+  }
+});
 
 // Read directory recursively (same as before)
 function readDirectoryRecursively(dir, dirPath) {
@@ -124,11 +200,7 @@ app.get("/api/npcs/content", (req, res) => {
     }
 
     const cleanPath = requestedPath.replace(/^\/npcs\//, "");
-    const fullPath = path.join(
-      process.cwd(),
-      "src/pages/npcs/data",
-      cleanPath
-    );
+    const fullPath = path.join(process.cwd(), "src/pages/npcs/data", cleanPath);
 
     if (!fs.existsSync(fullPath)) {
       return res.status(404).json({ message: "File not found" });
@@ -141,7 +213,6 @@ app.get("/api/npcs/content", (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
-
 
 // Serve static files from the "dist" folder
 app.use(express.static(appDirectory));
