@@ -27,5 +27,21 @@
 }
 
 .navigation a:hover {
-  text-decoration: underline;
+  color: var(--codex-blue);
+}
+
+.navigation p {
+  color: rgb(131, 131, 131);
+  font-size: 1.2rem;
+}
+
+.signInButton {
+  cursor: pointer;
+  font-size: 1.2rem;
+  background: none;
+  border: none;
+  transition: all 0.2s ease-in-out;
+}
+.signInButton:hover {
+  color: var(--codex-blue);
 }

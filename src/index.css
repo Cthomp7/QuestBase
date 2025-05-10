@@ -9,6 +9,10 @@
   color: #ffffffde;
   background-color: #242424;
 
+  --codex-blue: #007bff;
+  --codex-blue-hover: #005abb;
+  --codex-blue-entry-hover: rgba(0, 123, 255, 0.1);
+
   --primary-: #242424;
 
   --border-: 1px solid #6b6b6b;

@@ -1,0 +1,119 @@
+.auth-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.auth-modal-form {
+  background: #252525;
+  padding: 2rem 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.18);
+  min-width: 430px;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.auth-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.auth-modal-header h2 {
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.auth-modal-header button {
+  background: none;
+  border: none;
+  border-radius: 5px;
+  padding: 0.3rem;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.auth-modal-header button:hover {
+  background: rgb(65, 65, 65);
+}
+
+.auth-modal-header button img {
+  width: 1.8rem;
+  display: block;
+}
+
+.auth-modal-form input {
+  padding: 0.7rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.auth-modal-form input:focus {
+  border-color: var(--codex-blue);
+}
+
+.auth-error {
+  color: #dc2626;
+  background: #fee2e2;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.auth-success {
+  color: #16a34a;
+  background: #dcfce7;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.auth-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.auth-actions button {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  background: var(--codex-blue);
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.auth-actions button[type="button"] {
+  background: rgb(99, 99, 99);
+  color: white;
+}
+
+.auth-actions button:hover {
+  background: var(--codex-blue-hover);
+}
+
+.auth-actions button[type="button"]:hover {
+  background: rgb(65, 65, 65);
+}

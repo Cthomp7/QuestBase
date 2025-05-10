@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
+import closeIcon from "../../assets/x.svg";
+import styles from "./AuthModal.module.css";
 
 interface AuthModalProps {
   show: boolean;
@@ -19,6 +21,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
 
   const [loginForm, setLoginForm] = useState({ email: "", password: "" });
   const [registerForm, setRegisterForm] = useState({
+    code: "",
     email: "",
     password: "",
     confirm: "",
@@ -85,7 +88,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
         registerError: "",
         loginError: "",
       });
-      setRegisterForm({ email: "", password: "", confirm: "" });
+      setRegisterForm({ code: "", email: "", password: "", confirm: "" });
     } catch (error) {
       setMessages((m) => ({
         ...m,
@@ -114,15 +117,29 @@ const AuthModal: React.FC<AuthModalProps> = ({
   if (!show) return null;
 
   return (
-    <div className="auth-modal-overlay">
+    <div className={styles["auth-modal-overlay"]}>
       <form
         onSubmit={showRegister ? handleRegister : handleLogin}
-        className="auth-modal-form"
+        className={styles["auth-modal-form"]}
       >
-        <h2>{showRegister ? "Register" : "Sign In"}</h2>
+        <div className={styles["auth-modal-header"]}>
+          <h2>{showRegister ? "Register Account" : "Sign In"}</h2>
+          <button type="button" onClick={onClose}>
+            <img src={closeIcon} alt="close" />
+          </button>
+        </div>
 
         {showRegister ? (
           <>
+            <input
+              type="code"
+              placeholder="Registration Code"
+              value={registerForm.code}
+              onChange={(e) =>
+                handleInputChange("register", "code", e.target.value)
+              }
+              autoFocus
+            />
             <input
               type="email"
               placeholder="Email"
@@ -130,7 +147,6 @@ const AuthModal: React.FC<AuthModalProps> = ({
               onChange={(e) =>
                 handleInputChange("register", "email", e.target.value)
               }
-              autoFocus
             />
             <input
               type="password"
@@ -149,12 +165,16 @@ const AuthModal: React.FC<AuthModalProps> = ({
               }
             />
             {messages.registerError && (
-              <div className="auth-error">{messages.registerError}</div>
+              <div className={styles["auth-error"]}>
+                {messages.registerError}
+              </div>
             )}
             {messages.registerSuccess && (
-              <div className="auth-success">{messages.registerSuccess}</div>
+              <div className={styles["auth-success"]}>
+                {messages.registerSuccess}
+              </div>
             )}
-            <div className="auth-actions">
+            <div className={styles["auth-actions"]}>
               <button type="submit">Register</button>
               <button type="button" onClick={closeRegister}>
                 Back to Sign In
@@ -181,13 +201,10 @@ const AuthModal: React.FC<AuthModalProps> = ({
               }
             />
             {messages.loginError && (
-              <div className="auth-error">{messages.loginError}</div>
+              <div className={styles["auth-error"]}>{messages.loginError}</div>
             )}
-            <div className="auth-actions">
+            <div className={styles["auth-actions"]}>
               <button type="submit">Sign In</button>
-              <button type="button" onClick={onClose}>
-                Cancel
-              </button>
               <button type="button" onClick={() => setShowRegister(true)}>
                 Register
               </button>
