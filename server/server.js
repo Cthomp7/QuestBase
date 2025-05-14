@@ -106,7 +106,7 @@ app.post("/api/login", async (req, res) => {
     sameSite: "Strict",
     maxAge: 3600000, // 1 hour
   });
-  res.json({ token, name: user.name });
+  res.json({ token, name: user.name, permission: user.permission });
 });
 
 app.get("/api/check-auth", (req, res) => {

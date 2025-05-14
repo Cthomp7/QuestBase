@@ -16,7 +16,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
   onLoginSuccess,
   apiBaseUrl,
 }) => {
-  const { setLoggedIn, setUserName } = useAuth();
+  const { setLoggedIn, setUserName, setPermission } = useAuth();
   const [showRegister, setShowRegister] = useState(false);
 
   const [loginForm, setLoginForm] = useState({ email: "", password: "" });
@@ -49,6 +49,8 @@ const AuthModal: React.FC<AuthModalProps> = ({
       setUserName(data.name ?? "");
       localStorage.setItem("loggedIn", "true");
       localStorage.setItem("userName", data.name ?? "");
+      setPermission(data.permission ?? "");
+      localStorage.setItem("permission", data.permission ?? "");
       onLoginSuccess();
       onClose();
     } catch (error) {

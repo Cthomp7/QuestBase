@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 import sessions from "../../data/sessions.json";
 import upcomingSessions from "../../data/upcoming.json";
@@ -10,6 +10,7 @@ import stretchHorizontal from "../../assets/stretch-horizontal.svg";
 import map from "../../assets/map.svg";
 import userIcon from "@/assets/user-icon.jpg";
 import { useAuth } from "@/context/AuthContext";
+import Dropdown from "@/components/Dropdown";
 
 interface SessionHighlight {
   title: string;
@@ -19,9 +20,14 @@ interface SessionHighlight {
 }
 
 function Home() {
-  const { loggedIn, userName } = useAuth();
+  const { loggedIn, userName, permission } = useAuth();
   const [popup, setPopup] = useState<SessionHighlight | null>(null);
   const [showMore, setShowMore] = useState<boolean>(false);
+  const [view, setView] = useState("admin");
+  const dropdownOptions = [
+    { label: "Admin View", value: "admin" },
+    { label: "Player View", value: "player" },
+  ];
 
   // Filter upcoming sessions to only show future dates
   const filteredUpcomingSessions = upcomingSessions.filter((session) => {
@@ -81,8 +87,17 @@ function Home() {
     <div>
       {loggedIn && userName && (
         <div className={styles.home_header}>
-          <img src={userIcon} alt="user icon" />
-          <h1>Welcome back, {userName}!</h1>
+          <div className={styles.home_header_greeting}>
+            <img src={userIcon} alt="user icon" />
+            <h1>Welcome back, {userName}!</h1>
+          </div>
+          {permission === "admin" && (
+            <Dropdown
+              options={dropdownOptions}
+              value={view}
+              onChange={setView}
+            />
+          )}
         </div>
       )}
       <div className={styles.sections}>

@@ -9,6 +9,12 @@ header {
 .home_header {
   margin: 2rem;
   margin-bottom: 1rem;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.home_header_greeting {
   display: flex;
   gap: 1.5rem;
 }
