@@ -17,7 +17,9 @@ try {
   dotenv.config({ path: envFile });
   console.log(`Loaded environment from ${envFile}`);
 } catch (error) {
-  console.warn(`Warning: Could not load ${envFile}, using default environment`);
+  console.warn(
+    `Warning: Could not load ${envFile}, using default environment: ${error}`
+  );
 }
 
 const __filename = fileURLToPath(import.meta.url);
@@ -36,9 +38,11 @@ app.use(express.json());
 
 // Register
 app.post("/api/register", async (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
-    return res.status(400).json({ message: "Email and password are required" });
+  const { email, password, code } = req.body;
+  if (!email || !password || !code) {
+    return res
+      .status(400)
+      .json({ message: "Email, password, and code are required" });
   }
   const usersFile = path.join(process.cwd(), "server/users.json");
   let users = [];
@@ -48,17 +52,25 @@ app.post("/api/register", async (req, res) => {
       users = JSON.parse(data || "[]");
     }
   } catch (err) {
-    return res.status(500).json({ message: "Error reading users file" });
+    return res
+      .status(500)
+      .json({ message: `Error reading users file: ${err}` });
+  }
+  // Check if code is valid (exists in any user object with a 'code' property)
+  const codeUserIndex = users.findIndex((u) => u.code === code);
+  if (codeUserIndex === -1) {
+    return res.status(403).json({ message: "Invalid registration code" });
   }
   if (users.find((u) => u.email === email)) {
     return res.status(409).json({ message: "User already exists" });
   }
   const hashed = await bcrypt.hash(password, 10);
-  users.push({ email, password: hashed });
+  users[codeUserIndex].email = email;
+  users[codeUserIndex].password = hashed;
   try {
     fs.writeFileSync(usersFile, JSON.stringify(users, null, 2));
   } catch (err) {
-    return res.status(500).json({ message: "Error saving user" });
+    return res.status(500).json({ message: `Error saving user: ${err}` });
   }
   res.status(201).json({ message: "User registered" });
 });
@@ -77,7 +89,9 @@ app.post("/api/login", async (req, res) => {
       users = JSON.parse(data || "[]");
     }
   } catch (err) {
-    return res.status(500).json({ message: "Error reading users file" });
+    return res
+      .status(500)
+      .json({ message: `Error reading users file: ${err}` });
   }
   const user = users.find((u) => u.email === email);
   if (!user || !(await bcrypt.compare(password, user.password))) {
@@ -103,7 +117,9 @@ app.get("/api/check-auth", (req, res) => {
     const user = jwt.verify(token, process.env.JWT_SECRET);
     res.json({ authenticated: true, user });
   } catch (err) {
-    res.status(401).json({ authenticated: false });
+    res
+      .status(401)
+      .json({ message: `Authentication failed: ${err}`, authenticated: false });
   }
 });
 

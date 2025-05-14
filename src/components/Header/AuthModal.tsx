@@ -78,17 +78,41 @@ const AuthModal: React.FC<AuthModalProps> = ({
       const res = await fetch(`${apiBaseUrl}/api/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, code: registerForm.code }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data?.message ?? "Registration failed");
 
-      setMessages({
-        registerSuccess: "Registration successful! You can now sign in.",
-        registerError: "",
-        loginError: "",
-      });
-      setRegisterForm({ code: "", email: "", password: "", confirm: "" });
+      // Registration successful, now log in automatically
+      try {
+        const loginRes = await fetch(`${apiBaseUrl}/api/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        });
+        const loginData = await loginRes.json();
+        if (!loginRes.ok)
+          throw new Error(
+            loginData?.message ?? "Login after registration failed"
+          );
+
+        setLoggedIn(true);
+        setUserName(loginData.name ?? "");
+        localStorage.setItem("loggedIn", "true");
+        localStorage.setItem("userName", loginData.name ?? "");
+        onLoginSuccess();
+        onClose();
+        setRegisterForm({ code: "", email: "", password: "", confirm: "" });
+        setMessages({ registerError: "", registerSuccess: "", loginError: "" });
+      } catch (loginError) {
+        setMessages((m) => ({
+          ...m,
+          registerError:
+            loginError instanceof Error
+              ? loginError.message
+              : String(loginError),
+        }));
+      }
     } catch (error) {
       setMessages((m) => ({
         ...m,
@@ -139,6 +163,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
                 handleInputChange("register", "code", e.target.value)
               }
               autoFocus
+              autoComplete="off"
             />
             <input
               type="email"
@@ -147,6 +172,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
               onChange={(e) =>
                 handleInputChange("register", "email", e.target.value)
               }
+              autoComplete="username"
             />
             <input
               type="password"
@@ -155,6 +181,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
               onChange={(e) =>
                 handleInputChange("register", "password", e.target.value)
               }
+              autoComplete="new-password"
             />
             <input
               type="password"
@@ -163,15 +190,11 @@ const AuthModal: React.FC<AuthModalProps> = ({
               onChange={(e) =>
                 handleInputChange("register", "confirm", e.target.value)
               }
+              autoComplete="new-password"
             />
             {messages.registerError && (
               <div className={styles["auth-error"]}>
                 {messages.registerError}
-              </div>
-            )}
-            {messages.registerSuccess && (
-              <div className={styles["auth-success"]}>
-                {messages.registerSuccess}
               </div>
             )}
             <div className={styles["auth-actions"]}>
