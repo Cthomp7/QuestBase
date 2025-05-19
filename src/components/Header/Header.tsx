@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import icon from "./../../assets/favicon-32x32.png";
 import styles from "./Header.module.css";
