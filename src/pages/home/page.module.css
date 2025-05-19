@@ -254,3 +254,73 @@ header {
   color: inherit;
   font-size: 1.1rem;
 }
+
+.plus_button {
+  background-color: #232323;
+  border: 1.5px solid #6b6b6b;
+  color: #fff;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  cursor: pointer;
+  margin-right: 0.7rem;
+  transition: background 0.2s;
+}
+
+.plus_button:hover {
+  background-color: #333;
+}
+
+.add_upcoming_content {
+  border: 1px solid #6b6b6b;
+  border-radius: 7px;
+  padding: 1rem;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-width: 350px;
+  margin-bottom: 0.6rem;
+}
+
+.add_upcoming_content input {
+  background: #181818;
+  border: 1px solid #6b6b6b;
+  border-radius: 7px;
+  color: #fff;
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.add_upcoming_content div button {
+  border-radius: 7px;
+  padding: 0.7rem 0;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background 0.2s;
+  width: 100%;
+}
+
+.upcoming_add_button {
+  background: var(--codex-blue);
+  border: none;
+}
+
+.upcoming_add_button:hover {
+  background: var(--codex-blue-hover);
+}
+
+.upcoming_cancel_button {
+  background: #353535;
+  border: none;
+}
+
+.upcoming_cancel_button:hover {
+  background: #2b2b2b;
+}

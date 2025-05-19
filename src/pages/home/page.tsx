@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "./page.module.css";
 import sessions from "../../data/sessions.json";
 import upcomingSessions from "../../data/upcoming.json";
@@ -42,6 +42,27 @@ function Home() {
     today.setHours(0, 0, 0, 0); // Reset time to start of day for fair comparison
     return sessionDate >= today;
   });
+
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [newSession, setNewSession] = useState({
+    date: "",
+    start: "",
+    end: "",
+  });
+  const [localUpcoming, setLocalUpcoming] = useState(filteredUpcomingSessions);
+
+  const handleAddSession = () => {
+    if (!newSession.date || !newSession.start || !newSession.end) return;
+    setLocalUpcoming([
+      ...localUpcoming,
+      {
+        date: newSession.date,
+        time: `${newSession.start} - ${newSession.end}`,
+      },
+    ]);
+    setShowAddForm(false);
+    setNewSession({ date: "", start: "", end: "" });
+  };
 
   const Session = (props: SessionHighlight) => {
     const { title, date, description } = props;
@@ -161,10 +182,63 @@ function Home() {
           </Link>
         </section>
         <section>
-          <h2>Upcoming Sessions</h2>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <button
+              className={styles.plus_button}
+              aria-label="Add upcoming session"
+              onClick={() => setShowAddForm((v) => !v)}
+            >
+              +
+            </button>
+            <h2>Upcoming Dates</h2>
+          </div>
+          {showAddForm && (
+            <div className={styles.add_upcoming_content}>
+              <input
+                type="text"
+                placeholder="session date"
+                value={newSession.date}
+                onChange={(e) =>
+                  setNewSession({ ...newSession, date: e.target.value })
+                }
+              />
+              <div style={{ display: "flex", gap: "0.6rem" }}>
+                <input
+                  type="text"
+                  placeholder="start time"
+                  value={newSession.start}
+                  onChange={(e) =>
+                    setNewSession({ ...newSession, start: e.target.value })
+                  }
+                />
+                <input
+                  type="text"
+                  placeholder="end time"
+                  value={newSession.end}
+                  onChange={(e) =>
+                    setNewSession({ ...newSession, end: e.target.value })
+                  }
+                />
+              </div>
+              <div style={{ display: "flex", gap: "0.6rem" }}>
+                <button
+                  className={styles.upcoming_add_button}
+                  onClick={handleAddSession}
+                >
+                  Add
+                </button>
+                <button
+                  className={styles.upcoming_cancel_button}
+                  onClick={() => setShowAddForm(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
           <div className={styles.upcoming_container}>
-            {filteredUpcomingSessions.map((session) => (
-              <UpcomingSession key={session.date} {...session} />
+            {localUpcoming.map((session) => (
+              <UpcomingSession key={session.date + session.time} {...session} />
             ))}
           </div>
         </section>
