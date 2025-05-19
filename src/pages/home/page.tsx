@@ -183,13 +183,15 @@ function Home() {
         </section>
         <section>
           <div style={{ display: "flex", alignItems: "center" }}>
-            <button
-              className={styles.plus_button}
-              aria-label="Add upcoming session"
-              onClick={() => setShowAddForm((v) => !v)}
-            >
-              +
-            </button>
+            {permission === "admin" && (
+              <button
+                className={styles.plus_button}
+                aria-label="Add upcoming session"
+                onClick={() => setShowAddForm((v) => !v)}
+              >
+                +
+              </button>
+            )}
             <h2>Upcoming Dates</h2>
           </div>
           {showAddForm && (
