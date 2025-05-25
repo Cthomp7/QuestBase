@@ -153,7 +153,7 @@ function Home() {
           <p className={styles.upcoming_date}>{date}</p>
           <p className={styles.upcoming_time}>{time}</p>
         </div>
-        {permission === "admin" && (
+        {permission === "admin" && view === "admin" && (
           <button
             className={styles.delete_button}
             onClick={() => handleDeleteSession(date, time)}
@@ -262,7 +262,7 @@ function Home() {
         </section>
         <section>
           <div style={{ display: "flex", alignItems: "center" }}>
-            {permission === "admin" && (
+            {permission === "admin" && view === "admin" && (
               <button
                 className={styles.plus_button}
                 aria-label="Add upcoming session"
