@@ -19,6 +19,8 @@ interface SessionHighlight {
   recap: string;
 }
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 function Home() {
   const { loggedIn, userName, permission } = useAuth();
   const [popup, setPopup] = useState<SessionHighlight | null>(null);
@@ -51,17 +53,66 @@ function Home() {
   });
   const [localUpcoming, setLocalUpcoming] = useState(filteredUpcomingSessions);
 
-  const handleAddSession = () => {
+  const handleAddSession = async () => {
     if (!newSession.date || !newSession.start || !newSession.end) return;
-    setLocalUpcoming([
-      ...localUpcoming,
-      {
-        date: newSession.date,
-        time: `${newSession.start} - ${newSession.end}`,
-      },
-    ]);
-    setShowAddForm(false);
-    setNewSession({ date: "", start: "", end: "" });
+
+    const sessionToAdd = {
+      date: newSession.date,
+      time: `${newSession.start} - ${newSession.end}`,
+    };
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/upcoming`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(sessionToAdd),
+      });
+
+      if (response.ok) {
+        setLocalUpcoming([...localUpcoming, sessionToAdd]);
+        setShowAddForm(false);
+        setNewSession({ date: "", start: "", end: "" });
+      } else {
+        let errorMsg = "Failed to add session";
+        try {
+          const error = await response.json();
+          errorMsg = error.message ?? errorMsg;
+        } catch (e) {
+          console.error("Failed to fetch error message: ", e);
+        }
+        alert(errorMsg);
+      }
+    } catch (err) {
+      alert("Server error: " + err);
+    }
+  };
+
+  const handleDeleteSession = async (date: string, time: string) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/upcoming`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ date, time }),
+      });
+      if (response.ok) {
+        setLocalUpcoming(
+          localUpcoming.filter(
+            (session) => session.date !== date || session.time !== time
+          )
+        );
+      } else {
+        let errorMsg = "Failed to delete session";
+        try {
+          const error = await response.json();
+          errorMsg = error.message ?? errorMsg;
+        } catch (e) {
+          console.log("Failed to fetch error message: ", e);
+        }
+        alert(errorMsg);
+      }
+    } catch (err) {
+      alert("Server error: " + err);
+    }
   };
 
   const Session = (props: SessionHighlight) => {
@@ -98,8 +149,36 @@ function Home() {
   const UpcomingSession = ({ date, time }: { date: string; time: string }) => {
     return (
       <div className={styles.upcoming_item}>
-        <p className={styles.upcoming_date}>{date}</p>
-        <p className={styles.upcoming_time}>{time}</p>
+        <div>
+          <p className={styles.upcoming_date}>{date}</p>
+          <p className={styles.upcoming_time}>{time}</p>
+        </div>
+        {permission === "admin" && (
+          <button
+            className={styles.delete_button}
+            onClick={() => handleDeleteSession(date, time)}
+            aria-label="Delete session"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="lucide lucide-trash2-icon lucide-trash-2"
+            >
+              <path d="M3 6h18" />
+              <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+              <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+              <line x1="10" x2="10" y1="11" y2="17" />
+              <line x1="14" x2="14" y1="11" y2="17" />
+            </svg>
+          </button>
+        )}
       </div>
     );
   };
@@ -204,6 +283,7 @@ function Home() {
                   setNewSession({ ...newSession, date: e.target.value })
                 }
               />
+              <p>Example: Monday, May 27th 2025</p>
               <div style={{ display: "flex", gap: "0.6rem" }}>
                 <input
                   type="text"

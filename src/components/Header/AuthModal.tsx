@@ -102,6 +102,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
         setUserName(loginData.name ?? "");
         localStorage.setItem("loggedIn", "true");
         localStorage.setItem("userName", loginData.name ?? "");
+        localStorage.setItem("permission", loginData.permission ?? "");
         onLoginSuccess();
         onClose();
         setRegisterForm({ code: "", email: "", password: "", confirm: "" });

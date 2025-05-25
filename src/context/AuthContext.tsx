@@ -4,6 +4,8 @@ import {
   useState,
   useEffect,
   ReactNode,
+  useMemo,
+  useCallback,
 } from "react";
 
 interface AuthContextType {
@@ -39,29 +41,40 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => window.removeEventListener("storage", syncLogin);
   }, []);
 
-  const logout = () => {
+  const login = useCallback((userName: string, permission: string) => {
+    localStorage.setItem("loggedIn", "true");
+    localStorage.setItem("userName", userName);
+    localStorage.setItem("permission", permission);
+    setLoggedIn(true);
+    setUserName(userName);
+    setPermission(permission);
+  }, []);
+
+  const logout = useCallback(() => {
     setLoggedIn(false);
     setUserName("");
     setPermission("");
     localStorage.removeItem("loggedIn");
     localStorage.removeItem("userName");
     localStorage.removeItem("permission");
-  };
+  }, []);
+
+  const contextValue = useMemo(
+    () => ({
+      loggedIn,
+      userName,
+      permission,
+      setLoggedIn,
+      setUserName,
+      setPermission,
+      login,
+      logout,
+    }),
+    [loggedIn, userName, permission, login, logout]
+  );
 
   return (
-    <AuthContext.Provider
-      value={{
-        loggedIn,
-        userName,
-        permission,
-        setLoggedIn,
-        setUserName,
-        setPermission,
-        logout,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 };
 

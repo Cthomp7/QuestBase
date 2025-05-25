@@ -230,6 +230,61 @@ app.get("/api/npcs/content", (req, res) => {
   }
 });
 
+// Add a new upcoming session
+app.post(`/api/upcoming`, (req, res) => {
+  const { date, time } = req.body;
+
+  if (!date || !time) {
+    return res.status(400).json({ message: "Date and time are required" });
+  }
+  const upcomingFile = path.join(process.cwd(), "src/data/upcoming.json");
+
+  let upcoming = [];
+
+  try {
+    if (fs.existsSync(upcomingFile)) {
+      const data = fs.readFileSync(upcomingFile, "utf-8");
+      upcoming = JSON.parse(data || "[]");
+    }
+
+    // Add the new session
+    upcoming.push({ date, time });
+    fs.writeFileSync(upcomingFile, JSON.stringify(upcoming, null, 2));
+    res.status(201).json({ message: "Session added", session: { date, time } });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: `Error updating upcoming sessions: ${err}` });
+  }
+});
+
+// Delete an upcoming session by date and time
+app.delete("/api/upcoming", (req, res) => {
+  const { date, time } = req.body;
+  if (!date || !time) {
+    return res.status(400).json({ message: "Date and time are required" });
+  }
+  const upcomingFile = path.join(process.cwd(), "src/data/upcoming.json");
+  let upcoming = [];
+  try {
+    if (fs.existsSync(upcomingFile)) {
+      const data = fs.readFileSync(upcomingFile, "utf-8");
+      upcoming = JSON.parse(data || "[]");
+    }
+    const initialLength = upcoming.length;
+    upcoming = upcoming.filter(
+      (session) => session.date !== date || session.time !== time
+    );
+    if (upcoming.length === initialLength) {
+      return res.status(404).json({ message: "Session not found" });
+    }
+    fs.writeFileSync(upcomingFile, JSON.stringify(upcoming, null, 2));
+    res.status(200).json({ message: "Session deleted" });
+  } catch (err) {
+    res.status(500).json({ message: `Error deleting session: ${err}` });
+  }
+});
+
 // Serve static files from the "dist" folder
 app.use(express.static(appDirectory));
 
@@ -238,36 +293,39 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "dist", "index.html"));
 });
 
-// if (isProduction) {
-// Production setup with HTTPS
-const certPath = "/etc/letsencrypt/live/questbase.net/";
-const privateKey = fs.readFileSync(path.join(certPath, "privkey.pem"), "utf8");
-const certificate = fs.readFileSync(path.join(certPath, "cert.pem"), "utf8");
-const ca = fs.readFileSync(path.join(certPath, "chain.pem"), "utf8");
+if (isProduction) {
+  // Production setup with HTTPS
+  const certPath = "/etc/letsencrypt/live/questbase.net/";
+  const privateKey = fs.readFileSync(
+    path.join(certPath, "privkey.pem"),
+    "utf8"
+  );
+  const certificate = fs.readFileSync(path.join(certPath, "cert.pem"), "utf8");
+  const ca = fs.readFileSync(path.join(certPath, "chain.pem"), "utf8");
 
-// Credentials for HTTPS
-const credentials = { key: privateKey, cert: certificate, ca: ca };
+  // Credentials for HTTPS
+  const credentials = { key: privateKey, cert: certificate, ca: ca };
 
-// Redirect HTTP to HTTPS
-app.use((req, res, next) => {
-  if (!req.secure) {
-    return res.redirect(["https://", req.get("Host"), req.url].join(""));
-  }
-  next();
-});
+  // Redirect HTTP to HTTPS
+  app.use((req, res, next) => {
+    if (!req.secure) {
+      return res.redirect(["https://", req.get("Host"), req.url].join(""));
+    }
+    next();
+  });
 
-// Create an HTTPS server and start it (port 443)
-https.createServer(credentials, app).listen(443, () => {
-  console.log("HTTPS server running on port 443");
-});
+  // Create an HTTPS server and start it (port 443)
+  https.createServer(credentials, app).listen(443, () => {
+    console.log("HTTPS server running on port 443");
+  });
 
-// Also listen on HTTP (port 80) for redirect to HTTPS
-app.listen(80, () => {
-  console.log("HTTP server running on port 80");
-});
-// } else {
-//   // Development setup - simple HTTP server
-//   app.listen(PORT, () => {
-//     console.log(`Development server running on http://localhost:${PORT}`);
-//   });
-// }
+  // Also listen on HTTP (port 80) for redirect to HTTPS
+  app.listen(80, () => {
+    console.log("HTTP server running on port 80");
+  });
+} else {
+  // Development setup - simple HTTP server
+  app.listen(PORT, () => {
+    console.log(`Development server running on http://localhost:${PORT}`);
+  });
+}

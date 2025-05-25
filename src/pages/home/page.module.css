@@ -131,6 +131,8 @@ header {
 .upcoming_item {
   border: 1px solid #6b6b6b;
   border-radius: 7px;
+  display: flex;
+  justify-content: space-between;
   padding: 1rem;
 }
 
@@ -323,4 +325,24 @@ header {
 
 .upcoming_cancel_button:hover {
   background: #2b2b2b;
+}
+
+.add_upcoming_content p {
+  font-size: 0.95rem;
+  color: #969696;
+}
+
+.upcoming_item:hover .delete_button {
+  opacity: 1;
+}
+
+.delete_button {
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  padding: 0.5rem;
+  height: fit-content;
+  margin: auto 0;
+  opacity: 0;
+  transition: 0.1s ease-in-out;
 }
