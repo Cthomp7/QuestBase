@@ -1,0 +1,9 @@
+CREATE TABLE quests (
+    id BIGSERIAL PRIMARY KEY,
+    title VARCHAR(150) NOT NULL,
+    description TEXT,
+    status VARCHAR(50) NOT NULL DEFAULT 'NOT_STARTED',
+    difficulty VARCHAR(50),
+    reward_xp INTEGER DEFAULT 0,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);

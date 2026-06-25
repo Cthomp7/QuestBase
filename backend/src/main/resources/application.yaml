@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: questbase
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/questbase
+    username: postgres
+    password: "postgres"
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+  flyway:
+    enabled: true
