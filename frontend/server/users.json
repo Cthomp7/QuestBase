@@ -1,0 +1,21 @@
+[
+  {
+    "code": "323663",
+    "permission": "admin",
+    "name": "Golorbium",
+    "email": "chloe.thomp7@gmail.com",
+    "password": "$2b$10$YlCZTQmKgKYiqC.u7CGkve3Ys1R/ehym./jBu2/ageYLLsJKbq7ZO"
+  },
+  {
+    "code": "667568",
+    "permission": "admin",
+    "name": "Golorbium",
+    "email": "chloe.thomp7+@gmail.com",
+    "password": "$2b$10$njbfYkGmwOaYty5XZ29VAufh5faXt0fSaJbPikEM19KMaAbooiqw2"
+  },
+  {
+    "name": "Galaxy Master",
+    "permission": "admin",
+    "code": "928416"
+  }
+]
