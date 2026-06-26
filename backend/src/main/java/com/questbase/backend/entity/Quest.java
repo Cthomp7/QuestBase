@@ -43,9 +43,10 @@ public class Quest {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private QuestStatus status;
+    private QuestStatus status = QuestStatus.NOT_STARTED;
 
     @Enumerated(EnumType.STRING)
     private QuestDifficulty difficulty;
