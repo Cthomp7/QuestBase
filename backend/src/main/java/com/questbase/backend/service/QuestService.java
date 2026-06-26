@@ -24,6 +24,13 @@ public class QuestService {
         this.campaignRepository = campaignRepository;
     }
 
+    public QuestResponse getQuestById(Long id) {
+        Quest quest = questRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Quest not found"));
+
+        return toResponse(quest);
+    }
+
     public List<QuestResponse> getAllQuests() {
         List<Quest> quests = questRepository.findAll();
 
@@ -46,8 +53,69 @@ public class QuestService {
             .build();
 
         Quest savedQuest = questRepository.save(quest);
-
         return toResponse(savedQuest);
+    }
+
+    public QuestResponse updateQuest(
+        Long id,
+        CreateQuestRequest request
+    ) {
+        Quest quest = questRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Quest not found"));
+
+        Campaign campaign = campaignRepository.findById(request.getCampaignId())
+            .orElseThrow(() -> new RuntimeException("Campaign not found"));
+
+        quest.setTitle(request.getTitle());
+        quest.setDescription(request.getDescription());
+        quest.setStatus(request.getStatus());
+        quest.setDifficulty(request.getDifficulty());
+        quest.setRewardXp(request.getRewardXp());
+        quest.setCampaign(campaign);
+
+        Quest savedQuest = questRepository.save(quest);
+        return toResponse(savedQuest);
+    }
+
+    public QuestResponse patchQuest(
+        Long id,
+        CreateQuestRequest request
+    ) {
+        Quest quest = questRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Quest not found"));
+
+        if (request.getCampaignId() != null) {
+            Campaign campaign = campaignRepository.findById(request.getCampaignId())
+                .orElseThrow(() -> new RuntimeException("Campaign not found"));
+            quest.setCampaign(campaign);
+        }
+
+        if (request.getTitle() != null) {
+            quest.setTitle(request.getTitle());
+        }
+
+        if (request.getDescription() != null) {
+            quest.setDescription(request.getDescription());
+        }
+
+        if (request.getStatus() != null) {
+            quest.setStatus(request.getStatus());
+        }
+
+        if (request.getDifficulty() != null) {
+            quest.setDifficulty(request.getDifficulty());
+        }
+
+        if (request.getRewardXp() != null) {
+            quest.setRewardXp(request.getRewardXp());
+        }
+
+        Quest savedQuest = questRepository.save(quest);
+        return toResponse(savedQuest);
+    }
+
+    public void deleteQuest(Long id) {
+        questRepository.deleteById(id);
     }
 
     // =========================================================================
