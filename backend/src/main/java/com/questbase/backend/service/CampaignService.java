@@ -1,10 +1,11 @@
 package com.questbase.backend.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.questbase.backend.dto.CampaignResponse;
+import com.questbase.backend.dto.CreateCampaignRequest;
 import com.questbase.backend.entity.Campaign;
 import com.questbase.backend.repository.CampaignRepository;
 
@@ -17,49 +18,87 @@ public class CampaignService {
         this.campaignRepository = campaignRepository;
     }
     
-    public Optional<Campaign> getCampaignById(Long id) {
-        return campaignRepository.findById(id);
-    }
-
-    public List<Campaign> getAllCampaigns() {
-        return campaignRepository.findAll();
-    }
-
-    public Campaign createCampaign(Campaign campaign) {
-        return campaignRepository.save(campaign);
-    }
-
-    public Campaign updateCampaign(Long id, Campaign updatedCampaign) {
+    public CampaignResponse getCampaignById(Long id) {
         Campaign campaign = campaignRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Campaign not found"));
 
-        campaign.setName(updatedCampaign.getName());
-        campaign.setSystem((updatedCampaign.getSystem()));
-        campaign.setDescription(updatedCampaign.getDescription());
-
-        return campaignRepository.save(campaign);
+        return toResponse(campaign);
     }
 
-    public Campaign patchCampaign(Long id, Campaign updatedCampaign) {
+    public List<CampaignResponse> getAllCampaigns() {
+        List<Campaign> campaigns = campaignRepository.findAll();
+
+        return campaigns.stream()
+            .map(campaign -> toResponse(campaign))
+            .toList();
+    }
+
+    public CampaignResponse createCampaign(CreateCampaignRequest request) {
+        Campaign campaign = Campaign.builder()
+            .name(request.getName())
+            .system(request.getSystem())
+            .description(request.getDescription())
+            .build();
+
+        Campaign savedCampaign = campaignRepository.save(campaign);
+
+        return toResponse(savedCampaign);
+    }
+
+    public CampaignResponse updateCampaign(
+        Long id, 
+        CreateCampaignRequest request
+    ) {
         Campaign campaign = campaignRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Campaign not found"));
 
-        if (updatedCampaign.getName() != null) {
-            campaign.setName(updatedCampaign.getName());
+        campaign.setName(request.getName());
+        campaign.setSystem((request.getSystem()));
+        campaign.setDescription(request.getDescription());
+
+        Campaign savedCampaign = campaignRepository.save(campaign);
+
+        return toResponse(savedCampaign);
+    }
+
+    public CampaignResponse patchCampaign(
+        Long id, 
+        CreateCampaignRequest request
+    ) {
+        Campaign campaign = campaignRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Campaign not found"));
+
+        if (request.getName() != null) {
+            campaign.setName(request.getName());
         }
 
-        if (updatedCampaign.getSystem() != null) {
-            campaign.setSystem(updatedCampaign.getSystem());
+        if (request.getSystem() != null) {
+            campaign.setSystem(request.getSystem());
         }
 
-        if (updatedCampaign.getDescription() != null) {
-            campaign.setDescription(updatedCampaign.getDescription());
+        if (request.getDescription() != null) {
+            campaign.setDescription(request.getDescription());
         }
 
-        return campaignRepository.save(campaign);
+        Campaign savedCampaign = campaignRepository.save(campaign);
+
+        return toResponse(savedCampaign);
     }
 
     public void deleteCampaign(Long id) {
         campaignRepository.deleteById(id);
+    }
+
+    // =========================================================================
+    // HELPER FUNCTIONS
+    // =========================================================================
+
+    private CampaignResponse toResponse(Campaign campaign) {
+        return CampaignResponse.builder()
+                .id(campaign.getId())
+                .name(campaign.getName())
+                .system(campaign.getSystem())
+                .description(campaign.getDescription())
+                .build();
     }
 }

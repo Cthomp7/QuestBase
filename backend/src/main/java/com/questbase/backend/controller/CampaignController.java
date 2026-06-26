@@ -3,11 +3,12 @@ package com.questbase.backend.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.questbase.backend.dto.CampaignResponse;
+import com.questbase.backend.dto.CreateCampaignRequest;
 import com.questbase.backend.entity.Campaign;
 import com.questbase.backend.service.CampaignService;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,34 +30,34 @@ public class CampaignController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Campaign> getCampaignById(@PathVariable Long id) {
+    public CampaignResponse getCampaignById(@PathVariable Long id) {
         return campaignService.getCampaignById(id);
     }
 
     @GetMapping()
-    public List<Campaign> getAllCampaigns() {
+    public List<CampaignResponse> getAllCampaigns() {
         return campaignService.getAllCampaigns();
     }
 
     @PostMapping()
-    public Campaign createCampaign(@RequestBody Campaign campaign) {
-        return campaignService.createCampaign(campaign);
+    public CampaignResponse createCampaign(@RequestBody CreateCampaignRequest request) {
+        return campaignService.createCampaign(request);
     }
 
     @PutMapping("/{id}")
-    public Campaign updateCampaign(
+    public CampaignResponse updateCampaign(
         @PathVariable Long id, 
-        @RequestBody Campaign entity
+        @RequestBody CreateCampaignRequest request
     ) {
-        return campaignService.updateCampaign(id, entity);
+        return campaignService.updateCampaign(id, request);
     }
 
     @PatchMapping("/{id}")
-    public Campaign patchCampaign(
+    public CampaignResponse patchCampaign(
         @PathVariable Long id,
-        @RequestBody Campaign entity
+        @RequestBody CreateCampaignRequest request
     ) {
-        return campaignService.patchCampaign(id, entity);
+        return campaignService.patchCampaign(id, request);
     }
 
     @DeleteMapping("/{id}")
