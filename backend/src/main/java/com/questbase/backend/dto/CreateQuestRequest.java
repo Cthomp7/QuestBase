@@ -1,5 +1,8 @@
 package com.questbase.backend.dto;
 
+import com.questbase.backend.enums.QuestDifficulty;
+import com.questbase.backend.enums.QuestStatus;
+
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,8 +17,8 @@ public class CreateQuestRequest {
     @Size(max = 750)
     private String description;
 
-    private String status; // TODO: switch to enum
-    private String difficulty; // TODO: switch to enum
+    private QuestStatus status;
+    private QuestDifficulty difficulty;
     private Integer rewardXp;
     Long campaignId;
 }
