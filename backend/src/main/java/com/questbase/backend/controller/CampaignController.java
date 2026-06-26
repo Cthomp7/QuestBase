@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.questbase.backend.dto.CampaignResponse;
 import com.questbase.backend.dto.CreateCampaignRequest;
-import com.questbase.backend.entity.Campaign;
 import com.questbase.backend.service.CampaignService;
 
 import java.util.List;

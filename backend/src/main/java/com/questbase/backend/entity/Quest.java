@@ -2,6 +2,8 @@ package com.questbase.backend.entity;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -44,7 +46,8 @@ public class Quest {
     @Column(name = "reward_xp")
     private Integer rewardXp;
 
-    @Column(name = "created_at", insertable = false, updatable = false)
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)

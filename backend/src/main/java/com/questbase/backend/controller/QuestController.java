@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.questbase.backend.entity.Quest;
+import com.questbase.backend.dto.CreateQuestRequest;
+import com.questbase.backend.dto.QuestResponse;
 import com.questbase.backend.service.QuestService;
 
 @RestController
@@ -21,12 +22,12 @@ public class QuestController {
     }
 
     @GetMapping
-    public List<Quest> getAllQuests() {
+    public List<QuestResponse> getAllQuests() {
         return questService.getAllQuests();
     }
 
     @PostMapping
-    public Quest createQuest(@RequestBody Quest quest) {
-        return questService.createQuest(quest);
+    public QuestResponse createQuest(@RequestBody CreateQuestRequest request) {
+        return questService.createQuest(request);
     }
 }
