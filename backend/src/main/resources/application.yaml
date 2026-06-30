@@ -3,9 +3,9 @@ spring:
     name: questbase
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/questbase
-    username: postgres
-    password: "postgres"
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASS}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -14,3 +14,7 @@ spring:
 
   flyway:
     enabled: true
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: ${JWT_EXPIRATION:86400000}
