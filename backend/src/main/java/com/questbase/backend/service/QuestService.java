@@ -32,7 +32,7 @@ public class QuestService {
     public QuestResponse getQuestById(Long id) {
         User currentUser = authService.getCurrentUser();
 
-        Quest quest = questRepository.findByIdAndUser(id, currentUser)
+        Quest quest = questRepository.findByIdAndCampaignUser(id, currentUser)
             .orElseThrow(() -> new RuntimeException("Quest not found"));
 
         return toResponse(quest);
@@ -41,7 +41,7 @@ public class QuestService {
     public List<QuestResponse> getAllQuests() {
         User currentUser = authService.getCurrentUser();
 
-        List<Quest> quests = questRepository.findByUser(currentUser);
+        List<Quest> quests = questRepository.findByCampaignUser(currentUser);
 
         return quests.stream()
             .map(quest -> toResponse(quest))
@@ -73,7 +73,7 @@ public class QuestService {
     ) {
         User currentUser = authService.getCurrentUser();
 
-        Quest quest = questRepository.findByIdAndUser(id, currentUser)
+        Quest quest = questRepository.findByIdAndCampaignUser(id, currentUser)
             .orElseThrow(() -> new RuntimeException("Quest not found"));
 
         Campaign campaign = campaignRepository.findByIdAndUser(request.campaignId(), currentUser)
@@ -96,7 +96,7 @@ public class QuestService {
     ) {
         User currentUser = authService.getCurrentUser();
 
-        Quest quest = questRepository.findByIdAndUser(id, currentUser)
+        Quest quest = questRepository.findByIdAndCampaignUser(id, currentUser)
             .orElseThrow(() -> new RuntimeException("Quest not found"));
 
         if (request.campaignId() != null) {
@@ -132,7 +132,7 @@ public class QuestService {
     public void deleteQuest(Long id) {
         User currentUser = authService.getCurrentUser();
 
-        Quest quest = questRepository.findByIdAndUser(id, currentUser)
+        Quest quest = questRepository.findByIdAndCampaignUser(id, currentUser)
             .orElseThrow(() -> new RuntimeException("Quest not found"));
 
         questRepository.delete(quest);

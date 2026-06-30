@@ -9,7 +9,7 @@ import com.questbase.backend.entity.Quest;
 import com.questbase.backend.entity.User;
 
 public interface QuestRepository extends JpaRepository<Quest, Long> {
-    List<Quest> findByUser(User user);
+    List<Quest> findByCampaignUser(User user);
 
-    Optional<Quest> findByIdAndUser(Long id, User user);
+    Optional<Quest> findByIdAndCampaignUser(Long id, User user);
 }
