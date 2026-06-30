@@ -1,12 +1,12 @@
-package com.questbase.backend.service;
+package com.questbase.backend.auth;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.questbase.backend.dto.LoginRequest;
-import com.questbase.backend.dto.LoginResponse;
-import com.questbase.backend.dto.RegisterRequest;
-import com.questbase.backend.dto.UserResponse;
+import com.questbase.backend.auth.dto.LoginRequest;
+import com.questbase.backend.auth.dto.LoginResponse;
+import com.questbase.backend.auth.dto.RegisterRequest;
+import com.questbase.backend.auth.dto.UserResponse;
 import com.questbase.backend.entity.User;
 import com.questbase.backend.repository.UserRepository;
 

@@ -1,9 +1,13 @@
-package com.questbase.backend.dto;
+package com.questbase.backend.auth.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public record LoginRequest(
+public record RegisterRequest(
+
+    @Size(max = 100)
+    @NotBlank
+    String displayName,
 
     @Size(max = 255)
     @NotBlank

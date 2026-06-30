@@ -1,13 +1,12 @@
-package com.questbase.backend.controller;
+package com.questbase.backend.auth;
 
-import com.questbase.backend.service.AuthService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.questbase.backend.dto.LoginRequest;
-import com.questbase.backend.dto.LoginResponse;
-import com.questbase.backend.dto.RegisterRequest;
-import com.questbase.backend.dto.UserResponse;
+import com.questbase.backend.auth.dto.LoginRequest;
+import com.questbase.backend.auth.dto.LoginResponse;
+import com.questbase.backend.auth.dto.RegisterRequest;
+import com.questbase.backend.auth.dto.UserResponse;
 
 import jakarta.validation.Valid;
 
