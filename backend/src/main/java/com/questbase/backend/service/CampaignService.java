@@ -1,11 +1,10 @@
 package com.questbase.backend.service;
 
-import com.questbase.backend.repository.UserRepository;
 import java.util.List;
 
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.questbase.backend.auth.AuthService;
 import com.questbase.backend.dto.CampaignResponse;
 import com.questbase.backend.dto.CreateCampaignRequest;
 import com.questbase.backend.entity.Campaign;
@@ -15,16 +14,19 @@ import com.questbase.backend.repository.CampaignRepository;
 @Service
 public class CampaignService {
     
-    private final UserRepository userRepository;
+    private final AuthService authService;
     private final CampaignRepository campaignRepository;
 
-    public CampaignService(CampaignRepository campaignRepository, UserRepository userRepository) {
+    public CampaignService(
+        AuthService authService, 
+        CampaignRepository campaignRepository
+    ) {
         this.campaignRepository = campaignRepository;
-        this.userRepository = userRepository;
+        this.authService = authService;
     }
     
     public CampaignResponse getCampaignById(Long id) {
-        User currentUser = getCurrentUser();
+        User currentUser = authService.getCurrentUser();
 
         Campaign campaign = campaignRepository.findByIdAndUser(id, currentUser)
             .orElseThrow(() -> new RuntimeException("Campaign not found"));
@@ -33,7 +35,7 @@ public class CampaignService {
     }
 
     public List<CampaignResponse> getAllCampaigns() {
-        User currentUser = getCurrentUser();
+        User currentUser = authService.getCurrentUser();
 
         List<Campaign> campaigns = campaignRepository.findByUser(currentUser);
 
@@ -43,7 +45,7 @@ public class CampaignService {
     }
 
     public CampaignResponse createCampaign(CreateCampaignRequest request) {
-        User currentUser = getCurrentUser();
+        User currentUser = authService.getCurrentUser();
 
         Campaign campaign = Campaign.builder()
             .name(request.name())
@@ -61,7 +63,7 @@ public class CampaignService {
         Long id, 
         CreateCampaignRequest request
     ) {
-        User currentUser = getCurrentUser();
+        User currentUser = authService.getCurrentUser();
 
         Campaign campaign = campaignRepository.findByIdAndUser(id, currentUser)
             .orElseThrow(() -> new RuntimeException("Campaign not found"));
@@ -79,7 +81,7 @@ public class CampaignService {
         Long id, 
         CreateCampaignRequest request
     ) {
-        User currentUser = getCurrentUser();
+        User currentUser = authService.getCurrentUser();
 
         Campaign campaign = campaignRepository.findByIdAndUser(id, currentUser)
             .orElseThrow(() -> new RuntimeException("Campaign not found"));
@@ -102,7 +104,7 @@ public class CampaignService {
     }
 
     public void deleteCampaign(Long id) {
-        User currentUser = getCurrentUser();
+        User currentUser = authService.getCurrentUser();
 
         Campaign campaign = campaignRepository.findByIdAndUser(id, currentUser)
             .orElseThrow(() -> new RuntimeException("Campaign not found"));
@@ -113,16 +115,6 @@ public class CampaignService {
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
-
-    private User getCurrentUser() {
-        String email = SecurityContextHolder
-            .getContext()
-            .getAuthentication()
-            .getName();
-
-        return userRepository.findByEmail(email)
-            .orElseThrow(() -> new RuntimeException("User not found"));
-    }
 
     private CampaignResponse toResponse(Campaign campaign) {
         return CampaignResponse.builder()

@@ -1,9 +1,11 @@
 package com.questbase.backend.service;
 
+import com.questbase.backend.auth.AuthService;
 import com.questbase.backend.dto.CreateQuestRequest;
 import com.questbase.backend.dto.QuestResponse;
 import com.questbase.backend.entity.Campaign;
 import com.questbase.backend.entity.Quest;
+import com.questbase.backend.entity.User;
 import com.questbase.backend.repository.CampaignRepository;
 import com.questbase.backend.repository.QuestRepository;
 import org.springframework.stereotype.Service;
@@ -13,26 +15,33 @@ import java.util.List;
 @Service
 public class QuestService {
 
+    private final AuthService authService;
     private final QuestRepository questRepository;
     private final CampaignRepository campaignRepository;
 
     public QuestService(
+        AuthService authService,
         QuestRepository questRepository,
         CampaignRepository campaignRepository
     ) {
+        this.authService = authService;
         this.questRepository = questRepository;
         this.campaignRepository = campaignRepository;
     }
 
     public QuestResponse getQuestById(Long id) {
-        Quest quest = questRepository.findById(id)
+        User currentUser = authService.getCurrentUser();
+
+        Quest quest = questRepository.findByIdAndUser(id, currentUser)
             .orElseThrow(() -> new RuntimeException("Quest not found"));
 
         return toResponse(quest);
     }
 
     public List<QuestResponse> getAllQuests() {
-        List<Quest> quests = questRepository.findAll();
+        User currentUser = authService.getCurrentUser();
+
+        List<Quest> quests = questRepository.findByUser(currentUser);
 
         return quests.stream()
             .map(quest -> toResponse(quest))
@@ -40,7 +49,9 @@ public class QuestService {
     }
 
     public QuestResponse createQuest(CreateQuestRequest request) {
-        Campaign campaign = campaignRepository.findById(request.campaignId())
+        User currentUser = authService.getCurrentUser();
+
+        Campaign campaign = campaignRepository.findByIdAndUser(request.campaignId(), currentUser)
             .orElseThrow(() -> new RuntimeException("Campaign not found"));
 
         Quest quest = Quest.builder()
@@ -60,10 +71,12 @@ public class QuestService {
         Long id,
         CreateQuestRequest request
     ) {
-        Quest quest = questRepository.findById(id)
+        User currentUser = authService.getCurrentUser();
+
+        Quest quest = questRepository.findByIdAndUser(id, currentUser)
             .orElseThrow(() -> new RuntimeException("Quest not found"));
 
-        Campaign campaign = campaignRepository.findById(request.campaignId())
+        Campaign campaign = campaignRepository.findByIdAndUser(request.campaignId(), currentUser)
             .orElseThrow(() -> new RuntimeException("Campaign not found"));
 
         quest.setTitle(request.title());
@@ -81,11 +94,13 @@ public class QuestService {
         Long id,
         CreateQuestRequest request
     ) {
-        Quest quest = questRepository.findById(id)
+        User currentUser = authService.getCurrentUser();
+
+        Quest quest = questRepository.findByIdAndUser(id, currentUser)
             .orElseThrow(() -> new RuntimeException("Quest not found"));
 
         if (request.campaignId() != null) {
-            Campaign campaign = campaignRepository.findById(request.campaignId())
+            Campaign campaign = campaignRepository.findByIdAndUser(request.campaignId(), currentUser)
                 .orElseThrow(() -> new RuntimeException("Campaign not found"));
             quest.setCampaign(campaign);
         }
@@ -115,7 +130,12 @@ public class QuestService {
     }
 
     public void deleteQuest(Long id) {
-        questRepository.deleteById(id);
+        User currentUser = authService.getCurrentUser();
+
+        Quest quest = questRepository.findByIdAndUser(id, currentUser)
+            .orElseThrow(() -> new RuntimeException("Quest not found"));
+
+        questRepository.delete(quest);
     }
 
     // =========================================================================
