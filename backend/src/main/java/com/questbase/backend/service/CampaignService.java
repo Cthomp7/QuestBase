@@ -35,9 +35,9 @@ public class CampaignService {
 
     public CampaignResponse createCampaign(CreateCampaignRequest request) {
         Campaign campaign = Campaign.builder()
-            .name(request.getName())
-            .system(request.getSystem())
-            .description(request.getDescription())
+            .name(request.name())
+            .system(request.system())
+            .description(request.description())
             .build();
 
         Campaign savedCampaign = campaignRepository.save(campaign);
@@ -52,9 +52,9 @@ public class CampaignService {
         Campaign campaign = campaignRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Campaign not found"));
 
-        campaign.setName(request.getName());
-        campaign.setSystem((request.getSystem()));
-        campaign.setDescription(request.getDescription());
+        campaign.setName(request.name());
+        campaign.setSystem((request.system()));
+        campaign.setDescription(request.description());
 
         Campaign savedCampaign = campaignRepository.save(campaign);
 
@@ -68,16 +68,16 @@ public class CampaignService {
         Campaign campaign = campaignRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Campaign not found"));
 
-        if (request.getName() != null) {
-            campaign.setName(request.getName());
+        if (request.name() != null) {
+            campaign.setName(request.name());
         }
 
-        if (request.getSystem() != null) {
-            campaign.setSystem(request.getSystem());
+        if (request.system() != null) {
+            campaign.setSystem(request.system());
         }
 
-        if (request.getDescription() != null) {
-            campaign.setDescription(request.getDescription());
+        if (request.description() != null) {
+            campaign.setDescription(request.description());
         }
 
         Campaign savedCampaign = campaignRepository.save(campaign);

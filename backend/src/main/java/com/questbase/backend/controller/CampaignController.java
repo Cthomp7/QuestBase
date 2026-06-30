@@ -7,6 +7,8 @@ import com.questbase.backend.dto.CampaignResponse;
 import com.questbase.backend.dto.CreateCampaignRequest;
 import com.questbase.backend.service.CampaignService;
 
+import jakarta.validation.Valid;
+
 import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,14 +41,16 @@ public class CampaignController {
     }
 
     @PostMapping()
-    public CampaignResponse createCampaign(@RequestBody CreateCampaignRequest request) {
+    public CampaignResponse createCampaign(
+        @Valid @RequestBody CreateCampaignRequest request
+    ) {
         return campaignService.createCampaign(request);
     }
 
     @PutMapping("/{id}")
     public CampaignResponse updateCampaign(
         @PathVariable Long id, 
-        @RequestBody CreateCampaignRequest request
+        @Valid @RequestBody CreateCampaignRequest request
     ) {
         return campaignService.updateCampaign(id, request);
     }
@@ -54,7 +58,7 @@ public class CampaignController {
     @PatchMapping("/{id}")
     public CampaignResponse patchCampaign(
         @PathVariable Long id,
-        @RequestBody CreateCampaignRequest request
+        @Valid @RequestBody CreateCampaignRequest request
     ) {
         return campaignService.patchCampaign(id, request);
     }

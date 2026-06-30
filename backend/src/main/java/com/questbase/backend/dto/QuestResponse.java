@@ -7,18 +7,14 @@ import com.questbase.backend.enums.QuestDifficulty;
 import com.questbase.backend.enums.QuestStatus;
 
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 @Builder
-public class QuestResponse {
-    private String title;
-    private String description;
-    private QuestStatus status;
-    private QuestDifficulty difficulty;
-    private Integer rewardXp;
-    private LocalDateTime createdAt;
-    private Campaign campaign;
-}
+public record QuestResponse (
+    String title,
+    String description,
+    QuestStatus status,
+    QuestDifficulty difficulty,
+    Integer rewardXp,
+    LocalDateTime createdAt,
+    Campaign campaign
+) {}

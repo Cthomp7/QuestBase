@@ -3,26 +3,26 @@ package com.questbase.backend.dto;
 import com.questbase.backend.enums.QuestDifficulty;
 import com.questbase.backend.enums.QuestStatus;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
-public class CreateQuestRequest {
-    
+public record CreateQuestRequest (
+
     @Size(max = 150)
-    private String title;
+    @NotBlank
+    String title,
 
     @Size(max = 750)
-    private String description;
+    String description,
 
-    private QuestStatus status;
-    private QuestDifficulty difficulty;
+    QuestStatus status,
+    QuestDifficulty difficulty,
 
     @Positive
-    private Integer rewardXp;
+    Integer rewardXp,
     
-    Long campaignId;
-}
+    @NotNull
+    Long campaignId
+) {}

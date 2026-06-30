@@ -40,15 +40,15 @@ public class QuestService {
     }
 
     public QuestResponse createQuest(CreateQuestRequest request) {
-        Campaign campaign = campaignRepository.findById(request.getCampaignId())
+        Campaign campaign = campaignRepository.findById(request.campaignId())
             .orElseThrow(() -> new RuntimeException("Campaign not found"));
 
         Quest quest = Quest.builder()
-            .title(request.getTitle())
-            .description(request.getDescription())
-            .status(request.getStatus())
-            .difficulty(request.getDifficulty())
-            .rewardXp(request.getRewardXp())
+            .title(request.title())
+            .description(request.description())
+            .status(request.status())
+            .difficulty(request.difficulty())
+            .rewardXp(request.rewardXp())
             .campaign(campaign)
             .build();
 
@@ -63,14 +63,14 @@ public class QuestService {
         Quest quest = questRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Quest not found"));
 
-        Campaign campaign = campaignRepository.findById(request.getCampaignId())
+        Campaign campaign = campaignRepository.findById(request.campaignId())
             .orElseThrow(() -> new RuntimeException("Campaign not found"));
 
-        quest.setTitle(request.getTitle());
-        quest.setDescription(request.getDescription());
-        quest.setStatus(request.getStatus());
-        quest.setDifficulty(request.getDifficulty());
-        quest.setRewardXp(request.getRewardXp());
+        quest.setTitle(request.title());
+        quest.setDescription(request.description());
+        quest.setStatus(request.status());
+        quest.setDifficulty(request.difficulty());
+        quest.setRewardXp(request.rewardXp());
         quest.setCampaign(campaign);
 
         Quest savedQuest = questRepository.save(quest);
@@ -84,30 +84,30 @@ public class QuestService {
         Quest quest = questRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Quest not found"));
 
-        if (request.getCampaignId() != null) {
-            Campaign campaign = campaignRepository.findById(request.getCampaignId())
+        if (request.campaignId() != null) {
+            Campaign campaign = campaignRepository.findById(request.campaignId())
                 .orElseThrow(() -> new RuntimeException("Campaign not found"));
             quest.setCampaign(campaign);
         }
 
-        if (request.getTitle() != null) {
-            quest.setTitle(request.getTitle());
+        if (request.title() != null) {
+            quest.setTitle(request.title());
         }
 
-        if (request.getDescription() != null) {
-            quest.setDescription(request.getDescription());
+        if (request.description() != null) {
+            quest.setDescription(request.description());
         }
 
-        if (request.getStatus() != null) {
-            quest.setStatus(request.getStatus());
+        if (request.status() != null) {
+            quest.setStatus(request.status());
         }
 
-        if (request.getDifficulty() != null) {
-            quest.setDifficulty(request.getDifficulty());
+        if (request.difficulty() != null) {
+            quest.setDifficulty(request.difficulty());
         }
 
-        if (request.getRewardXp() != null) {
-            quest.setRewardXp(request.getRewardXp());
+        if (request.rewardXp() != null) {
+            quest.setRewardXp(request.rewardXp());
         }
 
         Quest savedQuest = questRepository.save(quest);

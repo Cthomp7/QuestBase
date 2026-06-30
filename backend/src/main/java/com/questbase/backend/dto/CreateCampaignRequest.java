@@ -2,19 +2,15 @@ package com.questbase.backend.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
-public class CreateCampaignRequest {
+public record CreateCampaignRequest(
 
     @NotBlank
     @Size(max = 150)
-    private String name;
+    String name,
 
     @Size(max = 50)
-    private String system;
+    String system,
 
-    private String description;
-}
+    String description
+) {}

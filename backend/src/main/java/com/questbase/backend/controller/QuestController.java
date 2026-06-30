@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.questbase.backend.dto.CreateQuestRequest;
 import com.questbase.backend.dto.QuestResponse;
 import com.questbase.backend.service.QuestService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.PutMapping;
 
 
@@ -38,14 +41,16 @@ public class QuestController {
     }
 
     @PostMapping
-    public QuestResponse createQuest(@RequestBody CreateQuestRequest request) {
+    public QuestResponse createQuest(
+        @Valid @RequestBody CreateQuestRequest request
+    ) {
         return questService.createQuest(request);
     }
 
     @PutMapping("/{id}")
     public QuestResponse updateQuest(
         @PathVariable Long id, 
-        @RequestBody CreateQuestRequest request
+        @Valid @RequestBody CreateQuestRequest request
     ) {
         return questService.updateQuest(id, request);
     }
@@ -53,7 +58,7 @@ public class QuestController {
     @PatchMapping("/{id}")
     public QuestResponse patchQuest(
         @PathVariable Long id, 
-        @RequestBody CreateQuestRequest request
+        @Valid @RequestBody CreateQuestRequest request
     ) {
         return questService.patchQuest(id, request);
     }
