@@ -31,18 +31,7 @@ const Header = () => {
         <Link to="/codex">Codex</Link>
         <Link to="/npcs">NPCs</Link>
         <p>|</p>
-        <button
-          className={styles.signInButton}
-          onClick={() => {
-            if (loggedIn) {
-              handleLogout();
-            } else {
-              setShowLogin(true);
-            }
-          }}
-        >
-          {loggedIn ? "Sign out" : "Sign In"}
-        </button>
+        <Link to="/login">Login</Link>
       </div>
       {showLogin && !loggedIn && (
         <AuthModal

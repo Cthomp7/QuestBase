@@ -5,7 +5,8 @@ import Codex from "./pages/codex/page";
 import "./App.css";
 import Header from "./components/Header/Header";
 import NPCs from "./pages/npcs/page";
-// import About from "./pages/About";
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
 // import NotFound from "./pages/NotFound";
 
 const App: React.FC = () => {
@@ -18,6 +19,8 @@ const App: React.FC = () => {
         <Route path="/codex/*" element={<Codex />} />
         <Route path="/npcs/" element={<NPCs />} />
         <Route path="/npcs/*" element={<NPCs />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         {/* <Route path="/about" element={<About />} /> */}
         {/* <Route path="*" element={<NotFound />} /> */}
       </Routes>
