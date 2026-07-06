@@ -28,3 +28,14 @@ services:
       JWT_EXPIRATION: 86400000
     ports:
       - "8080:8080"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: questbase-frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
