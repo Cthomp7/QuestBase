@@ -2,7 +2,6 @@ import { Link, useNavigate } from "react-router-dom"
 import icon from "./../../assets/favicon-32x32.png"
 import styles from "./Header.module.css"
 import { useAuth } from "@/context/AuthContext"
-import { useEffect } from "react";
 
 const Header = () => {
   const navigate = useNavigate()
