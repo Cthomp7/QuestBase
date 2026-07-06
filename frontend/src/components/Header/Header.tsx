@@ -1,10 +1,21 @@
-import { Link } from "react-router-dom";
-import icon from "./../../assets/favicon-32x32.png";
-import styles from "./Header.module.css";
-import { useAuth } from "@/context/AuthContext";
+import { Link, useNavigate } from "react-router-dom"
+import icon from "./../../assets/favicon-32x32.png"
+import styles from "./Header.module.css"
+import { useAuth } from "@/context/AuthContext"
+import { useEffect } from "react";
 
 const Header = () => {
-  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate()
+  const { isAuthenticated, logout } = useAuth()
+
+  const redirectToLogin = () => {
+    navigate("/login")
+  }
+
+    useEffect(() => {
+      console.log(isAuthenticated)
+    }, [isAuthenticated])
+  
 
   return (
     <header>
@@ -14,21 +25,21 @@ const Header = () => {
       </Link>
       <div className={styles.navigation}>
         {isAuthenticated 
-          ? <>
+          ? <Link to="/">Dashboard</Link>
+          : <>
             <Link to="/">Base</Link>
             <Link to="/codex">Codex</Link>
             <Link to="/npcs">NPCs</Link>
             </>
-          : <Link to="/">Dashboard</Link>
         }
       </div>
       <div className={styles.navigation}>
         {isAuthenticated 
-          ? <Link to="/login">Login</Link>
-          : <>
+          ? <>
             {/* <Link to="/profile">Profile</Link> // TODO: add /profile page + change to a profile picture */}
-            <Link to="">Logout</Link> {/* // TODO configure & eventually move to /profile page */}
+            <button className={styles.logout_button} onClick={() => logout(redirectToLogin)}>Logout</button> {/* // TODO configure & eventually move to /profile page */}
             </>
+          : <Link to="/login">Login</Link>
         }
       </div>
     </header>

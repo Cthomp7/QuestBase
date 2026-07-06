@@ -1,9 +1,11 @@
-import { useState } from "react";
-import styles from "./page.module.css";
-import img from "../../assets/imgs/login-img.png";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react"
+import styles from "./page.module.css"
+import img from "../../assets/imgs/login-img.png"
+import { useNavigate } from "react-router-dom"
+import { useAuth } from "@/context/AuthContext"
 
 function Login () {
+  const { login } = useAuth()
   const navigate = useNavigate()
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
@@ -19,20 +21,9 @@ function Login () {
       return
     }
 
-    try {
-      const response = await fetch("http://localhost:8080/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password })
-      })
-      if (response.ok) {
-        navigate("/dashboard")
-      } else {
-        // TODO: show error message
-      }
-    } catch (error) {
-      console.error("Failed to login user: ", error)
-    }
+    await login(email, password, () => {
+      navigate("/dashboard")
+    })
   }
 
   // TODO: add error message system

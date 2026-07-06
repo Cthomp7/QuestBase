@@ -51,13 +51,15 @@ header {
   font-size: 1.2rem;
 }
 
-.signInButton {
+.logout_button {
   cursor: pointer;
-  font-size: 1.2rem;
+  font-size: 1rem;
   background: none;
   border: none;
   transition: all 0.2s ease-in-out;
+  padding: 0;
 }
-.signInButton:hover {
+.logout_button:hover {
+  background-color: transparent;
   color: var(--codex-blue);
 }

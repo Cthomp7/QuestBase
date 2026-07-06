@@ -8,11 +8,13 @@ import com.questbase.backend.auth.dto.LoginRequest;
 import com.questbase.backend.auth.dto.RegisterRequest;
 import com.questbase.backend.auth.dto.UserResponse;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
 import java.time.Duration;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -33,6 +35,10 @@ public class AuthController {
 
     @GetMapping("/me")
     public ResponseEntity<UserResponse> me(Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        
         CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
 
         return ResponseEntity.ok(
@@ -61,6 +67,22 @@ public class AuthController {
         String token = authService.login(request);
 
         return generateHTTPCookie(token);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletResponse response) {
+
+        ResponseCookie cookie = ResponseCookie.from("accessToken", "")
+            .httpOnly(true)
+            .secure(true)
+            .sameSite("Lax")
+            .path("/")
+            .maxAge(0)
+            .build();
+
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+
+        return ResponseEntity.ok().build();
     }
 
     private ResponseEntity<Void> generateHTTPCookie(String token) {
