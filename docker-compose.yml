@@ -11,9 +11,11 @@ services:
       - "5432:5432"
 
   backend:
-    build: .
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     container_name: questbase-backend
-    restart: always
+    restart: unless-stopped
     depends_on:
       - postgres
     environment:
