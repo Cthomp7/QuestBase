@@ -4,6 +4,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+import com.questbase.backend.auth.dto.CustomUserDetails;
 import com.questbase.backend.entity.User;
 import com.questbase.backend.repository.UserRepository;
 
@@ -19,10 +20,12 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepository.findByEmail(email)
             .orElseThrow(() -> new RuntimeException("User not found"));
 
-        return org.springframework.security.core.userdetails.User.builder()
-            .username(user.getEmail())
-            .password(user.getPassword())
-            .authorities("USER")
-            .build();
+        return new CustomUserDetails(
+            user.getId(),
+            user.getEmail(),
+            user.getPassword(),
+            user.getDisplayName(),
+            user.getCreatedAt()
+        );
     }
 }
