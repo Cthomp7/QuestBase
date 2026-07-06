@@ -29,21 +29,10 @@ services:
     ports:
       - "8080:8080"
 
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    container_name: questbase-frontend
-    restart: always
-    depends_on:
-      - backend
-    environment:
-      JWT_SECRET: ${JWT_SECRET}
-      JWT_EXPIRATION: 86400000
-    ports:
-      - "3000:80"
-
   nginx:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
     image: nginx:alpine
     container_name: questbase-nginx
     restart: always
