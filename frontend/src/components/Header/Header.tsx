@@ -12,11 +12,6 @@ const Header = () => {
     navigate("/login")
   }
 
-    useEffect(() => {
-      console.log(isAuthenticated)
-    }, [isAuthenticated])
-  
-
   return (
     <header>
       <Link className={styles.title} to={"/"}>
@@ -24,14 +19,7 @@ const Header = () => {
         <h1>QuestBase</h1>
       </Link>
       <div className={styles.navigation}>
-        {isAuthenticated 
-          ? <Link to="/">Dashboard</Link>
-          : <>
-            <Link to="/">Base</Link>
-            <Link to="/codex">Codex</Link>
-            <Link to="/npcs">NPCs</Link>
-            </>
-        }
+        {isAuthenticated && <Link to="/">Dashboard</Link>}
       </div>
       <div className={styles.navigation}>
         {isAuthenticated 
