@@ -5,14 +5,19 @@ button {
   width: 100%;
 }
 
+main.login_register {
+  overflow: hidden;
+  position: relative;
+  height: calc(100vh - 57px); 
+}
+
 .page_container {
   display: flex;
   /* vh - header - margin */
-  height: calc(100vh - 88px - 60px); 
+  height: calc(100vh - 57px - 60px); 
   position: relative;
   gap: 30px;
   margin: 30px;
-  overflow: hidden;
 }
 
 .sub_container {
@@ -21,16 +26,10 @@ button {
   justify-content: center;
 }
 
-/* .login_container {
-  background-color: rgba(45, 45, 45, 0.295);
-  border-radius: 15px;
-} */
-
 .login_portal {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 1rem 0;
   gap: 2.5rem;
   width: 100%;
   height: 100%;
@@ -73,6 +72,12 @@ button {
   border-radius: 15px;
 }
 
+@media (max-width: 1290px) {
+  .login .login_portal {
+    padding: 4rem 3.7rem;
+  }
+}
+
 @media (max-width: 1024px) {
   .login_container {
     position: absolute;
@@ -93,6 +98,10 @@ button {
     min-width: 300px;
   }
 
+  .login .login_portal_title {
+    margin-top: 0;
+  } 
+
   .img_container {
     width: 100%
   }
@@ -112,6 +121,9 @@ button {
   .login_portal_title h1 {
     font-size: 2rem;
     margin-bottom: 1rem;
+  }
+  .login .login_portal_title h1 {
+    white-space: nowrap;
   }
 
   .login_portal_title h2 {
