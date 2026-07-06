@@ -37,5 +37,8 @@ services:
     restart: always
     depends_on:
       - backend
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRATION: 86400000
     ports:
       - "80:80"
