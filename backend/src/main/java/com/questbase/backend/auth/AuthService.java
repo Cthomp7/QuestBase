@@ -5,9 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.questbase.backend.auth.dto.LoginRequest;
-import com.questbase.backend.auth.dto.LoginResponse;
 import com.questbase.backend.auth.dto.RegisterRequest;
-import com.questbase.backend.auth.dto.UserResponse;
 import com.questbase.backend.entity.User;
 import com.questbase.backend.repository.UserRepository;
 
@@ -20,7 +18,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
-    public UserResponse register(RegisterRequest request) {
+    public String register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.email())) {
             throw new RuntimeException("Email already exists.");
         }
@@ -33,16 +31,12 @@ public class AuthService {
             .password(hashedPassword)
             .build();
 
-        User savedUser = userRepository.save(user);
+        userRepository.save(user);
 
-        return UserResponse.builder()
-            .id(savedUser.getId())
-            .displayName(savedUser.getDisplayName())
-            .email(savedUser.getEmail())
-            .build();
+        return jwtService.generateToken(user);
     }
 
-    public LoginResponse login(LoginRequest request) {
+    public String login(LoginRequest request) {
         User user = userRepository.findByEmail(request.email())
             .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -50,9 +44,7 @@ public class AuthService {
             throw new RuntimeException("Invalid credentials");
         }
 
-        String token = jwtService.generateToken(user);
-
-        return new LoginResponse(token);
+        return jwtService.generateToken(user);
     }
 
     public User getCurrentUser() {
