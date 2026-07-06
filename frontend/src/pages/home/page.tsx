@@ -8,9 +8,6 @@ import bookOpen from "../../assets/book-marked.svg";
 import bookUser from "../../assets/book-user.svg";
 import stretchHorizontal from "../../assets/stretch-horizontal.svg";
 import map from "../../assets/map.svg";
-import userIcon from "@/assets/user-icon.jpg";
-import { useAuth } from "@/context/AuthContext";
-import Dropdown from "@/components/Dropdown";
 
 interface SessionHighlight {
   title: string;
@@ -22,14 +19,14 @@ interface SessionHighlight {
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function Home() {
-  const { loggedIn, userName, permission } = useAuth();
+  // const { loggedIn, userName, permission } = useAuth();
   const [popup, setPopup] = useState<SessionHighlight | null>(null);
   const [showMore, setShowMore] = useState<boolean>(false);
-  const [view, setView] = useState("admin");
-  const dropdownOptions = [
-    { label: "Admin View", value: "admin" },
-    { label: "Player View", value: "player" },
-  ];
+  // const [view, setView] = useState("admin");
+  // const dropdownOptions = [
+  //   { label: "Admin View", value: "admin" },
+  //   { label: "Player View", value: "player" },
+  // ];
 
   // Filter upcoming sessions to only show future dates
   const filteredUpcomingSessions = upcomingSessions.filter((session) => {
@@ -87,33 +84,33 @@ function Home() {
     }
   };
 
-  const handleDeleteSession = async (date: string, time: string) => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/upcoming`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ date, time }),
-      });
-      if (response.ok) {
-        setLocalUpcoming(
-          localUpcoming.filter(
-            (session) => session.date !== date || session.time !== time
-          )
-        );
-      } else {
-        let errorMsg = "Failed to delete session";
-        try {
-          const error = await response.json();
-          errorMsg = error.message ?? errorMsg;
-        } catch (e) {
-          console.log("Failed to fetch error message: ", e);
-        }
-        alert(errorMsg);
-      }
-    } catch (err) {
-      alert("Server error: " + err);
-    }
-  };
+  // const handleDeleteSession = async (date: string, time: string) => {
+  //   try {
+  //     const response = await fetch(`${API_BASE_URL}/api/upcoming`, {
+  //       method: "DELETE",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({ date, time }),
+  //     });
+  //     if (response.ok) {
+  //       setLocalUpcoming(
+  //         localUpcoming.filter(
+  //           (session) => session.date !== date || session.time !== time
+  //         )
+  //       );
+  //     } else {
+  //       let errorMsg = "Failed to delete session";
+  //       try {
+  //         const error = await response.json();
+  //         errorMsg = error.message ?? errorMsg;
+  //       } catch (e) {
+  //         console.log("Failed to fetch error message: ", e);
+  //       }
+  //       alert(errorMsg);
+  //     }
+  //   } catch (err) {
+  //     alert("Server error: " + err);
+  //   }
+  // };
 
   const Session = (props: SessionHighlight) => {
     const { title, date, description } = props;
@@ -153,7 +150,7 @@ function Home() {
           <p className={styles.upcoming_date}>{date}</p>
           <p className={styles.upcoming_time}>{time}</p>
         </div>
-        {permission === "admin" && view === "admin" && (
+        {/* {permission === "admin" && view === "admin" && (
           <button
             className={styles.delete_button}
             onClick={() => handleDeleteSession(date, time)}
@@ -178,14 +175,14 @@ function Home() {
               <line x1="14" x2="14" y1="11" y2="17" />
             </svg>
           </button>
-        )}
+        )} */}
       </div>
     );
   };
 
   return (
     <div>
-      {loggedIn && userName && (
+      {/* {loggedIn && userName && (
         <div className={styles.home_header}>
           <div className={styles.home_header_greeting}>
             <img src={userIcon} alt="user icon" />
@@ -199,7 +196,7 @@ function Home() {
             />
           )}
         </div>
-      )}
+      )} */}
       <div className={styles.sections}>
         <section
           className={`${styles.session_highlights} ${
@@ -262,7 +259,7 @@ function Home() {
         </section>
         <section>
           <div style={{ display: "flex", alignItems: "center" }}>
-            {permission === "admin" && view === "admin" && (
+            {/* {permission === "admin" && view === "admin" && (
               <button
                 className={styles.plus_button}
                 aria-label="Add upcoming session"
@@ -270,7 +267,7 @@ function Home() {
               >
                 +
               </button>
-            )}
+            )} */}
             <h2>Upcoming Dates</h2>
           </div>
           {showAddForm && (
