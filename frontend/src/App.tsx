@@ -7,16 +7,18 @@ import Header from "./components/Header/Header";
 import NPCs from "./pages/npcs/page";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
+import Dashboard from "./pages/dashboard/Dashboard";
 // import NotFound from "./pages/NotFound";
 
 const App: React.FC = () => {
   return (
     <Router>
-      <Header />
+      {<Header />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/codex" element={<Codex />} />
         <Route path="/codex/*" element={<Codex />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/npcs/" element={<NPCs />} />
         <Route path="/npcs/*" element={<NPCs />} />
         <Route path="/login" element={<Login />} />

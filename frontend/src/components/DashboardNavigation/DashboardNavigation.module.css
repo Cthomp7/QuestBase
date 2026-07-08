@@ -1,0 +1,35 @@
+.dashboard_navigation {
+  height: 100vh;
+  width: 20%;
+  background-color: rgb(97, 97, 97);
+  position: sticky;
+  padding: 20px;
+}
+
+.navigation_section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.campaign_name {
+  font-size: 1.1rem;
+}
+
+.navigation_page {
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  gap: 8px
+}
+
+.navigation_page:hover {
+  background-color: rgb(85, 85, 85);
+}
+
+.navigation_page p {
+  color: white;
+  font-weight: 500;
+}
