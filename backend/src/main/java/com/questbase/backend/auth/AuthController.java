@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 
 import java.time.Duration;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -26,6 +27,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
+    @Value("${app.cookie.secure}")
+    private boolean secureCookie;
     
     private final AuthService authService;
 
@@ -74,7 +78,7 @@ public class AuthController {
 
         ResponseCookie cookie = ResponseCookie.from("jwt", "")
             .httpOnly(true)
-            .secure(false)
+            .secure(secureCookie)
             .sameSite("Lax")
             .path("/")
             .maxAge(0)
@@ -88,7 +92,7 @@ public class AuthController {
     private ResponseEntity<Void> generateHTTPCookie(String token) {
         ResponseCookie cookie = ResponseCookie.from("jwt", token)
             .httpOnly(true)
-            .secure(false)
+            .secure(secureCookie)
             .path("/")
             .maxAge(Duration.ofDays(1))
             .sameSite("Lax")
