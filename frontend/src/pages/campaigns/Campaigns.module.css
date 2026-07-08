@@ -1,0 +1,219 @@
+.campaigns_container {
+  margin: 20px;
+  border-radius: 15px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px
+}
+
+.campaigns_header {
+  font-size: 3rem;
+}
+
+.campaign_hr {
+  border-color: rgb(59, 59, 59);
+  border-top: 1px solid rgb(59, 59, 59);
+  height: 1px;
+}
+
+.create_campaign {
+  background-color: rgb(51, 51, 51);
+  border: solid 2px rgb(59, 59, 59);
+  border-radius: 15px;
+  padding: 15px;
+  width: fit-content;
+  font-size: 1.2rem;
+  font-weight: 700;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease;
+}
+.create_campaign:hover {
+  background-color: rgb(40, 40, 40);
+  /* border-color: rgba(32, 39, 32, 0.377); */
+}
+
+.plus_icon {
+  background-color: rgba(43, 214, 58, 0.257);
+  border: solid 2px rgba(43, 214, 58, 0.257);
+  border-radius: 15px;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+}
+
+.campaigns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.campaign {
+  background-color: rgb(51, 51, 51);
+  border: solid 2px rgb(59, 59, 59);
+  border-radius: 15px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  cursor: pointer;
+  position: relative;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+.campaign:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+.campaign_image {
+  width: 100%;
+  border-radius: 9px 9px 0 0;
+  mask-image: linear-gradient(
+    to bottom,
+    black 70%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    black 70%,
+    transparent 100%
+  );
+}
+
+.campaign_content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.campaign_text {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.campaign_name {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.campaign_bottom {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.campaign_system {
+  background-color: rgba(255, 60, 60, 0.274);
+  border: solid 2px rgba(255, 60, 60, 0.274);
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 8px 10px;
+  width: fit-content;
+}
+
+.campaign_actions {
+  display: flex;
+  gap: 10px;
+}
+
+.campaign_edit {
+  stroke: rgb(212, 212, 212);
+}
+.campaign_edit:hover {
+  stroke: white;
+}
+
+.campaign_trash {
+  stroke: rgb(199, 62, 62);
+}
+.campaign_trash:hover {
+  stroke: rgb(255, 68, 68);
+}
+
+.no_results {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-top: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px
+}
+
+/* ========================================================================== */
+/* CAMPAIGN EDITOR */
+/* ========================================================================== */
+
+.campaign_editor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.596);
+  z-index: 10;
+}
+
+.editor_content {
+  /* position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%); */
+  background-color: rgb(51, 51, 51);
+  border: solid 2px rgb(59, 59, 59);
+  border-radius: 15px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  min-width: 600px;
+}
+
+.editor_title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.editor_title .closeIcon {
+  stroke: rgb(182, 182, 182);
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  transition: stroke 0.2s ease;
+}
+.editor_title .closeIcon:hover {
+  stroke: white;
+}
+
+.description {
+  min-height: 100px;
+}
+
+.editor_content textarea {
+  resize: vertical;
+}
+
+.editor_content input[name="delete-text"] {
+  margin-top: 15px;
+}
+
+.editor_content button {
+  margin-top: 15px;
+}

@@ -8,6 +8,7 @@ import NPCs from "./pages/npcs/page";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import Dashboard from "./pages/dashboard/Dashboard";
+import Campaigns from "./pages/campaigns/Campaigns";
 // import NotFound from "./pages/NotFound";
 
 const App: React.FC = () => {
@@ -16,6 +17,7 @@ const App: React.FC = () => {
       {<Header />}
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/campaigns" element={<Campaigns />}/>
         <Route path="/codex" element={<Codex />} />
         <Route path="/codex/*" element={<Codex />} />
         <Route path="/dashboard" element={<Dashboard />} />

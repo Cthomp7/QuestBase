@@ -38,13 +38,15 @@ button {
   background-color: var(--primary-);
   border: 1px solid #6b6b6b;
   color: #fff;
+  transition: 
+    background-color 0.2s ease-in-out;
 }
 
 button:hover {
-  background: rgb(65, 65, 65);
+  background-color: rgb(65, 65, 65);
 }
 
-input {
+input, textarea {
   padding: 1rem;
   border-radius: 25px;
   width: 100%;
