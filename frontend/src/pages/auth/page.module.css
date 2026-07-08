@@ -8,16 +8,17 @@ button {
 main.login_register {
   overflow: hidden;
   position: relative;
-  height: calc(100vh - 57px); 
+  height: calc(100vh);
 }
 
 .page_container {
   display: flex;
-  /* vh - header - margin */
-  height: calc(100vh - 57px - 60px); 
-  position: relative;
-  gap: 30px;
+  height: calc(100vh - 120px);
   margin: 30px;
+  margin-top: 90px;
+  position: relative;
+  display: flex;
+  gap: 30px;
 }
 
 .sub_container {
