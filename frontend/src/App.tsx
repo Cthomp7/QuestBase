@@ -9,6 +9,7 @@ import Register from "./pages/auth/Register";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Campaigns from "./pages/campaigns/Campaigns";
 import PublicLayout from "./layouts/PublicLayout";
+import AuthLayout from "./layouts/AuthLayout/AuthLayout";
 // import NotFound from "./pages/NotFound";
 
 const App: React.FC = () => {
@@ -22,7 +23,7 @@ const App: React.FC = () => {
           {/* <Route path="*" element={<NotFound />} /> */}
         </Route>
 
-        <Route>
+        <Route element={<AuthLayout />}>
           <Route path="/campaigns" element={<Campaigns />}/>
           <Route path="/codex/*" element={<Codex />} />
           <Route path="/dashboard" element={<Dashboard />} />

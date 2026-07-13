@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./Dropdown.module.css";
 
-interface DropdownOption {
+export interface DropdownOption {
   label: string;
   value: string;
 }

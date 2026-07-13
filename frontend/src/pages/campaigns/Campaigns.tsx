@@ -10,6 +10,7 @@ import TrashIcon from "../../assets/trash.svg?react"
 // TODO: add a loading sequence between fetchCampaigns
 
 const Campaigns = () => {
+  console.log("campaigns rendered")
   const { user } = useAuth();
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
   const [currentCampaign, setCurrentCampaign] = useState<Campaign | null>(null)
@@ -130,7 +131,7 @@ const Campaigns = () => {
   }
 
   return (
-    <main>
+    <>
       <div className={styles.campaigns_container}>
         <h1 className={styles.campaigns_header}>Campaigns</h1>
         <hr className={styles.campaign_hr}/>
@@ -248,7 +249,7 @@ const Campaigns = () => {
           <button onClick={deleteCampaign}>Delete</button>
         </div>
       </div>
-    </main>
+    </>
   )
 }
 

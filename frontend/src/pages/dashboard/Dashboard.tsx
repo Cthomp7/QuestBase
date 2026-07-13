@@ -1,10 +1,8 @@
-import DashboardNavigation from "@/components/DashboardNavigation/DashboardNavigation"
 
 const Dashboard = () => {
   return (
-    <main>
-      <DashboardNavigation></DashboardNavigation>
-    </main>
+    <div>
+    </div>
   )
 }
 

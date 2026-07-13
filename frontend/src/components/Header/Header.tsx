@@ -18,7 +18,7 @@ const Header = () => {
         <h1>QuestBase</h1>
       </Link>
       <div className={styles.navigation}>
-        {isAuthenticated && <Link to="/">Dashboard</Link>}
+        {isAuthenticated && <Link to="/dashboard">Dashboard</Link>}
       </div>
       <div className={styles.navigation}>
         {isAuthenticated 

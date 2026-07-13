@@ -1,9 +1,10 @@
 .dashboard_navigation {
   height: 100vh;
-  width: 20%;
-  background-color: rgb(97, 97, 97);
+  width: 300px;
+  background-color: rgb(53, 53, 53);
   position: sticky;
   padding: 20px;
+  flex-shrink: 0;
 }
 
 .navigation_section {
@@ -11,6 +12,17 @@
   flex-direction: column;
   gap: 10px;
   margin: 20px 0;
+}
+
+.campaign_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.campaign_container button {
+  width: fit-content;
+  padding: 5px 8px;
 }
 
 .campaign_name {
