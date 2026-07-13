@@ -1,11 +1,10 @@
-package com.questbase.backend.controller;
+package com.questbase.backend.campaign;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.questbase.backend.dto.CampaignResponse;
-import com.questbase.backend.dto.CreateCampaignRequest;
-import com.questbase.backend.service.CampaignService;
+import com.questbase.backend.campaign.dto.CampaignResponse;
+import com.questbase.backend.campaign.dto.CreateCampaignRequest;
 
 import jakarta.validation.Valid;
 

@@ -5,8 +5,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import com.questbase.backend.auth.dto.CustomUserDetails;
-import com.questbase.backend.entity.User;
-import com.questbase.backend.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 

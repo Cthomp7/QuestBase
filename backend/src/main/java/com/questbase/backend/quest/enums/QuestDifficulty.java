@@ -1,4 +1,4 @@
-package com.questbase.backend.enums;
+package com.questbase.backend.quest.enums;
 
 public enum QuestDifficulty {
     EASY,

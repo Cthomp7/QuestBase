@@ -1,4 +1,4 @@
-package com.questbase.backend.controller;
+package com.questbase.backend.common;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,13 +1,12 @@
-package com.questbase.backend.service;
+package com.questbase.backend.quest;
 
 import com.questbase.backend.auth.AuthService;
-import com.questbase.backend.dto.CreateQuestRequest;
-import com.questbase.backend.dto.QuestResponse;
-import com.questbase.backend.entity.Campaign;
-import com.questbase.backend.entity.Quest;
-import com.questbase.backend.entity.User;
-import com.questbase.backend.repository.CampaignRepository;
-import com.questbase.backend.repository.QuestRepository;
+import com.questbase.backend.auth.User;
+import com.questbase.backend.campaign.Campaign;
+import com.questbase.backend.campaign.CampaignRepository;
+import com.questbase.backend.quest.dto.CreateQuestRequest;
+import com.questbase.backend.quest.dto.QuestResponse;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -144,6 +143,7 @@ public class QuestService {
 
     private QuestResponse toResponse(Quest quest) {
         return QuestResponse.builder()
+            .id(quest.getId())
             .title(quest.getTitle())
             .description(quest.getDescription())
             .status(quest.getStatus())

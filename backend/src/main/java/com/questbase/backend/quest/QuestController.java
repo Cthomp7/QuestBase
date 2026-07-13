@@ -1,4 +1,4 @@
-package com.questbase.backend.controller;
+package com.questbase.backend.quest;
 
 import java.util.List;
 
@@ -11,9 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.questbase.backend.dto.CreateQuestRequest;
-import com.questbase.backend.dto.QuestResponse;
-import com.questbase.backend.service.QuestService;
+import com.questbase.backend.quest.dto.CreateQuestRequest;
+import com.questbase.backend.quest.dto.QuestResponse;
 
 import jakarta.validation.Valid;
 

@@ -1,4 +1,4 @@
-package com.questbase.backend.dto;
+package com.questbase.backend.campaign.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

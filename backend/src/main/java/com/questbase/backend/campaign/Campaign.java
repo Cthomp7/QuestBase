@@ -1,4 +1,6 @@
-package com.questbase.backend.entity;
+package com.questbase.backend.campaign;
+
+import com.questbase.backend.auth.User;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

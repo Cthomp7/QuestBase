@@ -1,4 +1,4 @@
-package com.questbase.backend.dto;
+package com.questbase.backend.campaign.dto;
 
 import lombok.Builder;
 

@@ -1,12 +1,11 @@
-package com.questbase.backend.repository;
+package com.questbase.backend.quest;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.questbase.backend.entity.Quest;
-import com.questbase.backend.entity.User;
+import com.questbase.backend.auth.User;
 
 public interface QuestRepository extends JpaRepository<Quest, Long> {
     List<Quest> findByCampaignUser(User user);

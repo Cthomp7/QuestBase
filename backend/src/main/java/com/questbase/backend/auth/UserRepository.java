@@ -1,10 +1,8 @@
-package com.questbase.backend.repository;
+package com.questbase.backend.auth;
 
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import com.questbase.backend.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 

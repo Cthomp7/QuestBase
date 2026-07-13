@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service;
 
 import com.questbase.backend.auth.dto.LoginRequest;
 import com.questbase.backend.auth.dto.RegisterRequest;
-import com.questbase.backend.entity.User;
-import com.questbase.backend.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 

@@ -1,11 +1,12 @@
-package com.questbase.backend.entity;
+package com.questbase.backend.quest;
 
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.questbase.backend.enums.QuestDifficulty;
-import com.questbase.backend.enums.QuestStatus;
+import com.questbase.backend.campaign.Campaign;
+import com.questbase.backend.quest.enums.QuestDifficulty;
+import com.questbase.backend.quest.enums.QuestStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

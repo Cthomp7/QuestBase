@@ -1,4 +1,4 @@
-package com.questbase.backend.entity;
+package com.questbase.backend.auth;
 
 import java.time.LocalDateTime;
 
