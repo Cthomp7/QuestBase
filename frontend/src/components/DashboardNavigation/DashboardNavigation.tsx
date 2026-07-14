@@ -1,51 +1,34 @@
 import { useNavigate } from "react-router-dom"
 import styles from "./DashboardNavigation.module.css"
-import { useAuth } from "@/context/AuthContext"
 import { useEffect, useState } from "react"
-import { Campaign } from "@/types/api/campaign"
 import Dropdown, { DropdownOption } from "@/components/Dropdown/Dropdown"
+import { useCampaign } from "@/context/campaign/useCampaign"
 
 const DashboardNavigation = () => {
   const navigate = useNavigate()
-  const { user } = useAuth()
-  const [campaigns, setCampaigns] = useState<Campaign[]>([])
-  const [selectedCampaign, setSelectedCampaign] = useState<string>("")
+  const { campaigns, activeCampaignId, setActiveCampaignId } = useCampaign()
   const [campaignDropdownOptions, setCampaignDropdownOptions] = useState<DropdownOption[]>([])
 
   const pages = [
-    // { name: "Characters", url: "/characters" },
-    // { name: "Items", url: "/items" },
     { name: "Quests", url: "/quests" }
   ]
 
-  useEffect(() => {
-    fetchCampaigns()
-  },[user])
-
   // configure dropdown
   useEffect(() => {
-    const selected = localStorage.getItem("selectedCampaign") ?? ""
-    const options = campaigns.map((campaign) => ({
-      label: campaign.name,
-      value: String(campaign.id),
-    }))
-    setCampaignDropdownOptions(options)
-    if (selected) setSelectedCampaign(selected)
-  },[campaigns])
-
-  const fetchCampaigns = async () => {
-    try {
-      const response = await fetch("/api/campaigns", { method: "GET" })
-      const json = await response.json()
-      setCampaigns(json)
-    } catch (error) {
-      console.error("Failed to fetch campaigns: ", error)
+    if (campaigns.length > 0) {
+      const selected = localStorage.getItem("activeCampaignId") ?? ""
+      const options = campaigns.map((campaign) => ({
+        label: campaign.name,
+        value: String(campaign.id),
+      }))
+      setCampaignDropdownOptions(options)
+      if (selected) setActiveCampaignId(selected)
     }
-  }
+  },[campaigns, setActiveCampaignId])
 
-  const switchCampaign = (campaign: string) => {
-    setSelectedCampaign(campaign)
-    localStorage.setItem("selectedCampaign", campaign);
+  const switchCampaign = (id: string) => {
+    setActiveCampaignId(id)
+    localStorage.setItem("activeCampaignId", id);
   }
 
   return (
@@ -60,7 +43,7 @@ const DashboardNavigation = () => {
         </div>
         <Dropdown
           options={campaignDropdownOptions}
-          value={selectedCampaign}
+          value={activeCampaignId}
           onChange={(c) => switchCampaign(c)}
         ></Dropdown>
       </section>

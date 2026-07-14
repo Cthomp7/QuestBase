@@ -1,18 +1,16 @@
 import styles from "./Campaigns.module.css"
-import { useAuth } from "@/context/AuthContext"
 import { Campaign } from "@/types/api/campaign";
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import CloseIcon from "../../assets/x.svg?react"
 import EditIcon from "../../assets/edit.svg?react"
 import PlusIcon from "../../assets/plus.svg?react"
 import TrashIcon from "../../assets/trash.svg?react"
+import { useCampaign } from "@/context/campaign/useCampaign";
 
 // TODO: add a loading sequence between fetchCampaigns
 
 const Campaigns = () => {
-  console.log("campaigns rendered")
-  const { user } = useAuth();
-  const [campaigns, setCampaigns] = useState<Campaign[]>([])
+  const { campaigns, setCampaigns } = useCampaign()
   const [currentCampaign, setCurrentCampaign] = useState<Campaign | null>(null)
   const [name, setName] = useState<string>("")
   const [description, setDescription] = useState<string>("")
@@ -23,20 +21,6 @@ const Campaigns = () => {
 
   const editorRef = useRef<HTMLDivElement>(null)
   const deletionPopupRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (user) fetchCampaigns()
-  },[user])
-
-  const fetchCampaigns = async () => {
-    try {
-      const response = await fetch("/api/campaigns", { method: "GET" })
-      const json = await response.json()
-      setCampaigns(json)
-    } catch (error) {
-      console.error("Failed to fetch campaigns: ", error)
-    }
-  }
 
   const openEditor = (campaign: Campaign | null) => {
     if (campaign) {
