@@ -29,3 +29,6 @@ server/users.json
 
 # Backend Ignores
 backend/target/
+
+# misc
+desktop.ini
