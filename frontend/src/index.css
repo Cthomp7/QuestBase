@@ -19,6 +19,18 @@
   --border-: 1px solid #6b6b6b;
   --hover-color: #6b6b6b60;
 
+
+  /* --qb-translucent-blue: */
+  --qb-translucent-green: rgba(53, 163, 43, 0.45);
+  /* --qb-translucent-yellow: */
+  --qb-translucent-orange: rgba(252, 105, 47, 0.45);
+  --qb-red: rgba(252, 47, 47, 1);
+  --qb-translucent-red: rgba(252, 47, 47, 0.45);
+  --qb-translucent-purple: rgba(195, 0, 255, 0.45);
+  --qb-translucent-blue-purple: rgba(60, 89, 255, 0.45);
+  --qb-translucent-pink: rgba(255, 0, 170, 0.459);
+  --qb-translucent-grey: rgba(99, 99, 99, 0.45);
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -46,7 +58,7 @@ button:hover {
 }
 
 input, textarea {
-  padding: 1rem;
+  padding: .8rem 1rem;
   border-radius: 25px;
   width: 100%;
   font-size: 0.9rem;

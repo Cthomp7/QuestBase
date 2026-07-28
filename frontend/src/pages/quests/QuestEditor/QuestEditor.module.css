@@ -1,0 +1,64 @@
+.quest_editor {
+  padding: 20px;
+  border: solid 2px rgb(59, 59, 59);
+  border-radius: 15px;
+  /* max-width: 800px; */
+  display: none;
+}
+
+.editor_content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.editor_title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.editor_container {
+  display: flex;
+  align-items: center;
+  gap: 10px 20px;
+  flex-wrap: wrap;
+}
+
+.editor_property {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.quest_property {
+  width: 100%;
+  max-width: 170px;
+}
+
+.quest_property span,
+.editor_property p {
+  white-space: nowrap;
+}
+
+.quest_description {
+  height: 150px;
+  min-height: 53px;
+  max-height: 250px;
+  resize: vertical;
+}
+
+.closeIcon {
+  stroke: rgb(182, 182, 182);
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  transition: stroke 0.2s ease;
+}
+.editor_title .closeIcon:hover {
+  stroke: white;
+}
+
+.edit_button {
+  width: fit-content;
+  padding: 1rem 3rem;
+}

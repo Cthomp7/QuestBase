@@ -10,7 +10,7 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import Campaigns from "./pages/campaigns/Campaigns";
 import PublicLayout from "./layouts/PublicLayout";
 import AuthLayout from "./layouts/AuthLayout/AuthLayout";
-// import Quests from "./pages/quests/Quests";
+import Quests from "./pages/quests/Quests";
 import { CampaignProvider } from "./context/campaign/CampaignProvider";
 // import NotFound from "./pages/NotFound";
 
@@ -36,7 +36,7 @@ const App: React.FC = () => {
           <Route path="/codex/*" element={<Codex />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/npcs/*" element={<NPCs />} />
-          {/* <Route path="/quests/*" element={<Quests />} /> */}
+          <Route path="/quests/*" element={<Quests />} />
         </Route>
       </Routes>
     </Router>

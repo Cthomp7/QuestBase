@@ -1,0 +1,105 @@
+.selected_campaign {
+  background-color: var(--qb-translucent-blue-purple);
+  border: solid 2px var(--qb-translucent-blue-purple);
+  border-radius: 25px;
+  font-weight: 500;
+  padding: 8px 15px;
+  width: fit-content;
+}
+
+.quests {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ========================================================================== */
+/* QUEST CARD */
+/* ========================================================================== */
+
+.quest_card_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.quest_card_properties {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+}
+
+.quest_card_property {
+  padding: 0.3rem 0.5rem;
+  border-radius: 25px;
+  border-width: 2px;
+  border-style: solid;
+}
+
+.quest_actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.confirm_deletion {
+  display: flex;
+  gap: 10px;
+}
+
+.confirm_deletion p {
+  color: white;
+  white-space: nowrap;
+  margin: auto 0;
+  font-weight: 500;
+  /* will-change: transform; */
+}
+
+.confirm_deletion p span {
+  /* color: var(--qb-red); */
+  font-weight: bold;
+  will-change: transform;
+}
+
+.confirm_deletion button {
+  padding: 0.5rem 1rem;
+}
+
+.quest_xp {
+  background-color: var(--qb-translucent-purple);
+  border-color: var(--qb-translucent-purple);
+}
+
+.quest_status.NOT_STARTED {
+  background-color: var(--qb-translucent-grey);
+  border-color: var(--qb-translucent-grey);
+}
+
+.quest_status.ACTIVE {
+  background-color: var(--qb-translucent-blue-purple);
+  border-color: var(--qb-translucent-blue-purple);
+}
+
+.quest_difficulty.EASY,
+.quest_status.COMPLETED {
+  background-color: var(--qb-translucent-green);
+  border-color: var(--qb-translucent-green);
+}
+
+.quest_difficulty.MEDIUM {
+  background-color: var(--qb-translucent-orange);
+  border-color: var(--qb-translucent-orange);
+}
+
+.quest_difficulty.HARD,
+.quest_status.FAILED {
+  background-color: var(--qb-translucent-red);
+  border-color: var(--qb-translucent-red);
+}
+
+.quest_difficulty.DEADLY {
+  background-color: var(--qb-translucent-pink);
+  border-color: var(--qb-translucent-pink);
+}

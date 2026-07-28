@@ -4,4 +4,107 @@
 
 .main_content {
   flex-shrink: 1;
+  flex-grow: 1;
+}
+
+.page_container {
+  margin: 20px;
+  border-radius: 15px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.header_container {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.header {
+  font-size: 3rem;
+}
+
+.hr {
+  border-color: rgb(59, 59, 59);
+  border-top: 1px solid rgb(59, 59, 59);
+  height: 1px;
+}
+
+.card {
+  background-color: rgb(51, 51, 51);
+  border: solid 2px rgb(59, 59, 59);
+  border-radius: 15px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  cursor: pointer;
+  position: relative;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+.card:hover {
+  transform: translateY(-6px) scale(1.02) translateZ(0);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+.card .card_title {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.no_results {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-top: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px
+}
+
+.plus_icon {
+  background-color: rgba(43, 214, 58, 0.257);
+  border: solid 2px rgba(43, 214, 58, 0.257);
+  border-radius: 15px;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+}
+
+.create_button {
+  background-color: rgb(51, 51, 51);
+  border: solid 2px rgb(59, 59, 59);
+  border-radius: 15px;
+  padding: 15px;
+  width: fit-content;
+  font-size: 1.2rem;
+  font-weight: 700;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease;
+}
+.create_button:hover {
+  background-color: rgb(40, 40, 40);
+}
+
+.edit_icon {
+  stroke: rgb(212, 212, 212);
+}
+.edit_icon:hover {
+  stroke: white;
+}
+
+.trash_icon {
+  stroke: rgb(199, 62, 62);
+}
+.trash_icon:hover {
+  stroke: rgb(255, 68, 68);
 }
