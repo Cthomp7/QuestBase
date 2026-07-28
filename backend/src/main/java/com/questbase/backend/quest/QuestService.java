@@ -137,6 +137,38 @@ public class QuestService {
         questRepository.delete(quest);
     }
 
+    public List<QuestResponse> getQuestsByCampaignId(
+        Long campaignId,
+        Long userId,
+        String sort
+    ) {
+        boolean ownsCampaign = 
+            campaignRepository.existsByIdAndUserId(campaignId, userId);
+        
+        if (!ownsCampaign) {
+            throw new RuntimeException("Campaign not found");
+        }
+
+        List<Quest> quests;
+        if ("asc".equalsIgnoreCase(sort)) {
+            quests = questRepository
+                .findByCampaignIdAndCampaignUserIdOrderByCreatedAtAsc(
+                    campaignId,
+                    userId
+                );
+        } else {
+            quests = questRepository
+                .findByCampaignIdAndCampaignUserIdOrderByCreatedAtDesc(
+                    campaignId,
+                    userId
+                );
+        }
+
+        return quests.stream()
+            .map(quest -> toResponse(quest))
+            .toList();
+    }
+
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================

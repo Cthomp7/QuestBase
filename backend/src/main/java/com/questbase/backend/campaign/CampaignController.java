@@ -1,15 +1,21 @@
 package com.questbase.backend.campaign;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.questbase.backend.auth.dto.CustomUserDetails;
 import com.questbase.backend.campaign.dto.CampaignResponse;
 import com.questbase.backend.campaign.dto.CreateCampaignRequest;
+import com.questbase.backend.quest.QuestService;
+import com.questbase.backend.quest.dto.QuestResponse;
 
 import jakarta.validation.Valid;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -24,9 +30,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RequestMapping("/api/campaigns")
 public class CampaignController {
     private final CampaignService campaignService;
+    private final QuestService questService;
 
-    public CampaignController(CampaignService campaignService) {
+    public CampaignController(
+        CampaignService campaignService,
+        QuestService questService
+    ) {
         this.campaignService = campaignService;
+        this.questService = questService;
     }
 
     @GetMapping("/{id}")
@@ -65,5 +76,24 @@ public class CampaignController {
     @DeleteMapping("/{id}")
     public void deleteCampaign(@PathVariable Long id) {
         campaignService.deleteCampaign(id);
+    }
+
+    @GetMapping("/{campaignId}/quests")
+    public ResponseEntity<List<QuestResponse>> getCampaignQuests(
+        @PathVariable Long campaignId,
+        @RequestParam(defaultValue = "desc") String sort,
+        Authentication authentication
+    ) {
+        CustomUserDetails userDetails =
+            (CustomUserDetails) authentication.getPrincipal();
+
+        List<QuestResponse> quests =
+            questService.getQuestsByCampaignId(
+                campaignId,
+                userDetails.getId(),
+                sort
+            );
+
+        return ResponseEntity.ok(quests);
     }
 }
