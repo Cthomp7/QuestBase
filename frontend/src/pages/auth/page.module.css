@@ -89,6 +89,7 @@ main.login_register {
   background-color: #384222c2;
   border: 2px solid #465723;
   border-radius: 25px;
+  margin: 0 1rem;
 }
 
 .warning_icon {
@@ -128,6 +129,12 @@ main.login_register {
   .img_container {
     width: 100%
   }
+
+  .notification_message {
+    bottom: -73px;
+    width: max-content;
+    max-width: 700px;
+  }
 }
 
 @media (max-width: 795px) {
@@ -137,6 +144,11 @@ main.login_register {
 
   .login .login_portal_title h1 {
     font-size: 2rem;
+  }
+
+  .notification_message {
+    width: 100%;
+    bottom: -96px;
   }
 }
 
