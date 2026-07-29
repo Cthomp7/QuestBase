@@ -22,7 +22,15 @@ jobs:
       - name: Deploy to server
         run: |
           ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} << 'EOF'
+            set -e
+
             cd /root/questbase
             git pull origin main
-            docker compose up -d --build
+
+            cd backend
+            chmod +x mvnw
+            ./mvnw clean package -DskipTests
+
+            cd ..
+            docker compose up -d --build --force-recreate
           EOF
