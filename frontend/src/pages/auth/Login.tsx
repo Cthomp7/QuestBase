@@ -60,7 +60,7 @@ function Login () {
           </div>
           <div className={styles.notification_message}>
             <WarningIcon className={styles.warning_icon}/>
-            <p>Please note QuestBase is very early development.</p>
+            <p>QuestBase is in very early development.</p>
           </div>
         </div>
         <div className={`${styles.sub_container} ${styles.img_container}`}>
