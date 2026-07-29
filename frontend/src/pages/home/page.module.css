@@ -120,7 +120,7 @@ section {
 }
 
 /* ========================================================================== */
-/* BLOBS */
+/* DESIGN ASSETS */
 /* ========================================================================== */
 
 .small_sparkle_1 {
@@ -162,6 +162,46 @@ section {
   width: 60px;
   height: 80px;
 }
+
+@media (max-width: 1400px) {
+  .small_sparkle_1,
+  .medium_sparkle_1,
+  .large_sparkle_1,
+  .small_sparkle_2,
+  .medium_sparkle_2 {
+    transform: scale(.8);
+  }
+  .small_sparkle_1 {
+    top: 368px;
+    right: 62px;
+  }
+  .medium_sparkle_1 {
+    top: 302px;
+    right: 96px;
+  }
+  .large_sparkle_1 {
+    top: 267px;
+  }
+  .small_sparkle_2 {
+    top: -29px;
+    left: -47px;
+  }
+  .medium_sparkle_2 {
+    top: -84px;
+    right: -21px;
+  }
+}
+
+@media (max-width: 900px) {
+  .small_sparkle_1,
+  .medium_sparkle_1,
+  .large_sparkle_1,
+  .small_sparkle_2,
+  .medium_sparkle_2 {
+    display: none;
+  }
+}
+
 
 .hero::before,
 .hero::after {
