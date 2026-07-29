@@ -1,7 +1,7 @@
-const API_URL = "http://localhost:8080/api";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export async function apiFetch(path, options = {}) {
-    return fetch(`http://localhost:8080/api${path}`, {
+    return fetch(`${API_URL}${path}`, {
         credentials: "include",
         ...options,
         headers: {
