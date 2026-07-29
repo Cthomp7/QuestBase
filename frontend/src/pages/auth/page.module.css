@@ -36,7 +36,7 @@ main.login_register {
   height: 100%;
   padding: 4rem 6rem;
   text-align: center;
-  background-color: rgba(45, 45, 45, 0.295);
+  background-color: #94a7fa0e;
   border-radius: 15px;
 }
 
@@ -45,8 +45,13 @@ main.login_register {
 } 
 
 .login_portal_title h1 {
-  font-size: 2.7rem;
+  font-size: 3rem;
+  font-weight: 600;
   margin-bottom: 1rem;
+  font-feature-settings: "ss01";
+}
+.login_portal_title h2 {
+  font-weight: 400;
 }
 
 .login_portal_inputs {
@@ -63,7 +68,7 @@ main.login_register {
 }
 
 .img_container {
-  width: 55%
+  width: 55%;
 }
 
 .login_img {
@@ -71,6 +76,23 @@ main.login_register {
   height: 100%;
   object-fit: cover;
   border-radius: 15px;
+}
+
+.notification_message {
+  position: absolute;
+  bottom: 1rem;
+  display: flex;
+  gap: 10px;
+  padding: 1rem;
+  font-weight: 300;
+  color: var(--qb-frog-green);
+  background-color: #384222c2;
+  border: 2px solid #465723;
+  border-radius: 25px;
+}
+
+.warning_icon {
+  outline: var(--qb-frog-green);
 }
 
 @media (max-width: 1290px) {
@@ -165,13 +187,14 @@ main.login_register::after {
 }
 
 main.login_register::before {
-  background: #6da3ac;
+  background: #421b3d;
   top: 55%;
   left: 5%;
 }
 
 main.login_register::after {
-  background: #596e4d;
+  background: rgb(255, 151, 54);
+  opacity: 0.2;
   top: 10%;
   left: 30%;
 }

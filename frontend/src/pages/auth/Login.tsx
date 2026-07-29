@@ -1,8 +1,9 @@
 import { useState } from "react"
 import styles from "./page.module.css"
-import img from "../../assets/imgs/login-img.png"
+import img from "../../assets/imgs/in-progress-login.png"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "@/context/AuthContext"
+import WarningIcon from "@/assets/svgs/warning.svg?react"
 
 function Login () {
   const { login } = useAuth()
@@ -56,6 +57,10 @@ function Login () {
               <button onClick={onLogin}>Login</button>
               <p>New to QuestBase? <a href="/register">Create account</a></p>
             </div>
+          </div>
+          <div className={styles.notification_message}>
+            <WarningIcon className={styles.warning_icon}/>
+            <p>Please note QuestBase is very early development.</p>
           </div>
         </div>
         <div className={`${styles.sub_container} ${styles.img_container}`}>

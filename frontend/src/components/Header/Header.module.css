@@ -44,6 +44,7 @@ a.title span {
   font-size: 1.7rem;
   line-height: 1.7rem;
   font-weight: 500;
+  font-feature-settings: "ss01";
   transition: 
     color ease-in-out 0.2s,
     transform ease-in-out 0.2s;

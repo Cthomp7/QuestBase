@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./page.module.css";
-import registerImg from "../../assets/imgs/register-img.png";
+import registerImg from "../../assets/imgs/in-progress-login.png";
+import WarningIcon from "@/assets/svgs/warning.svg?react"
 
 function Register () {
   const navigate = useNavigate()
@@ -86,6 +87,10 @@ function Register () {
               />
             </div>
             <button onClick={onRegister}>Register</button>
+          </div>
+          <div className={styles.notification_message}>
+            <WarningIcon className={styles.warning_icon}/>
+            <p>Please note QuestBase is very early development.</p>
           </div>
         </div>
         <div className={`${styles.sub_container} ${styles.img_container}`}>
