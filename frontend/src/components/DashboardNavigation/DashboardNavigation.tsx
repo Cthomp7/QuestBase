@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import styles from "./DashboardNavigation.module.css"
 import { useEffect, useState } from "react"
 import Dropdown, { DropdownOption } from "@/components/Dropdown/Dropdown"
@@ -34,7 +34,7 @@ const DashboardNavigation = () => {
   return (
     <div className={styles.dashboard_navigation}>
       <section>
-        <h1>QuestBase </h1>
+        <Link to="/"><h1>Quest<span>Base</span></h1></Link>
       </section>
       <section className={styles.navigation_section}>
         <div className={styles.campaign_container}>

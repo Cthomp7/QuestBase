@@ -8,7 +8,7 @@ import LargeSparkle from "@/assets/svgs/large-sparkle.svg?react"
 function Home() {
 
   return (
-    <div>
+    <div className={styles.home_page}>
       <section className={styles.hero}>
         <div className={styles.hero_text_cont}>
           <SmallSparkle className={styles.small_sparkle_1}/>

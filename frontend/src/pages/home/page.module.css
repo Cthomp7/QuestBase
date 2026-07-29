@@ -1,10 +1,10 @@
-section {
+.home_page section {
   display: flex;
   width: 100%;
   margin: 0 clamp(1rem, 5vw, 4rem);
 }
 
-.hero {
+.home_page .hero {
   display: flex;
   align-items: center;
   justify-content: center;

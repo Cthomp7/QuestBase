@@ -1,3 +1,4 @@
+import layoutStyles from "@/layouts/AuthLayout/AuthLayout.module.css"
 import styles from "./Campaigns.module.css"
 import { Campaign } from "@/types/api/campaign";
 import { useRef, useState } from "react"
@@ -117,7 +118,7 @@ const Campaigns = () => {
   return (
     <>
       <div className={styles.campaigns_container}>
-        <h1 className={styles.campaigns_header}>Campaigns</h1>
+        <h1 className={layoutStyles.header}>Campaigns</h1>
         <hr className={styles.campaign_hr}/>
         {campaigns.length > 0 ? (
           <>
@@ -137,7 +138,7 @@ const Campaigns = () => {
                   />
                   <div className={styles.campaign_content}>
                     <div className={styles.campaign_text}>
-                      <p className={styles.campaign_name}>{campaign.name}</p>
+                      <p className={layoutStyles.card_title}>{campaign.name}</p>
                       <hr />
                       <p>{campaign.description}</p>
                     </div>

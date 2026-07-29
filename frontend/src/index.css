@@ -43,6 +43,10 @@
   font-family: "Brakle", "Montserrat", sans-serif;
 }
 
+p {
+  font-weight: 300;
+}
+
 button {
   border-radius: 5px;
   background-color: var(--primary-);

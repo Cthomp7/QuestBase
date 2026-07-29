@@ -24,6 +24,7 @@
 
 .header {
   font-size: 3rem;
+  font-weight: 600;
 }
 
 .hr {
@@ -52,9 +53,9 @@
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
 }
 
-.card .card_title {
+.card_title {
   font-size: 1.4rem;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .no_results {
