@@ -102,9 +102,9 @@
 }
 
 @media (max-width: 575px) {
-  .hero {
+  .home_page .hero {
     flex-direction: column;
-    margin-top: 6.7rem;
+    margin-top: 6rem;
   }
   .hero_image_cont {
     order: 1;
