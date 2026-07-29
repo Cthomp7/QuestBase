@@ -44,6 +44,7 @@ public class SecurityConfig {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
+        System.out.println("CORS CONFIG LOADED: https://questbase.net");
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowedOrigins(List.of(
