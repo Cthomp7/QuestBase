@@ -127,7 +127,7 @@ const Quests = () => {
       <QuestEditor
         ref={questCreateEditorRef}
         activeCampaignId={activeCampaign?.id ?? 0}
-        updateQuest={(id, req) => createQuest(req)}
+        updateQuest={(_id, req) => createQuest(req)}
         setEditorVisible={(visible) => setEditorVisible('create', visible)}
       />
       {/* QUESTS */}
