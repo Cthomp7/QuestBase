@@ -3,13 +3,25 @@ header {
   background-color: rgb(58, 58, 58);
   display: flex;
   justify-content: space-between;
-  padding: 0.5rem 1.5rem;
+  padding: 0.8rem 1.5rem;
   border-radius: 25px;
   position: fixed;
   width: calc(100vw - 30px);
   top: 15px;
   left: 15px;
   z-index: 1000;
+  background: linear-gradient(
+    90deg,
+    #3d2b7d 0%,
+    #604a94 50%,
+    #8b5a74 100%
+  );
+  box-shadow:
+    0 3px 10px rgba(11, 26, 43, 0.75),
+    0 0 30px rgba(14, 5, 29, 0.45);
+  text-shadow:
+    0 3px 10px rgba(11, 26, 43, 0.75),
+    0 0 30px rgba(14, 5, 29, 0.45);
 }
 
 .title {
@@ -17,16 +29,35 @@ header {
   color: white;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   cursor: pointer;
 }
 
-.icon {
-  height: fit-content;
+.small_sparkle {
+  width: 20px;
+  height: 20px;
+  fill: #94a7fa;
 }
 
-.title > h1 {
+a.title h1,
+a.title span {
   font-size: 1.7rem;
+  line-height: 1.7rem;
+  font-weight: 500;
+  transition: 
+    color ease-in-out 0.2s,
+    transform ease-in-out 0.2s;
+}
+
+a.title h1 span {
+  color: rgb(148 167 250);
+}
+a.title h1:hover {
+  color: rgb(255, 255, 255);
+  transform: scale(1.02);
+}
+a.title h1:hover span {
+  color: #adff5d;
 }
 
 .navigation {
@@ -43,7 +74,7 @@ header {
 }
 
 .navigation a:hover {
-  color: var(--codex-blue);
+  color: #adff5d;
 }
 
 .navigation p {
@@ -61,5 +92,5 @@ header {
 }
 .logout_button:hover {
   background-color: transparent;
-  color: var(--codex-blue);
+  color: #adff5d;
 }

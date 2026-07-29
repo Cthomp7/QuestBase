@@ -123,6 +123,14 @@ section {
 /* DESIGN ASSETS */
 /* ========================================================================== */
 
+.small_sparkle_1,
+.medium_sparkle_1,
+.large_sparkle_1,
+.small_sparkle_2,
+.medium_sparkle_2 {
+  fill: white;
+}
+
 .small_sparkle_1 {
   position: absolute;
   top: 361px;

@@ -68,10 +68,11 @@ input, textarea {
 a {
   color: var(--codex-blue);
   text-decoration: none;
+  font-weight: 300;
 }
 
 a:hover {
-  color: #77b9ff;
+  color: #adff5d;
 }
 
 /* @media (prefers-color-scheme: light) {

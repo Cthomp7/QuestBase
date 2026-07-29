@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom"
-import icon from "./../../assets/favicon-32x32.png"
+import SmallSparkle from "@/assets/svgs/small-sparkle.svg?react"
 import styles from "./Header.module.css"
 import { useAuth } from "@/context/AuthContext"
 
@@ -14,11 +14,14 @@ const Header = () => {
   return (
     <header>
       <Link className={styles.title} to={"/"}>
-        <img src={icon} alt="icon" className={styles.icon} />
-        <h1>QuestBase</h1>
+        <SmallSparkle className={styles.small_sparkle}/>
+        <h1>Quest<span>Base</span></h1>
       </Link>
       <div className={styles.navigation}>
         {isAuthenticated && <Link to="/dashboard">Dashboard</Link>}
+        <Link to="#project">Project</Link>
+        <Link to="#features">Features</Link>
+        <Link to="#support">Support</Link>
       </div>
       <div className={styles.navigation}>
         {isAuthenticated 
