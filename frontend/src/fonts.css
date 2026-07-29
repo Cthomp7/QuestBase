@@ -1,0 +1,109 @@
+/* Regular */
+@font-face {
+  font-family: "Brakle";
+  src:
+    url("@/assets/fonts/brakle-regular-webfont.woff2") format("woff2"),
+    url("@/assets/fonts/brakle-regular-webfont.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Italic */
+@font-face {
+  font-family: "Brakle";
+  src:
+    url("@/assets/fonts/brakle-italic-webfont.woff2") format("woff2"),
+    url("@/assets/fonts/brakle-italic-webfont.woff") format("woff");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Light */
+@font-face {
+  font-family: "Brakle";
+  src:
+    url("@/assets/fonts/brakle-light-webfont.woff2") format("woff2"),
+    url("@/assets/fonts/brakle-light-webfont.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Light Italic */
+@font-face {
+  font-family: "Brakle";
+  src:
+    url("@/assets/fonts/brakle-lightitalic-webfont.woff2") format("woff2"),
+    url("@/assets/fonts/brakle-lightitalic-webfont.woff") format("woff");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Medium */
+@font-face {
+  font-family: "Brakle";
+  src:
+    url("@/assets/fonts/brakle-medium-webfont.woff2") format("woff2"),
+    url("@/assets/fonts/brakle-medium-webfont.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Medium Italic */
+@font-face {
+  font-family: "Brakle";
+  src:
+    url("@/assets/fonts/brakle-mediumitalic-webfont.woff2") format("woff2"),
+    url("@/assets/fonts/brakle-mediumitalic-webfont.woff") format("woff");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Semi Bold */
+@font-face {
+  font-family: "Brakle";
+  src:
+    url("@/assets/fonts/brakle-semibold-webfont.woff2") format("woff2"),
+    url("@/assets/fonts/brakle-semibold-webfont.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Semi Bold Italic */
+@font-face {
+  font-family: "Brakle";
+  src:
+    url("@/assets/fonts/brakle-semibolditalic-webfont.woff2") format("woff2"),
+    url("@/assets/fonts/brakle-semibolditalic-webfont.woff") format("woff");
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Bold */
+@font-face {
+  font-family: "Brakle";
+  src:
+    url("@/assets/fonts/brakle-bold-webfont.woff2") format("woff2"),
+    url("@/assets/fonts/brakle-bold-webfont.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Bold Italic */
+@font-face {
+  font-family: "Brakle";
+  src:
+    url("@/assets/fonts/brakle-bolditalic-webfont.woff2") format("woff2"),
+    url("@/assets/fonts/brakle-bolditalic-webfont.woff") format("woff");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
