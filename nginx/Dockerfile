@@ -3,6 +3,7 @@ FROM node:20-alpine AS frontend-build
 WORKDIR /app
 
 RUN corepack enable
+RUN corepack prepare pnpm@8.14.1 --activate
 
 COPY frontend/package.json frontend/pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
