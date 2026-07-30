@@ -4,14 +4,13 @@ import Home from "./pages/home/page";
 import Codex from "./pages/codex/page";
 import "./App.css";
 import NPCs from "./pages/npcs/page";
-import Login from "./pages/auth/Login";
-import Register from "./pages/auth/Register";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Campaigns from "./pages/campaigns/Campaigns";
 import PublicLayout from "./layouts/PublicLayout";
 import AuthLayout from "./layouts/AuthLayout/AuthLayout";
 import Quests from "./pages/quests/Quests";
 import { CampaignProvider } from "./context/campaign/CampaignProvider";
+import Auth from "./pages/auth/Auth";
 // import NotFound from "./pages/NotFound";
 
 const App: React.FC = () => {
@@ -20,8 +19,8 @@ const App: React.FC = () => {
       <Routes>
         <Route element={<PublicLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Auth view={"login"}/>} />
+          <Route path="/register" element={<Auth view={"register"} />} />
           {/* <Route path="*" element={<NotFound />} /> */}
         </Route>
 

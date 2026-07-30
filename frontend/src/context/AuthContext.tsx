@@ -14,7 +14,8 @@ interface AuthContextType {
   login: (
     email: string, 
     password: string, 
-    onSuccess?: () => void
+    onSuccess?: () => void,
+    onError?: (error: string) => void
   ) => Promise<void>
   logout: (onSuccess?: () => void) => Promise<void>
   setUser: React.Dispatch<React.SetStateAction<User | null>>
@@ -46,7 +47,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = async (
     email: string, 
     password: string,
-    onSuccess?: () => void
+    onSuccess?: () => void,
+    onError?: (error: string) => void
   ) => {
     try {
       const response = await fetch("/api/auth/login", {
@@ -58,10 +60,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         await fetchUser()
         onSuccess?.()
       } else {
-        // TODO: show error message
+        onError?.("Failed to log in. Please try again.")
       }
     } catch (error) {
       console.error("Failed to login user: ", error)
+      onError?.(`Failed to login user: ${error}`)
     }
   }
 

@@ -78,17 +78,26 @@ main.login_register {
   border-radius: 15px;
 }
 
+.message {
+  display: flex;
+  gap: 10px;
+  padding: 0.6rem 0.8rem;
+  font-weight: 300;
+  border-radius: 25px;
+}
+
+.error_message {
+  color: #ff5d5d;
+  background-color: #ff5d5d1e;
+  border: 2px solid #ff5d5d;
+}
+
 .notification_message {
   position: absolute;
   bottom: 1rem;
-  display: flex;
-  gap: 10px;
-  padding: 1rem;
-  font-weight: 300;
   color: var(--qb-frog-green);
   background-color: #384222c2;
   border: 2px solid #465723;
-  border-radius: 25px;
   margin: 0 1rem;
 }
 
@@ -97,7 +106,7 @@ main.login_register {
 }
 
 @media (max-width: 1290px) {
-  .login .login_portal {
+  .login_portal {
     padding: 4rem 3.7rem;
   }
 }
@@ -117,21 +126,25 @@ main.login_register {
 
   .login_portal {
     background-color: var(--primary-translucent);
-    padding: 3rem;
+    padding: 2.5rem;
     border-radius: 15px;
     min-width: 300px;
   }
 
   .login .login_portal_title {
     margin-top: 0;
-  } 
+  }
+
+  .login .login_portal_title h1 {
+    font-size: 2.5rem;
+  }
 
   .img_container {
     width: 100%
   }
 
   .notification_message {
-    bottom: -73px;
+    bottom: -63px;
     width: max-content;
     max-width: 700px;
   }
