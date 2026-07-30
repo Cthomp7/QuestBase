@@ -19,6 +19,7 @@
     "fuse.js": "^7.1.0",
     "http-proxy-middleware": "^3.0.3",
     "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^1.27.0",
     "marked": "^15.0.7",
     "path": "^0.12.7",
     "react": "^19.0.0",

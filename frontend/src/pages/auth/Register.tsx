@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./page.module.css";
 import registerImg from "../../assets/imgs/in-progress-login.png";
 import WarningIcon from "@/assets/svgs/warning.svg?react"
+import PasswordInput from "@/components/PasswordInput/PasswordInput";
 
 function Register () {
   const navigate = useNavigate()
@@ -71,16 +72,16 @@ function Register () {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              <input 
+              <PasswordInput 
                 id="password" 
-                type="password" 
+                name="password" 
                 placeholder="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)} 
               />
-              <input 
+              <PasswordInput 
                 id="verify-password" 
-                type="password" 
+                name="verify-password" 
                 placeholder="verify password"
                 value={verifyPassword}
                 onChange={(e) => setVerifyPassword(e.target.value)} 

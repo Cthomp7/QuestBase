@@ -4,6 +4,7 @@ import img from "../../assets/imgs/in-progress-login.png"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "@/context/AuthContext"
 import WarningIcon from "@/assets/svgs/warning.svg?react"
+import PasswordInput from "@/components/PasswordInput/PasswordInput"
 
 function Login () {
   const { login } = useAuth()
@@ -46,9 +47,9 @@ function Login () {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              <input 
-                id="password" 
-                type="password"
+              <PasswordInput 
+                id="password"
+                name="password"
                 placeholder="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)} 
