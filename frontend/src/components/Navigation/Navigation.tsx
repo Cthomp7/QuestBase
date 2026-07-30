@@ -1,13 +1,13 @@
 import { Link, useNavigate } from "react-router-dom"
 import SmallSparkle from "@/assets/svgs/small-sparkle.svg?react"
-import styles from "./Header.module.css"
+import styles from "./Navigation.module.css"
 import { useAuth } from "@/context/AuthContext"
-import { useState } from "react";
+import { useState } from "react"
 
-const Header = () => {
+export default function Navigation () {
   const navigate = useNavigate()
   const { isAuthenticated, logout } = useAuth()
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false)
 
   const redirectToLogin = () => {
     navigate("/login")
@@ -69,7 +69,5 @@ const Header = () => {
         }
       </div>
     </header>
-  );
-};
-
-export default Header;
+  )
+}
