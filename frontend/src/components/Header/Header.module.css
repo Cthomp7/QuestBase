@@ -95,3 +95,111 @@ a.title h1:hover span {
   background-color: transparent;
   color: #adff5d;
 }
+
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  width: fit-content;
+  padding: 0;
+}
+.hamburger:hover {
+  background: none;
+}
+
+.hamburger span {
+  display: block;
+  width: 30px;
+  height: 3px;
+  background: white;
+  border-radius: 999px;
+  transition:
+    transform 250ms ease,
+    opacity 250ms ease,
+    background 250ms ease-in-out;
+}
+.hamburger:hover span {
+  background: var(--qb-frog-green);
+}
+.hamburger.open span {
+  background: var(--qb-frog-green);
+}
+.hamburger.open:hover span {
+  background: white;
+}
+
+/* hamburger animation */
+.open span:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+}
+.open span:nth-child(2) {
+  opacity: 0;
+}
+.open span:nth-child(3) {
+  transform: translateY(-9px) rotate(-45deg);
+}
+
+.mobileMenu {
+  display: none;
+}
+
+@media (max-width: 875px) {
+  .navigation {
+    display: none;
+  }
+
+  .hamburger {
+    display: flex;
+    z-index: 10;
+  }
+
+  .mobileMenu {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    right: 0rem;
+    background: var(--primary-);
+    border-radius: 12px;
+    padding: 1rem;
+    padding-top: 50px;
+    /* gap: 1rem; */
+    border: 1px solid var(--qb-frog-green);
+
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-10px);
+    transition: 0.25s;
+    min-width: 180px;
+    box-shadow:
+      0 3px 10px rgba(40, 36, 41, 0.75),
+      0 0 30px rgba(21, 20, 22, 0.45);
+  }
+
+  .mobileMenu a,
+  .mobileMenu button {
+    color: var(--qb-frog-green);
+    padding: 0.5rem 0.7rem;
+    border-radius: 8px;
+    transition: 0.25s;
+    text-align: right;
+    font-weight: 300;
+  }
+
+  .mobileMenu a:hover,
+  .mobileMenu button:hover {
+    background: #604a94;
+    color: #c084fc;
+  }
+
+  .open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+}
