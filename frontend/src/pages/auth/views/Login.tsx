@@ -37,7 +37,7 @@ export default function Login ({ onError }: LoginProps) {
   return (
     <>
       <div className={styles.login_portal_title}>
-        <h1>Welcome back!</h1>
+        <h1>Welcome Back!</h1>
         <p>Your Campaign. Your Story. Your Quest.</p>
       </div>
       <div className={styles.login_portal_inputs}>
