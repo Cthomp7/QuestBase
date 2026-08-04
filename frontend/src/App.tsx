@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/home/page";
 import Codex from "./pages/codex/page";
-import "./App.css";
 import NPCs from "./pages/npcs/page";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Campaigns from "./pages/campaigns/Campaigns";
