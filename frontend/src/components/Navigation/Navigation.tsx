@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router-dom"
+import { HashLink } from "react-router-hash-link";
 import SmallSparkle from "@/assets/svgs/small-sparkle.svg?react"
 import styles from "./Navigation.module.css"
 import { useAuth } from "@/context/AuthContext"
@@ -22,10 +23,10 @@ export default function Navigation () {
       {/* Desktop Links */}
       <div className={styles.navigation}>
         {isAuthenticated && <Link to="/dashboard">Dashboard</Link>}
-        <Link to="#project">Project</Link>
-        <Link to="#features">Features</Link>
-        <Link to="/#contact">Contact</Link>
-        <Link to="#support">Support</Link>
+        <HashLink smooth to="/#project">Project</HashLink>
+        <HashLink smooth to="/#features">Features</HashLink>
+        <HashLink smooth to="/#contact">Contact</HashLink>
+        <HashLink smooth to="/#support">Support</HashLink>
       </div>
       <div className={styles.navigation}>
         {isAuthenticated 
