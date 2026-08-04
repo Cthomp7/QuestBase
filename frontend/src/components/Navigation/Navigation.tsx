@@ -24,6 +24,7 @@ export default function Navigation () {
         {isAuthenticated && <Link to="/dashboard">Dashboard</Link>}
         <Link to="#project">Project</Link>
         <Link to="#features">Features</Link>
+        <Link to="/#contact">Contact</Link>
         <Link to="#support">Support</Link>
       </div>
       <div className={styles.navigation}>

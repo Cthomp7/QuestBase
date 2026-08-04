@@ -30,6 +30,10 @@
   --qb-translucent-pink: rgba(255, 0, 170, 0.459);
   --qb-translucent-grey: rgba(99, 99, 99, 0.45);
 
+  --qb-periwinkle: rgb(148 167 250);
+  --qb-alien-green: #adff5d;
+  --qb-alien-green-trans: #aeff5d3b;
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
