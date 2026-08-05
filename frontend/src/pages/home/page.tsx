@@ -4,7 +4,7 @@ import Sparkle from "@/assets/svgs/sparkle.svg?react"
 import SmallSparkle from "@/assets/svgs/small-sparkle.svg?react"
 import MediumSparkle from "@/assets/svgs/medium-sparkle.svg?react"
 import LargeSparkle from "@/assets/svgs/large-sparkle.svg?react"
-import { CircleX, FolderGit2, PartyPopper, Send } from "lucide-react"
+import { CircleX, FolderGit2, LoaderCircle, PartyPopper, Send } from "lucide-react"
 import { useEffect, useState } from "react"
 
 function Home() {
@@ -30,7 +30,6 @@ function Home() {
   }, [])
 
   const sendMessage = async () => {
-    setSubmitting(true)
     setErrorMessage("")
     setSuccessMessage("")
 
@@ -43,8 +42,9 @@ function Home() {
       setErrorMessage("Please write a message.")
       return
     }
-    
+
     try {
+      setSubmitting(true)
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -148,13 +148,15 @@ function Home() {
             style={{ marginTop: "10px"}}
           ></div>
           <div className={styles.button_error_container}>
-            <div 
-              className={styles.green_button}
-              onClick={sendMessage}
-            >
-              <Send></Send>
-              <p>Send</p>
-            </div>
+            {submitting 
+            ? <div className={styles.loader_circle_wrapper}>
+                <LoaderCircle className={styles.loader_circle} size={47} color="currentColor"/>
+              </div>
+            : <div className={styles.green_button} onClick={sendMessage}>
+                <Send></Send>
+                <p>Send</p>
+              </div>
+            }
             {errorMessage && 
               <div className={`${styles.message} ${styles.error_message}`}>
                 <CircleX color={"#ff5d5d"} size={25}/>
