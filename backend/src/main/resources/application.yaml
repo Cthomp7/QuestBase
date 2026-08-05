@@ -37,6 +37,10 @@ jwt:
   secret: ${JWT_SECRET}
   expiration: ${JWT_EXPIRATION:86400000}
 
+cloudflare:
+  turnstile:
+    secret: ${TURNSTILE_SECRET}
+
 contact:
   recipient: ${CONTACT_EMAIL}
   sender: ${SENDER_EMAIL}

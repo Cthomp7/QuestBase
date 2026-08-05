@@ -5,27 +5,50 @@ import SmallSparkle from "@/assets/svgs/small-sparkle.svg?react"
 import MediumSparkle from "@/assets/svgs/medium-sparkle.svg?react"
 import LargeSparkle from "@/assets/svgs/large-sparkle.svg?react"
 import { CircleX, FolderGit2, PartyPopper, Send } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 function Home() {
   const [name, setName] = useState<string>("")
   const [email, setEmail] = useState<string>("")
   const [message, setMessage] = useState<string>("")
+  const [turnstileToken, setTurnstileToken] = useState<string>("")
+  const [submitting, setSubmitting] = useState<boolean>(false)
   const [errorMessage, setErrorMessage] = useState<string>("")
   const [successMessage, setSuccessMessage] = useState<string>("")
 
+  useEffect(() => {
+    window.onTurnstileSuccess = (token: string) => {
+      setTurnstileToken(token)
+    }
+    window.onTurnstileExpired = () => {
+      setTurnstileToken("")
+    }
+    return () => {
+      delete window.onTurnstileSuccess
+      delete window.onTurnstileExpired
+    }
+  }, [])
+
   const sendMessage = async () => {
+    setSubmitting(true)
     setErrorMessage("")
     setSuccessMessage("")
+
+    if (!turnstileToken) {
+      setErrorMessage("Please complete the security check.")
+      return
+    }
+
     if (!message) {
       setErrorMessage("Please write a message.")
       return
     }
+    
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, message })
+        body: JSON.stringify({ name, email, message, turnstileToken })
       })
       const data = await response.json()
       if (!response.ok) {
@@ -34,7 +57,16 @@ function Home() {
       console.log(data.message)
       handleMessageSent()
     } catch (error) {
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : "Your message could not be sent."
+      )
       console.error("Failed to send message: ", error)
+    } finally {
+      setSubmitting(false)
+      setTurnstileToken("")
+      window.turnstile?.reset()
     }
   }
 
@@ -73,7 +105,7 @@ function Home() {
         <div className={styles.contact_text_container}>
           <div className={styles.contact_text}>
             <h1>Contact <span>Us</span></h1>
-            <p>Have a <span>question</span>, found a <span>bug</span>, or have an <span>ideas</span> for QuestBase?</p>
+            <p>Have a <span>question</span>, found a <span>bug</span>, or have an <span>idea</span> for QuestBase?</p>
             <p>We'd love to hear from you. Feel free to reach out anytime at{" "}<a href="mailto:support@questbase.net">support@questbase.net</a></p>
           </div>
           <div className={styles.project_link}>
@@ -106,8 +138,15 @@ function Home() {
             className={styles.dark_input}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            placeholder="Explain your quest, bug, or brilliant idea..."
+            placeholder="Explain your quest, bug, or creative idea..."
           ></textarea>
+          <div
+            className="cf-turnstile"
+            data-sitekey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
+            data-callback="onTurnstileSuccess"
+            data-expired-callback="onTurnstileExpired"
+            style={{ marginTop: "10px"}}
+          ></div>
           <div className={styles.button_error_container}>
             <div 
               className={styles.green_button}
@@ -131,6 +170,11 @@ function Home() {
           </div>
         </div>
       </section>
+      <script
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+        async
+        defer
+      ></script>
     </div>
   );
 }
