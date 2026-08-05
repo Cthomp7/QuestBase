@@ -144,8 +144,44 @@ a.title h1:hover span {
   transform: translateY(-9px) rotate(-45deg);
 }
 
-.mobileMenu {
-  display: none;
+.profile_picture_wrapper {
+  width: 33px;
+  height: 33px;
+}
+
+.profile_picture {
+  width: 43px;
+  height: 43px;
+  border-radius: 25px;
+  cursor: pointer;
+  border: 1px solid #1b1b1b;
+}
+
+.account_info {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.account_info div {
+  min-width: 0;
+}
+
+.account_info p {
+  font-size: 1rem;
+}
+
+.account_info .user_display_name {
+  font-weight: 400;
+  color: var(--qb-alien-green);
+}
+
+.account_info .user_email {
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 @media (max-width: 875px) {
@@ -156,50 +192,5 @@ a.title h1:hover span {
   .hamburger {
     display: flex;
     z-index: 10;
-  }
-
-  .mobileMenu {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 0;
-    right: 0rem;
-    background: var(--primary-);
-    border-radius: 12px;
-    padding: 1rem;
-    padding-top: 50px;
-    /* gap: 1rem; */
-    border: 1px solid var(--qb-frog-green);
-
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(-10px);
-    transition: 0.25s;
-    min-width: 180px;
-    box-shadow:
-      0 3px 10px rgba(40, 36, 41, 0.75),
-      0 0 30px rgba(21, 20, 22, 0.45);
-  }
-
-  .mobileMenu a,
-  .mobileMenu button {
-    color: var(--qb-frog-green);
-    padding: 0.5rem 0.7rem;
-    border-radius: 8px;
-    transition: 0.25s;
-    text-align: right;
-    font-weight: 300;
-  }
-
-  .mobileMenu a:hover,
-  .mobileMenu button:hover {
-    background: #604a94;
-    color: #c084fc;
-  }
-
-  .open {
-    opacity: 1;
-    pointer-events: auto;
-    transform: translateY(0);
   }
 }

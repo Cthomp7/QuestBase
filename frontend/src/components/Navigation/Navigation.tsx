@@ -4,12 +4,14 @@ import SmallSparkle from "@/assets/svgs/small-sparkle.svg?react"
 import styles from "./Navigation.module.css"
 import { useAuth } from "@/context/AuthContext"
 import { useState } from "react"
+import ProfilePicture from "@/assets/imgs/profiles/Ribbert.png"
+import MenuDropdown from "../MenuDropdown/MenuDropdown";
 
 export default function Navigation () {
   const navigate = useNavigate()
-  const { isAuthenticated, logout } = useAuth()
+  const { isAuthenticated, logout, user } = useAuth()
   const [menuOpen, setMenuOpen] = useState(false)
-
+  const [accountMenuOpen, setAccountMenuOpen] = useState(false)
   const redirectToLogin = () => {
     navigate("/login")
   }
@@ -22,20 +24,51 @@ export default function Navigation () {
       </Link>
       {/* Desktop Links */}
       <div className={styles.navigation}>
-        {isAuthenticated && <Link to="/dashboard">Dashboard</Link>}
         <HashLink smooth to="/#project">Project</HashLink>
         <HashLink smooth to="/#features">Features</HashLink>
         <HashLink smooth to="/#contact">Contact</HashLink>
-        <HashLink smooth to="/#support">Support</HashLink>
+        {/* <HashLink smooth to="/#support">Support</HashLink> */}
       </div>
       <div className={styles.navigation}>
         {isAuthenticated 
-          ? <button 
-              className={styles.logout_button} 
-              onClick={() => logout(redirectToLogin)}
-            >
-              Logout
-            </button>
+          ? <>
+              <div className={styles.profile_picture_wrapper}>
+                <img 
+                  src={ProfilePicture} 
+                  alt="Profile Picture of Ribbert the Frog"
+                  className={styles.profile_picture} 
+                  onClick={() => setAccountMenuOpen(!accountMenuOpen)}
+                  style={{ transform: "translateY(-5px) translateX(4px)" }}
+                />
+              </div>
+              <MenuDropdown
+                open={accountMenuOpen}
+                textAlign="left"
+                style={{ right: "10px"}}
+                children={
+                  <>
+                    <div className={styles.account_info}>
+                      <img 
+                        src={ProfilePicture} 
+                        alt="Profile Picture of Ribbert the Frog"
+                        className={styles.profile_picture} 
+                        onClick={() => setAccountMenuOpen(!accountMenuOpen)}
+                      />
+                      <div>
+                        <p className={styles.user_display_name}>{user?.displayName}</p>
+                        <p className={styles.user_email}>{user?.email}</p>
+                      </div>
+                    </div>
+                    <hr />
+                    <Link to="/dashboard">Dashboard</Link>
+                    <Link to="/campaigns">Campaigns</Link>
+                    <Link to="/settings">Settings</Link>
+                    <hr />
+                    <Link onClick={() => logout(redirectToLogin)} to="#">Logout</Link>
+                  </>
+                }
+              ></MenuDropdown>
+            </>
           : <Link to="/login">Login</Link>
         }
       </div>
@@ -50,26 +83,31 @@ export default function Navigation () {
         <span></span>
       </button>
       {/* Mobile Menu */}
-      <div
-        className={`${styles.mobileMenu} ${
-          menuOpen ? styles.open : ""
-        }`}
-      >
-        <Link to="/">Home</Link>
-        {isAuthenticated && <Link to="/dashboard">Dashboard</Link>}
-        <Link to="#project">Project</Link>
-        <Link to="#features">Features</Link>
-        <Link to="#support">Support</Link>
-        {isAuthenticated 
-          ? <button 
-              className={styles.logout_button} 
-              onClick={() => logout(redirectToLogin)}
-            >
-              Logout
-            </button>
-          : <Link to="/login">Login</Link>
+      <MenuDropdown
+        open={menuOpen}
+        style={{ top: 0, marginTop: 0, paddingTop: "50px" }}
+        mobile={true}
+        textAlign="right"
+        children={
+          <>
+            <Link to="/">Home</Link>
+            {isAuthenticated && <Link to="/dashboard">Dashboard</Link>}
+            <Link to="#project">Project</Link>
+            <HashLink smooth to="/#contact">Contact</HashLink>
+            {/* <Link to="#support">Support</Link> */}
+            {isAuthenticated 
+              ? <button 
+                  className={styles.logout_button} 
+                  onClick={() => logout(redirectToLogin)}
+                >
+                  Logout
+                </button>
+              : <Link to="/login">Login</Link>
+            }
+          </>
         }
-      </div>
+      >
+      </MenuDropdown>
     </header>
   )
 }
