@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import styles from "./Auth.module.css"
-import img from "../../assets/imgs/in-progress-login.png"
+import img from "../../assets/imgs/QB_Lost_Cabin.png"
 import { CircleX, CircleAlert } from "lucide-react"
 import Login from "./views/Login"
 import Register from "./views/Register"
