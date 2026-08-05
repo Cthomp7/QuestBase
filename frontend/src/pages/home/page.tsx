@@ -4,8 +4,9 @@ import Sparkle from "@/assets/svgs/sparkle.svg?react"
 import SmallSparkle from "@/assets/svgs/small-sparkle.svg?react"
 import MediumSparkle from "@/assets/svgs/medium-sparkle.svg?react"
 import LargeSparkle from "@/assets/svgs/large-sparkle.svg?react"
-import { CircleX, FolderGit2, LoaderCircle, PartyPopper, Send } from "lucide-react"
+import { CircleX, FolderGit2, PartyPopper, Send } from "lucide-react"
 import { useEffect, useState } from "react"
+import Loader from "@/components/ui/loader/Loader"
 
 function Home() {
   const [name, setName] = useState<string>("")
@@ -149,9 +150,7 @@ function Home() {
           ></div>
           <div className={styles.button_error_container}>
             {submitting 
-            ? <div className={styles.loader_circle_wrapper}>
-                <LoaderCircle className={styles.loader_circle} size={47} color="currentColor"/>
-              </div>
+            ? <Loader/>
             : <div className={styles.green_button} onClick={sendMessage}>
                 <Send></Send>
                 <p>Send</p>

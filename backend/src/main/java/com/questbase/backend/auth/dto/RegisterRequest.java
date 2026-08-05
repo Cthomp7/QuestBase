@@ -15,5 +15,8 @@ public record RegisterRequest(
 
     @Size(max = 255)
     @NotBlank
-    String password 
+    String password,
+
+    @NotBlank
+    String turnstileToken
 ) {}

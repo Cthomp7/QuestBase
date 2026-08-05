@@ -1,4 +1,4 @@
-package com.questbase.backend.contact.dto;
+package com.questbase.backend.security.turnstile;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

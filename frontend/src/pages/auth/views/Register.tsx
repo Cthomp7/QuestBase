@@ -2,17 +2,25 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../Auth.module.css";
 import PasswordInput from "@/components/PasswordInput/PasswordInput";
+import Loader from "@/components/ui/loader/Loader";
 
 interface RegisterProps {
-  onError: (eorr: string) => void
+  turnstileToken: string
+  setTurnstileToken: (value: string) => void
+  onError: (error: string) => void
 } 
 
-export default function Register ({ onError } : RegisterProps) {
+export default function Register ({ 
+  turnstileToken, 
+  setTurnstileToken, 
+  onError 
+} : RegisterProps) {
   const navigate = useNavigate()
   const [name, setName] = useState<string>("")
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
   const [verifyPassword, setVerifyPassword] = useState<string>("")
+  const [submitting, setSubmitting] = useState<boolean>(false)
 
   const onRegister = async () => {
     const error = validateForm()
@@ -21,11 +29,17 @@ export default function Register ({ onError } : RegisterProps) {
       return
     }
 
+    if (!turnstileToken) {
+      onError("Please complete the security check.")
+      return
+    }
+
     try {
+      setSubmitting(true)
       const response = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ displayName: name, email, password })
+        body: JSON.stringify({ displayName: name, email, password, turnstileToken })
       })
       if (response.ok) {
         navigate("/dashboard")
@@ -35,6 +49,10 @@ export default function Register ({ onError } : RegisterProps) {
     } catch (error) {
       console.error("Failed to register user: ", error)
       onError(`Failed to register user: ${error}`)
+    } finally {
+      setSubmitting(false)
+      setTurnstileToken("")
+      window.turnstile?.reset()
     }
   }
 
@@ -84,8 +102,17 @@ export default function Register ({ onError } : RegisterProps) {
           value={verifyPassword}
           onChange={(e) => setVerifyPassword(e.target.value)} 
         />
+        <div
+          className="cf-turnstile"
+          data-sitekey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
+          data-callback="onTurnstileSuccess"
+          data-expired-callback="onTurnstileExpired"
+          style={{ marginTop: "10px"}}
+        ></div>
+        {submitting
+          ? <Loader/>
+          : <button onClick={onRegister}>Register</button>}
       </div>
-      <button onClick={onRegister}>Register</button>
     </>
   )
 }

@@ -7,11 +7,15 @@ import com.questbase.backend.auth.dto.CustomUserDetails;
 import com.questbase.backend.auth.dto.LoginRequest;
 import com.questbase.backend.auth.dto.RegisterRequest;
 import com.questbase.backend.auth.dto.UserResponse;
+import com.questbase.backend.security.ClientIpUtils;
+import com.questbase.backend.security.turnstile.TurnstileService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
 import java.time.Duration;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -32,9 +36,14 @@ public class AuthController {
     private boolean secureCookie;
     
     private final AuthService authService;
+    private final TurnstileService turnstileService;
 
-    AuthController(AuthService authService) {
+    AuthController(
+        AuthService authService,
+        TurnstileService turnstileService
+    ) {
         this.authService = authService;
+        this.turnstileService = turnstileService;
     }
 
     @GetMapping("/me")
@@ -56,9 +65,26 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Void> register(
-        @Valid @RequestBody RegisterRequest request
+    public ResponseEntity<?> register(
+        @Valid @RequestBody RegisterRequest request,
+        HttpServletRequest servletRequest
     ) {
+        String clientIp = ClientIpUtils.getClientIp(servletRequest);
+
+        boolean validTurnstile = turnstileService.verify(
+            request.turnstileToken(),
+            clientIp
+        );
+
+        if (!validTurnstile) {
+            return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(Map.of(
+                    "message",
+                    "The security check could not be verified."
+                ));
+        }
+
         String token = authService.register(request);
 
         return generateHTTPCookie(token);

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import styles from "./Auth.module.css"
 import img from "../../assets/imgs/in-progress-login.png"
 import { CircleX, CircleAlert } from "lucide-react"
@@ -11,6 +11,20 @@ interface AuthProps {
 
 export default function Auth ({ view }: AuthProps) {
   const [errorMessage, setErrorMessage] = useState<string>("")
+  const [turnstileToken, setTurnstileToken] = useState<string>("")
+
+  useEffect(() => {
+      window.onTurnstileSuccess = (token: string) => {
+        setTurnstileToken(token)
+      }
+      window.onTurnstileExpired = () => {
+        setTurnstileToken("")
+      }
+      return () => {
+        delete window.onTurnstileSuccess
+        delete window.onTurnstileExpired
+      }
+    }, [])
 
   return (
     <main className={`${styles.login_register} ${styles.login}`}>
@@ -18,8 +32,16 @@ export default function Auth ({ view }: AuthProps) {
         <div className={`${styles.sub_container} ${styles.login_container}`}>
           <div className={styles.login_portal}>
             {view === "login" 
-              ? <Login onError={(error) => setErrorMessage(error)}/>
-              : <Register onError={(error) => setErrorMessage(error)}/>
+              ? 
+                <Login 
+                  onError={(error) => setErrorMessage(error)}
+                />
+              : 
+                <Register 
+                  turnstileToken={turnstileToken}
+                  setTurnstileToken={(value: string) => setTurnstileToken(value)}
+                  onError={(error) => setErrorMessage(error)}
+                />
             }
             {errorMessage && 
               <div className={`${styles.message} ${styles.error_message}`}>
@@ -37,6 +59,11 @@ export default function Auth ({ view }: AuthProps) {
           <img className={styles.login_img} src={img} alt="d7d" />
         </div>
       </div>
+      <script
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+        async
+        defer
+      ></script>
     </main>
   )
 }

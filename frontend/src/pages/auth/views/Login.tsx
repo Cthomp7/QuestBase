@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom"
 import styles from "../Auth.module.css";
 
 interface LoginProps {
-  onError: (eorr: string) => void
+  onError: (error: string) => void
 } 
 
 export default function Login ({ onError }: LoginProps) {

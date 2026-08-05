@@ -1,0 +1,26 @@
+.loader_circle_wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 47px;
+  height: 47px;
+  flex: 0 0 47px;
+  transform-origin: 50% 50%;
+  animation: spin 2s linear infinite;
+}
+
+.loader_circle {
+  display: block;
+  width: 47px;
+  height: 47px;
+  color: var(--qb-periwinkle);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

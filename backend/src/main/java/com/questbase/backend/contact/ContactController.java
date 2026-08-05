@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.questbase.backend.contact.dto.ContactRequest;
+import com.questbase.backend.security.ClientIpUtils;
+import com.questbase.backend.security.turnstile.TurnstileService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -36,7 +38,7 @@ public class ContactController {
         @Valid @RequestBody ContactRequest request,
         HttpServletRequest servletRequest
     ) {
-        String clientIp = getClientIp(servletRequest);
+        String clientIp = ClientIpUtils.getClientIp(servletRequest);
 
         if (!rateLimiter.allowRequest(clientIp)) {
             return ResponseEntity
@@ -66,15 +68,5 @@ public class ContactController {
         return ResponseEntity.ok(
             Map.of("message", "Your message was sent successfully.")
         );
-    }
-
-    private String getClientIp(HttpServletRequest request) {
-        String forwardedFor = request.getHeader("X-Forwarded-For");
-
-        if (forwardedFor != null && !forwardedFor.isBlank()) {
-            return forwardedFor.split(",")[0].trim();
-        }
-
-        return request.getRemoteAddr();
     }
 }

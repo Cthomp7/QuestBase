@@ -1,4 +1,4 @@
-package com.questbase.backend.contact;
+package com.questbase.backend.security.turnstile;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
-
-import com.questbase.backend.contact.dto.TurnstileResponse;
 
 @Service
 public class TurnstileService {

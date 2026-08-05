@@ -41,7 +41,7 @@ main.login_register {
 }
 
 .login .login_portal_title {
-  margin-top: 2rem;
+  /* margin-top: 2rem; */
 } 
 
 .login_portal_title h1 {
@@ -128,7 +128,7 @@ main.login_register {
     background-color: var(--primary-translucent);
     padding: 2.5rem;
     border-radius: 15px;
-    min-width: 300px;
+    min-width: 340px;
   }
 
   .login .login_portal_title {
@@ -160,8 +160,7 @@ main.login_register {
   }
 
   .notification_message {
-    width: 100%;
-    bottom: -96px;
+    display: none;
   }
 }
 
@@ -196,10 +195,6 @@ main.login_register {
 
   .login .login_portal_title h1 {
     white-space: unset;
-  }
-
-  .notification_message {
-    display: none;
   }
 }
 
