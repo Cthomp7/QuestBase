@@ -44,11 +44,16 @@ export default function Register ({
       if (response.ok) {
         navigate("/dashboard")
       } else {
-        onError("Failed to register user: ")
+        const error = await response.json();
+        throw new Error(error.message)
       }
     } catch (error) {
       console.error("Failed to register user: ", error)
-      onError(`Failed to register user: ${error}`)
+      if (error instanceof Error) {
+        onError(error.message)
+      } else {
+        onError("An unexpected error occurred. Please try again later.")
+      }
     } finally {
       setSubmitting(false)
       setTurnstileToken("")

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import styles from "./Auth.module.css"
 import img from "../../assets/imgs/QB_Lost_Cabin.png"
-import { CircleX, CircleAlert } from "lucide-react"
+import { CircleX } from "lucide-react"
 import Login from "./views/Login"
 import Register from "./views/Register"
 
@@ -50,10 +50,11 @@ export default function Auth ({ view }: AuthProps) {
               </div>
             }
           </div>
+          {/* TODO: fix placement 
           <div className={`${styles.message} ${styles.notification_message}`}>
             <CircleAlert color={"#adff5d"} size={25}/>
             <p>QuestBase is in very early development.</p>
-          </div>
+          </div> */}
         </div>
         <div className={`${styles.sub_container} ${styles.img_container}`}>
           <img className={styles.login_img} src={img} alt="d7d" />

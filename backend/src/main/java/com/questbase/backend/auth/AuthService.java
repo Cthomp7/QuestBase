@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 
 import com.questbase.backend.auth.dto.LoginRequest;
 import com.questbase.backend.auth.dto.RegisterRequest;
+import com.questbase.backend.exception.auth.EmailAlreadyExistsException;
+import com.questbase.backend.exception.auth.InvalidCredentialsException;
+import com.questbase.backend.exception.auth.UserNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,7 +21,7 @@ public class AuthService {
 
     public String register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.email())) {
-            throw new RuntimeException("Email already exists.");
+            throw new EmailAlreadyExistsException();
         }
 
         String hashedPassword = passwordEncoder.encode(request.password());
@@ -36,10 +39,10 @@ public class AuthService {
 
     public String login(LoginRequest request) {
         User user = userRepository.findByEmail(request.email())
-            .orElseThrow(() -> new RuntimeException("User not found"));
+            .orElseThrow(() -> new UserNotFoundException());
 
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {
-            throw new RuntimeException("Invalid credentials");
+            throw new InvalidCredentialsException();
         }
 
         return jwtService.generateToken(user);
@@ -52,6 +55,6 @@ public class AuthService {
             .getName();
 
         return userRepository.findByEmail(email)
-            .orElseThrow(() -> new RuntimeException("User not found"));
+            .orElseThrow(() -> new UserNotFoundException());
     }
 }

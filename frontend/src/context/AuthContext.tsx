@@ -60,11 +60,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         await fetchUser()
         onSuccess?.()
       } else {
-        onError?.("Failed to log in. Please try again.")
+        const error = await response.json()
+        throw new Error(error.message)
       }
     } catch (error) {
       console.error("Failed to login user: ", error)
-      onError?.(`Failed to login user: ${error}`)
+      if (error instanceof Error) {
+        onError?.(error.message)
+      } else {
+        onError?.("An unexpected error occurred. Please try again later.")
+      }
     }
   }
 

@@ -84,7 +84,10 @@ public class AuthController {
         if (!allowed) {
             return ResponseEntity
                 .status(HttpStatus.TOO_MANY_REQUESTS)
-                .build();
+                .body(Map.of(
+                    "message",
+                    "Too many registration attempts. Please try again in 10 minutes."
+                ));
         }
 
         boolean validTurnstile = turnstileService.verify(

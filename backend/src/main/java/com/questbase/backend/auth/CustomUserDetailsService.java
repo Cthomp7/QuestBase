@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import com.questbase.backend.auth.dto.CustomUserDetails;
+import com.questbase.backend.exception.auth.UserNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,7 +17,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) {
         User user = userRepository.findByEmail(email)
-            .orElseThrow(() -> new RuntimeException("User not found"));
+            .orElseThrow(() -> new UserNotFoundException());
 
         return new CustomUserDetails(
             user.getId(),
