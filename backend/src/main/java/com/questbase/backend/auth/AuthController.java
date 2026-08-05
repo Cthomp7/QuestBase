@@ -8,6 +8,7 @@ import com.questbase.backend.auth.dto.LoginRequest;
 import com.questbase.backend.auth.dto.RegisterRequest;
 import com.questbase.backend.auth.dto.UserResponse;
 import com.questbase.backend.security.ClientIpUtils;
+import com.questbase.backend.security.ratelimiter.RateLimiterService;
 import com.questbase.backend.security.turnstile.TurnstileService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,12 +38,15 @@ public class AuthController {
     
     private final AuthService authService;
     private final TurnstileService turnstileService;
+    private final RateLimiterService rateLimiter;
 
     AuthController(
         AuthService authService,
+        RateLimiterService rateLimiter,
         TurnstileService turnstileService
     ) {
         this.authService = authService;
+        this.rateLimiter = rateLimiter;
         this.turnstileService = turnstileService;
     }
 
@@ -70,6 +74,18 @@ public class AuthController {
         HttpServletRequest servletRequest
     ) {
         String clientIp = ClientIpUtils.getClientIp(servletRequest);
+
+        boolean allowed = rateLimiter.isAllowed(
+            "register:" + clientIp,
+            3,
+            Duration.ofMinutes(10)
+        );
+
+        if (!allowed) {
+            return ResponseEntity
+                .status(HttpStatus.TOO_MANY_REQUESTS)
+                .build();
+        }
 
         boolean validTurnstile = turnstileService.verify(
             request.turnstileToken(),

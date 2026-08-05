@@ -1,5 +1,6 @@
 package com.questbase.backend.contact;
 
+import java.time.Duration;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.questbase.backend.contact.dto.ContactRequest;
 import com.questbase.backend.security.ClientIpUtils;
+import com.questbase.backend.security.ratelimiter.RateLimiterService;
 import com.questbase.backend.security.turnstile.TurnstileService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,12 +21,12 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/contact")
 public class ContactController {
-    private final ContactRateLimiter rateLimiter;
+    private final RateLimiterService rateLimiter;
     private final ContactEmailService contactEmailService;
     private final TurnstileService turnstileService;
 
     public ContactController(
-        ContactRateLimiter rateLimiter,
+        RateLimiterService rateLimiter,
         ContactEmailService contactEmailService, 
         TurnstileService turnstileService
     ) {
@@ -39,14 +41,18 @@ public class ContactController {
         HttpServletRequest servletRequest
     ) {
         String clientIp = ClientIpUtils.getClientIp(servletRequest);
+        String rateLimitKey = "contact:" + clientIp;
 
-        if (!rateLimiter.allowRequest(clientIp)) {
+        boolean allowed = rateLimiter.isAllowed(
+            rateLimitKey,
+            3,
+            Duration.ofMinutes(10)
+        );
+
+        if (!allowed) {
             return ResponseEntity
                 .status(HttpStatus.TOO_MANY_REQUESTS)
-                .body(Map.of(
-                    "message",
-                    "Too many messages. Please try again in a few minutes."
-                ));
+                .build();
         }
 
         boolean validTurnstile = turnstileService.verify(
