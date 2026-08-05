@@ -293,6 +293,10 @@ textarea.dark_input {
   border: 2px solid #ff5d5d;
 }
 
+.error_message > svg {
+  flex: 0 0 auto;
+}
+
 .success_message {
   color: var(--qb-alien-green);
   background-color: var(--qb-alien-green-trans);
