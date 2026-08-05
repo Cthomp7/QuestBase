@@ -17,13 +17,16 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/contact")
 public class ContactController {
+    private final ContactRateLimiter rateLimiter;
     private final ContactEmailService contactEmailService;
     private final TurnstileService turnstileService;
 
     public ContactController(
+        ContactRateLimiter rateLimiter,
         ContactEmailService contactEmailService, 
         TurnstileService turnstileService
     ) {
+        this.rateLimiter = rateLimiter;
         this.contactEmailService = contactEmailService;
         this.turnstileService = turnstileService;
     }
@@ -34,6 +37,15 @@ public class ContactController {
         HttpServletRequest servletRequest
     ) {
         String clientIp = getClientIp(servletRequest);
+
+        if (!rateLimiter.allowRequest(clientIp)) {
+            return ResponseEntity
+                .status(HttpStatus.TOO_MANY_REQUESTS)
+                .body(Map.of(
+                    "message",
+                    "Too many messages. Please try again in a few minutes."
+                ));
+        }
 
         boolean validTurnstile = turnstileService.verify(
             request.turnstileToken(),
