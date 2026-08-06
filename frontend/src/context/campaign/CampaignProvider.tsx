@@ -28,8 +28,8 @@ export const CampaignProvider = ({
     if (campaigns.length > 0 && activeCampaignId) {
       const campaign = campaigns.find(campaign => campaign.id === Number(activeCampaignId))
       if (!campaign) {
-      console.error(`Failed to find campaign with matching id: ${activeCampaignId}`)
-      setActiveCampaign(null)
+        console.error(`Failed to find campaign with matching id: ${activeCampaignId}`)
+        setActiveCampaign(null)
       } else setActiveCampaign(campaign)
     }
   }, [campaigns, activeCampaignId])

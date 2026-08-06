@@ -11,7 +11,7 @@ import { useCampaign } from "@/context/campaign/useCampaign";
 // TODO: add a loading sequence between fetchCampaigns
 
 const Campaigns = () => {
-  const { campaigns, setCampaigns } = useCampaign()
+  const { campaigns, setCampaigns, setActiveCampaignId } = useCampaign()
   const [currentCampaign, setCurrentCampaign] = useState<Campaign | null>(null)
   const [name, setName] = useState<string>("")
   const [description, setDescription] = useState<string>("")
@@ -54,8 +54,11 @@ const Campaigns = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, description, system }) 
       })
-      const json = await response.json()
-      setCampaigns([...campaigns, json])
+      const campaign = await response.json()
+      setCampaigns([...campaigns, campaign])
+      // set active campaign
+      setActiveCampaignId(String(campaign.id))
+      localStorage.setItem("activeCampaignId", String(campaign.id));
       closeEditor()
     } catch (error) {
       console.error("Failed to add new campaign: ", error)

@@ -1,12 +1,13 @@
 import { Link, useNavigate } from "react-router-dom"
 import styles from "./DashboardNavigation.module.css"
+import layoutStyles from "@/layouts/AuthLayout/AuthLayout.module.css"
 import { useEffect, useState } from "react"
 import Dropdown, { DropdownOption } from "@/components/Dropdown/Dropdown"
 import { useCampaign } from "@/context/campaign/useCampaign"
 import ProfilePicture from "@/assets/imgs/profiles/Ribbert.png"
 import { useAuth } from "@/context/AuthContext"
 import MenuDropdown from "../MenuDropdown/MenuDropdown"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, PlusIcon } from "lucide-react"
 
 const DashboardNavigation = () => {
   const navigate = useNavigate()
@@ -89,11 +90,21 @@ const DashboardNavigation = () => {
             <p>Campaign:</p>
             <button onClick={() => navigate("/campaigns")}>view all</button>
           </div>
-          <Dropdown
-            options={campaignDropdownOptions}
-            value={activeCampaignId}
-            onChange={(c) => switchCampaign(c)}
-          ></Dropdown>
+          {campaigns.length > 0 
+            ? <Dropdown
+                options={campaignDropdownOptions}
+                value={activeCampaignId}
+                onChange={(c) => switchCampaign(c)}
+              ></Dropdown>
+            : <div 
+                className={`${layoutStyles.create_button} ${layoutStyles.mini}`}
+              >
+                <div className={layoutStyles.plus_icon}>
+                  <PlusIcon />
+                </div>
+                <p onClick={() => navigate("/campaigns")}>Create a new campaign</p>
+              </div>
+          }
         </section>
         <section className={styles.navigation_pages}>
           {pages.map((p) => (
