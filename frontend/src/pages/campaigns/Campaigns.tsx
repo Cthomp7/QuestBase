@@ -233,6 +233,7 @@ const Campaigns = () => {
             placeholder={currentCampaign?.name}
             value={deleteText}
             onChange={(e) => setDeleteText(e.target.value)}
+            autoComplete="off"
           />
           <button onClick={deleteCampaign}>Delete</button>
         </div>
