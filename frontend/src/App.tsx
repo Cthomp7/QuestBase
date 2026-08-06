@@ -10,6 +10,7 @@ import AuthLayout from "./layouts/AuthLayout/AuthLayout";
 import Quests from "./pages/quests/Quests";
 import { CampaignProvider } from "./context/campaign/CampaignProvider";
 import Auth from "./pages/auth/Auth";
+import ProtectedRoute from "./routes/ProtectedRoute";
 // import NotFound from "./pages/NotFound";
 
 const App: React.FC = () => {
@@ -23,18 +24,20 @@ const App: React.FC = () => {
           {/* <Route path="*" element={<NotFound />} /> */}
         </Route>
 
-        <Route 
-          element={
-            <CampaignProvider>
-              <AuthLayout />
-            </CampaignProvider>
-          }
-        >
-          <Route path="/campaigns" element={<Campaigns />}/>
-          <Route path="/codex/*" element={<Codex />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/npcs/*" element={<NPCs />} />
-          <Route path="/quests/*" element={<Quests />} />
+        <Route element={<ProtectedRoute />}>
+          <Route 
+            element={
+              <CampaignProvider>
+                <AuthLayout />
+              </CampaignProvider>
+            }
+          >
+            <Route path="/campaigns" element={<Campaigns />}/>
+            <Route path="/codex/*" element={<Codex />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/npcs/*" element={<NPCs />} />
+            <Route path="/quests/*" element={<Quests />} />
+          </Route>
         </Route>
       </Routes>
     </Router>
