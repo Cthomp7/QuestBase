@@ -1,10 +1,42 @@
 .dashboard_navigation {
   height: 100vh;
   width: 350px;
-  background-color: rgb(53, 53, 53);
+  background-color: var(--primary-);
   position: sticky;
-  padding: 20px;
+  padding: 10px;
   flex-shrink: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.dashboard_header {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.dashboard_header_qb {
+  display: flex;
+  gap: 8px;
+  transform: translateX(-32px);
+  transition: transform ease-in-out .2s;
+}
+
+.dashboard_header_qb:hover {
+  transform: translateX(0);
+}
+
+.qb_arrow {
+  opacity: 0;
+  transition: opacity ease-in-out .2s;
+}
+
+.dashboard_header:hover .qb_arrow {
+  opacity: 1;
 }
 
 .dashboard_navigation a h1,
@@ -66,4 +98,63 @@
 .navigation_page p {
   color: white;
   font-weight: 500;
+}
+
+/* ========================================================================== */
+/* Profile Section */
+/* ========================================================================== */
+
+.tooltip {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 20px;
+  font-size: 0.7rem;
+  line-height: 0.7rem;
+  white-space: nowrap;
+  padding: 8px 10px;
+  border-radius: 5px;
+  background-color: var(--primary-);
+  transition: opacity ease-in-out 0.1s;
+  opacity: 0;
+}
+
+.dashboard_user_navigation:hover .tooltip {
+  opacity: 1;
+}
+
+.profile_picture {
+  width: 43px;
+  height: 43px;
+  border-radius: 25px;
+  cursor: pointer;
+  border: 1px solid #1b1b1b;
+}
+
+.account_info {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.account_info div {
+  min-width: 0;
+}
+
+.account_info p {
+  font-size: 1rem;
+}
+
+.account_info .user_display_name {
+  font-weight: 400;
+  color: white;
+}
+
+.account_info .user_email {
+  font-size: 1rem;
+  color: rgb(131, 131, 131);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
