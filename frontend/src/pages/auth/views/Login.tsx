@@ -3,6 +3,7 @@ import { useAuth } from "@/context/AuthContext"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import styles from "../Auth.module.css";
+import Loader from "@/components/ui/loader/Loader";
 
 interface LoginProps {
   onError: (error: string) => void
@@ -13,6 +14,7 @@ export default function Login ({ onError }: LoginProps) {
   const navigate = useNavigate()
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
+  const [submitting, setSubmitting] = useState<boolean>(false)
 
   const onLogin = async () => {
     onError("")
@@ -28,10 +30,15 @@ export default function Login ({ onError }: LoginProps) {
       return
     }
 
-    await login(email, password, 
-      () => { navigate("/dashboard") },
-      (error) => { onError(error) }
-    )
+    try {
+      setSubmitting(true)
+      await login(email, password, 
+        () => { navigate("/dashboard") },
+        (error) => { onError(error) }
+      )
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -56,7 +63,10 @@ export default function Login ({ onError }: LoginProps) {
           onChange={(e) => setPassword(e.target.value)} 
         />
         <a href="/forgot-password">Forgot Password?</a>
-        <button onClick={onLogin}>Login</button>
+        {submitting
+          ? <Loader />
+          : <button onClick={onLogin}>Login</button>
+        }
         <p>New to QuestBase? <a href="/register">Create account</a></p>
       </div>
     </>
