@@ -139,7 +139,7 @@ const Quests = () => {
             onClick={() => setEditorVisible('create', true)}
           >
             <div className={layoutStyles.plus_icon}>
-              <PlusIcon />
+              <PlusIcon color={"var(--qb-alien-green)"}/>
             </div>
             <p>Create a new Quest</p>
           </div>
@@ -153,14 +153,14 @@ const Quests = () => {
                   <div className={styles.quest_card_header}>
                     <p className={layoutStyles.card_title}>{quest.title}</p>
                     <div className={styles.quest_card_properties}>
-                      <p className={`${styles.quest_card_property} ${styles.quest_xp}`}>
-                        {quest.rewardXp}{" "}XP
-                      </p>
                       <p className={`${styles.quest_card_property} ${styles.quest_status} ${styles[quest.status]}`}>
                         {quest.status}
                       </p>
                       <p className={`${styles.quest_card_property} ${styles.quest_difficulty} ${styles[quest.difficulty]}`}>
                         {quest.difficulty}
+                      </p>
+                      <p className={`${styles.quest_card_property} ${styles.quest_xp}`}>
+                        {quest.rewardXp}{" "}XP
                       </p>
                     </div>
                   </div>

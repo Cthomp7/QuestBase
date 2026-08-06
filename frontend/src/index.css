@@ -11,7 +11,7 @@
 
   --qb-frog-green: #adff5d;
   --qb-magic-purple: #94a7fa;
-  --qb-spellwine: #8b5a74;
+  --qb-spellwine : #8b5a74;
 
   --primary-: #242424;
   --primary-translucent: rgba(36, 36, 36, 0.884);
@@ -19,19 +19,27 @@
   --border-: 1px solid #6b6b6b;
   --hover-color: #6b6b6b60;
 
+  --qb-mimic-coin: #e0af44;
+  --qb-mimic-coin-trans : #e0af442f;
 
-  /* --qb-translucent-blue: */
-  --qb-translucent-green: rgba(53, 163, 43, 0.45);
-  /* --qb-translucent-yellow: */
-  --qb-translucent-orange: rgba(252, 105, 47, 0.45);
-  --qb-red: rgba(252, 47, 47, 1);
-  --qb-translucent-red: rgba(252, 47, 47, 0.45);
-  --qb-translucent-purple: rgba(195, 0, 255, 0.45);
-  --qb-translucent-blue-purple: rgba(60, 89, 255, 0.45);
-  --qb-translucent-pink: rgba(255, 0, 170, 0.459);
-  --qb-translucent-grey: rgba(99, 99, 99, 0.45);
+  --qb-pixie-dust : #da4293;
+  --qb-pixie-dust-trans : #da429336;
 
-  --qb-periwinkle: rgb(148 167 250);
+  --qb-mana-star: #b151ff;
+  --qb-mana-star-trans: #b151ff3b; 
+
+  --qb-blue-slime: #71baff;
+  --qb-blue-slime-trans: #71baff2d; 
+
+  --qb-error-red: #ff5d5d;
+  --qb-error-red-trans: #ff5d5d3f;;
+
+  --qb-seasame-grey: #bdbdbd;
+  --qb-seasame-grey-trans: #bdbdbd38;
+
+  --qb-periwinkle: #97aaff;
+  --qb-periwinkle-trans: #97aaff3b;
+
   --qb-alien-green: #adff5d;
   --qb-alien-green-trans: #aeff5d3b;
 

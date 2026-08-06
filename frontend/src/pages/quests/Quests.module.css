@@ -1,6 +1,7 @@
 .selected_campaign {
-  background-color: var(--qb-translucent-blue-purple);
-  border: solid 2px var(--qb-translucent-blue-purple);
+  background-color: var(--qb-periwinkle-trans);
+  border: solid 2px var(--qb-periwinkle);
+  color: var(--qb-periwinkle);
   border-radius: 25px;
   font-weight: 500;
   padding: 8px 15px;
@@ -68,38 +69,45 @@
 }
 
 .quest_xp {
-  background-color: var(--qb-translucent-purple);
-  border-color: var(--qb-translucent-purple);
+  background-color: var(--qb-periwinkle-trans);
+  border-color: var(--qb-periwinkle);
+  color: var(--qb-periwinkle);
 }
 
 .quest_status.NOT_STARTED {
-  background-color: var(--qb-translucent-grey);
-  border-color: var(--qb-translucent-grey);
+  background-color: var(--qb-blue-slime-trans);
+  border-color: var(--qb-blue-slime);
+  color: var(--qb-blue-slime);
 }
 
 .quest_status.ACTIVE {
-  background-color: var(--qb-translucent-blue-purple);
-  border-color: var(--qb-translucent-blue-purple);
+  background-color: var(--qb-mana-star-trans);
+  border-color: var(--qb-mana-star);
+  color: var(--qb-mana-star);
 }
 
 .quest_difficulty.EASY,
 .quest_status.COMPLETED {
-  background-color: var(--qb-translucent-green);
-  border-color: var(--qb-translucent-green);
+  background-color: var(--qb-alien-green-trans);
+  border-color: var(--qb-alien-green);
+  color: var(--qb-alien-green);;
 }
 
 .quest_difficulty.MEDIUM {
-  background-color: var(--qb-translucent-orange);
-  border-color: var(--qb-translucent-orange);
+  background-color: var(--qb-mimic-coin-trans);
+  border-color: var(--qb-mimic-coin);
+  color: var(--qb-mimic-coin);
 }
 
 .quest_difficulty.HARD,
 .quest_status.FAILED {
-  background-color: var(--qb-translucent-red);
-  border-color: var(--qb-translucent-red);
+  background-color: var(--qb-error-red-trans);
+  border-color: var(--qb-error-red);
+  color: var(--qb-error-red)
 }
 
 .quest_difficulty.DEADLY {
-  background-color: var(--qb-translucent-pink);
-  border-color: var(--qb-translucent-pink);
+  background-color: var(--qb-pixie-dust-trans);
+  border-color: var(--qb-pixie-dust);
+  color: var(--qb-pixie-dust);
 }

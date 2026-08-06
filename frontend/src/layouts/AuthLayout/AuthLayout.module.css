@@ -5,6 +5,7 @@
 .main_content {
   flex-shrink: 1;
   flex-grow: 1;
+  background-color: #171717;
 }
 
 .page_container {
@@ -34,8 +35,8 @@
 }
 
 .card {
-  background-color: rgb(51, 51, 51);
-  border: solid 2px rgb(59, 59, 59);
+  background-color: rgba(51, 51, 51, 0.267);
+  border: solid 2px rgba(59, 59, 59, 0.507);
   border-radius: 15px;
   padding: 20px;
   display: flex;
@@ -69,9 +70,9 @@
 }
 
 .plus_icon {
-  background-color: rgba(43, 214, 58, 0.257);
-  border: solid 2px rgba(43, 214, 58, 0.257);
-  border-radius: 15px;
+  background-color: var(--qb-alien-green-trans);
+  border: solid 2px var(--qb-alien-green);
+  border-radius: 25px;
   padding: 2px;
   display: flex;
   align-items: center;
@@ -81,12 +82,13 @@
   background-color: rgb(51, 51, 51);
   border: solid 2px rgb(59, 59, 59);
   border-radius: 15px;
-  padding: 15px;
+  padding: 10px 15px 10px 10px;
   width: fit-content;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+  line-height: 1rem;
   font-weight: 700;
   display: flex;
-  gap: 10px;
+  gap: 11px;
   align-items: center;
   cursor: pointer;
   transition:
