@@ -33,7 +33,7 @@ const DashboardNavigation = () => {
 
   const switchCampaign = (id: string) => {
     setActiveCampaignId(id)
-    localStorage.setItem("activeCampaignId", id);
+    localStorage.setItem("activeCampaign", id);
   }
 
   const redirectToLogin = () => {

@@ -28,7 +28,7 @@ export default function CampaignEmptyState ({ type }: CampaignEmptyStateProps) {
 
   const switchCampaign = (id: string) => {
     setActiveCampaignId(id)
-    localStorage.setItem("activeCampaignId", id);
+    localStorage.setItem("activeCampaign", id);
   }
 
   return (
