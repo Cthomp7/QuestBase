@@ -157,7 +157,7 @@ const Quests = () => {
                       <p className={layoutStyles.card_title}>{quest.title}</p>
                       <div className={styles.quest_card_properties}>
                         <p className={`${styles.quest_card_property} ${styles.quest_status} ${styles[quest.status]}`}>
-                          {quest.status}
+                          {quest.status.replace(/_/g, " ")}
                         </p>
                         <p className={`${styles.quest_card_property} ${styles.quest_difficulty} ${styles[quest.difficulty]}`}>
                           {quest.difficulty}
