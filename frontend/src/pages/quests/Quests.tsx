@@ -139,7 +139,7 @@ const Quests = () => {
             onClick={() => setEditorVisible('create', true)}
           >
             <div className={layoutStyles.plus_icon}>
-              <PlusIcon color={"var(--qb-alien-green)"}/>
+              <PlusIcon />
             </div>
             <p>Create a new Quest</p>
           </div>

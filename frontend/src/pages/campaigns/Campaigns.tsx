@@ -122,15 +122,15 @@ const Campaigns = () => {
         <hr className={styles.campaign_hr}/>
         {campaigns.length > 0 ? (
           <>
-          <div className={styles.create_campaign} onClick={() => openEditor(null)}>
-            <div className={styles.plus_icon}>
+          <div className={layoutStyles.create_button} onClick={() => openEditor(null)}>
+            <div className={layoutStyles.plus_icon}>
               <PlusIcon />
             </div>
             <p>Create a new campaign</p>
           </div>
           <div className={styles.campaigns}>
               {campaigns.map((campaign) => (
-                <div key={campaign.id} className={styles.campaign}>
+                <div key={campaign.id} className={layoutStyles.card}>
                   <img 
                     className={styles.campaign_image} 
                     src="https://cdna.artstation.com/p/assets/images/images/087/888/970/large/sathish-kumar-2526.jpg?1746961387" 
@@ -166,8 +166,8 @@ const Campaigns = () => {
               <h2>No Campaigns Found</h2>
               <p>Start your new campaign below!</p>
             </div>
-            <div className={styles.create_campaign} onClick={() => openEditor(null)}>
-              <div className={styles.plus_icon}>
+            <div className={layoutStyles.create_button} onClick={() => openEditor(null)}>
+              <div className={layoutStyles.plus_icon}>
                 <PlusIcon />
               </div>
               <p>Create a new campaign</p>
