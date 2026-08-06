@@ -1,0 +1,19 @@
+.or_divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.or_divider hr {
+  flex: 1;
+  height: 1px;
+  max-width: 100px;
+  width: 100%;
+}
+
+.no_results_dropdown {
+  width: 100%;
+  max-width: 309px;
+}

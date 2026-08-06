@@ -8,6 +8,7 @@ import { useAuth } from "@/context/AuthContext"
 import { CreateQuestRequest, Quest } from "@/types/api/quest"
 import { useCampaign } from "@/context/campaign/useCampaign"
 import QuestEditor, { QuestEditorHandle } from "./QuestEditor/QuestEditor"
+import CampaignEmptyState from "@/components/CampaignEmptyState/CampaignEmptyState"
 
 const Quests = () => {
   const { user } = useAuth()
@@ -121,7 +122,7 @@ const Quests = () => {
     <div className={layoutStyles.page_container}>
       <div className={layoutStyles.header_container}>
         <h1 className={layoutStyles.header}>Quests</h1>
-        <h2 className={styles.selected_campaign}>{activeCampaign?.name}</h2>
+        {activeCampaign && <h2 className={styles.selected_campaign}>{activeCampaign?.name}</h2>}
       </div>
       <hr className={layoutStyles.hr}/>
       <QuestEditor
@@ -131,88 +132,91 @@ const Quests = () => {
         setEditorVisible={(visible) => setEditorVisible('create', visible)}
       />
       {/* QUESTS */}
-      {quests.length > 0 ? (
-        <>
-          <div 
-            ref={createDivRef}
-            className={layoutStyles.create_button}
-            onClick={() => setEditorVisible('create', true)}
-          >
-            <div className={layoutStyles.plus_icon}>
-              <PlusIcon />
-            </div>
-            <p>Create a new Quest</p>
-          </div>
-          <div className={styles.quests}>
-              {quests.map((quest, i) => (
-                <div 
-                  key={quest.id} 
-                  className={layoutStyles.card}
-                  style={{ order: i }}
-                >
-                  <div className={styles.quest_card_header}>
-                    <p className={layoutStyles.card_title}>{quest.title}</p>
-                    <div className={styles.quest_card_properties}>
-                      <p className={`${styles.quest_card_property} ${styles.quest_status} ${styles[quest.status]}`}>
-                        {quest.status}
-                      </p>
-                      <p className={`${styles.quest_card_property} ${styles.quest_difficulty} ${styles[quest.difficulty]}`}>
-                        {quest.difficulty}
-                      </p>
-                      <p className={`${styles.quest_card_property} ${styles.quest_xp}`}>
-                        {quest.rewardXp}{" "}XP
-                      </p>
-                    </div>
-                  </div>
-                  <p>{quest.description}</p>
-                  <div className={styles.quest_actions}>
-                    {confirmDeletion === quest.id
-                      ? <div className={styles.confirm_deletion}>
-                          <p>Are you sure you want to <span>DELETE</span> this quest?</p>
-                          <button onClick={() => deleteQuest(quest.id)}>Yes</button>
-                          <button onClick={() => setConfirmDeletion(-1)}>No</button>
-                        </div>
-                      : <>
-                          <EditIcon
-                            className={layoutStyles.edit_icon}
-                            onClick={() => setEditorToQuest(quest, i)} 
-                          />
-                          <TrashIcon 
-                            className={layoutStyles.trash_icon}
-                            onClick={() => setConfirmDeletion(quest.id)}
-                          />
-                        </>}
-                  </div>
-                </div>
-              ))}
-              <QuestEditor
-                ref={questEditorRef}
-                activeCampaignId={activeCampaign?.id ?? 0}
-                updateQuest={(id, req) => editQuest(id, req)}
-                setEditorVisible={(visible) => setEditorVisible('edit', visible)}
-              />
-          </div>
-        </>
-        ) : (
-          <div 
-            ref={noResultsRef}
-            className={layoutStyles.no_results}
-          >
-            <div>
-              <h2>No quests Found</h2>
-              <p>Create a new quest for your campaign below!</p>
-            </div>
+      {!activeCampaign ? (
+          <CampaignEmptyState type={"quests"} />
+        ) : quests.length > 0 ? (
+          <>
             <div 
+              ref={createDivRef}
               className={layoutStyles.create_button}
               onClick={() => setEditorVisible('create', true)}
             >
               <div className={layoutStyles.plus_icon}>
                 <PlusIcon />
               </div>
-              <p>Create a new quest</p>
+              <p>Create a new Quest</p>
             </div>
-          </div>
-        )}
+            <div className={styles.quests}>
+                {quests.map((quest, i) => (
+                  <div 
+                    key={quest.id} 
+                    className={layoutStyles.card}
+                    style={{ order: i }}
+                  >
+                    <div className={styles.quest_card_header}>
+                      <p className={layoutStyles.card_title}>{quest.title}</p>
+                      <div className={styles.quest_card_properties}>
+                        <p className={`${styles.quest_card_property} ${styles.quest_status} ${styles[quest.status]}`}>
+                          {quest.status}
+                        </p>
+                        <p className={`${styles.quest_card_property} ${styles.quest_difficulty} ${styles[quest.difficulty]}`}>
+                          {quest.difficulty}
+                        </p>
+                        <p className={`${styles.quest_card_property} ${styles.quest_xp}`}>
+                          {quest.rewardXp}{" "}XP
+                        </p>
+                      </div>
+                    </div>
+                    <p>{quest.description}</p>
+                    <div className={styles.quest_actions}>
+                      {confirmDeletion === quest.id
+                        ? <div className={styles.confirm_deletion}>
+                            <p>Are you sure you want to <span>DELETE</span> this quest?</p>
+                            <button onClick={() => deleteQuest(quest.id)}>Yes</button>
+                            <button onClick={() => setConfirmDeletion(-1)}>No</button>
+                          </div>
+                        : <>
+                            <EditIcon
+                              className={layoutStyles.edit_icon}
+                              onClick={() => setEditorToQuest(quest, i)} 
+                            />
+                            <TrashIcon 
+                              className={layoutStyles.trash_icon}
+                              onClick={() => setConfirmDeletion(quest.id)}
+                            />
+                          </>}
+                    </div>
+                  </div>
+                ))}
+                <QuestEditor
+                  ref={questEditorRef}
+                  activeCampaignId={activeCampaign?.id ?? 0}
+                  updateQuest={(id, req) => editQuest(id, req)}
+                  setEditorVisible={(visible) => setEditorVisible('edit', visible)}
+                />
+            </div>
+          </>
+          ) : (
+            <div 
+              ref={noResultsRef}
+              className={layoutStyles.no_results}
+            >
+              <div>
+                <h2>No quests Found</h2>
+                <p>Create a new quest for your campaign below!</p>
+              </div>
+              <div 
+                className={layoutStyles.create_button}
+                onClick={() => setEditorVisible('create', true)}
+              >
+                <div className={layoutStyles.plus_icon}>
+                  <PlusIcon />
+                </div>
+                <p>Create a new quest</p>
+              </div>
+            </div>
+          )
+        }
     </div>
   )
 }

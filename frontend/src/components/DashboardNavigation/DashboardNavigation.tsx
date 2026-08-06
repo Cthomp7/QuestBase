@@ -22,15 +22,13 @@ const DashboardNavigation = () => {
   // configure dropdown
   useEffect(() => {
     if (campaigns.length > 0) {
-      const selected = localStorage.getItem("activeCampaignId") ?? ""
       const options = campaigns.map((campaign) => ({
         label: campaign.name,
         value: String(campaign.id),
       }))
       setCampaignDropdownOptions(options)
-      if (selected) setActiveCampaignId(selected)
     }
-  },[campaigns, setActiveCampaignId])
+  },[campaigns])
 
   const switchCampaign = (id: string) => {
     setActiveCampaignId(id)

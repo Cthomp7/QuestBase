@@ -56,6 +56,10 @@
   font-family: "Brakle", "Montserrat", sans-serif;
 }
 
+h2 {
+  font-weight: 500;
+}
+
 p {
   font-weight: 300;
 }
