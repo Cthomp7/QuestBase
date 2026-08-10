@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.questbase.backend.auth.dto.CustomUserDetails;
 import com.questbase.backend.campaign.dto.CampaignResponse;
 import com.questbase.backend.campaign.dto.CreateCampaignRequest;
+import com.questbase.backend.npc.NpcService;
+import com.questbase.backend.npc.dto.NpcResponse;
 import com.questbase.backend.quest.QuestService;
 import com.questbase.backend.quest.dto.QuestResponse;
 
@@ -30,13 +32,16 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RequestMapping("/api/campaigns")
 public class CampaignController {
     private final CampaignService campaignService;
+    private final NpcService npcService;
     private final QuestService questService;
 
     public CampaignController(
         CampaignService campaignService,
+        NpcService npcService,
         QuestService questService
     ) {
         this.campaignService = campaignService;
+        this.npcService = npcService;
         this.questService = questService;
     }
 
@@ -76,6 +81,25 @@ public class CampaignController {
     @DeleteMapping("/{id}")
     public void deleteCampaign(@PathVariable Long id) {
         campaignService.deleteCampaign(id);
+    }
+
+    @GetMapping("/{campaignId}/npcs")
+    public ResponseEntity<List<NpcResponse>> getCampaignNpcs(
+        @PathVariable Long campaignId,
+        @RequestParam(defaultValue = "desc") String sort,
+        Authentication authentication
+    ) {
+        CustomUserDetails userDetails =
+            (CustomUserDetails) authentication.getPrincipal();
+
+        List<NpcResponse> npcs =
+            npcService.getNpcsByCampaignId(
+                campaignId,
+                userDetails.getId(),
+                sort
+            );
+
+        return ResponseEntity.ok(npcs);
     }
 
     @GetMapping("/{campaignId}/quests")

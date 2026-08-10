@@ -1,8 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/home/page";
-import Codex from "./pages/codex/page";
-import NPCs from "./pages/npcs/page";
+// import Codex from "./pages/codex/page";
+import Npcs from "./pages/npcs/Npcs";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Campaigns from "./pages/campaigns/Campaigns";
 import PublicLayout from "./layouts/PublicLayout";
@@ -33,9 +33,9 @@ const App: React.FC = () => {
             }
           >
             <Route path="/campaigns" element={<Campaigns />}/>
-            <Route path="/codex/*" element={<Codex />} />
+            {/* <Route path="/codex/*" element={<Codex />} /> */}
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/npcs/*" element={<NPCs />} />
+            <Route path="/npcs" element={<Npcs />} />
             <Route path="/quests/*" element={<Quests />} />
           </Route>
         </Route>

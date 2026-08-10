@@ -1,0 +1,95 @@
+.editor {
+  padding: 20px;
+  border: solid 2px #0a0a0a;
+  border-radius: 15px;
+  background-color: #131313;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.editor_container {
+  display: flex;
+  align-items: center;
+  gap: 10px 20px;
+  flex-wrap: wrap;
+}
+
+.editor_title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.editor_title > h2 > span {
+  color: var(--qb-alien-green);
+}
+
+.editor_property {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.dropdown_property {
+  width: 100%;
+  max-width: 170px;
+}
+.dropdown_property span,
+.dropdown_property div {
+  white-space: nowrap;
+}
+
+.editor_property p {
+  white-space: nowrap;
+}
+
+.editor input,
+.editor textarea {
+  background-color: rgba(61, 61, 61, 0.253);
+  border-color: rgb(10, 10, 10);
+  color: white;
+  padding: .5rem 1rem;
+}
+
+.editor textarea {
+  resize: vertical;
+  min-height: 180px;
+}
+
+.editor .small_textarea {
+  min-height: 80px;
+}
+
+.editor .button {
+  background-color: var(--qb-alien-green-trans);
+  color: var(--qb-alien-green);
+  border: solid 2px var(--qb-alien-green);
+  font-weight: 400;
+  font-size: 1.05rem;
+  line-height: 1rem;
+  width: fit-content;
+  padding: 0.7rem 1.3rem 0.6rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: ease-in-out .2s;
+}
+
+.editor .button:hover {
+  background-color: var(--qb-periwinkle-trans);
+  border-color: var(--qb-periwinkle);
+  color: var(--qb-periwinkle);
+}
+
+.green_close_icon {
+  stroke: var(--qb-alien-green);
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  transition: stroke 0.2s ease;
+}
+.green_close_icon:hover {
+  stroke: var(--qb-alien-green-trans);
+}

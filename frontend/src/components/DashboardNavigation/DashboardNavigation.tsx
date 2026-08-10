@@ -1,13 +1,13 @@
 import { Link, useNavigate } from "react-router-dom"
 import styles from "./DashboardNavigation.module.css"
-import layoutStyles from "@/layouts/AuthLayout/AuthLayout.module.css"
 import { useEffect, useState } from "react"
 import Dropdown, { DropdownOption } from "@/components/Dropdown/Dropdown"
 import { useCampaign } from "@/context/campaign/useCampaign"
 import ProfilePicture from "@/assets/imgs/profiles/Ribbert.png"
 import { useAuth } from "@/context/AuthContext"
 import MenuDropdown from "../MenuDropdown/MenuDropdown"
-import { ArrowLeft, PlusIcon } from "lucide-react"
+import { ArrowLeft } from "lucide-react"
+import CreateButton from "../ui/CreateButton/CreateButton"
 
 const DashboardNavigation = () => {
   const navigate = useNavigate()
@@ -17,6 +17,7 @@ const DashboardNavigation = () => {
   const [accountMenuOpen, setAccountMenuOpen] = useState(false)
 
   const pages = [
+    { name: "NPCs", url: "/npcs" },
     { name: "Quests", url: "/quests" }
   ]
 
@@ -96,14 +97,11 @@ const DashboardNavigation = () => {
                 value={activeCampaignId}
                 onChange={(c) => switchCampaign(c)}
               ></Dropdown>
-            : <div 
-                className={`${layoutStyles.create_button} ${layoutStyles.mini}`}
-              >
-                <div className={layoutStyles.plus_icon}>
-                  <PlusIcon />
-                </div>
-                <p onClick={() => navigate("/campaigns")}>Create a new campaign</p>
-              </div>
+            : <CreateButton 
+                text="Create a new campaign"
+                size="small"
+                onClick={() => navigate("/campaigns")}
+              />
           }
         </section>
         <section className={styles.navigation_pages}>
@@ -117,6 +115,7 @@ const DashboardNavigation = () => {
             </div>
           ))}
         </section>
+        <p style={{ margin: "10px" }}>More coming soon...</p>
       </div>
     </div>
   )

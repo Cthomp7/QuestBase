@@ -1,0 +1,2 @@
+ALTER TABLE npcs
+ADD level INTEGER;

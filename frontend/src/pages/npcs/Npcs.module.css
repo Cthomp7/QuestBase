@@ -1,0 +1,79 @@
+.npc_property {
+  padding: 0.3rem 0.5rem;
+  border-radius: 25px;
+  border-width: 2px;
+  border-style: solid;
+}
+
+.npc_traits {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.npc_traits p {
+  font-size: 1.05rem;
+  line-height: 1.05rem;
+  transform: translateY(3px);
+}
+
+.npc_traits svg {
+  color: var(--qb-alien-green);
+  flex: 0 0 auto;
+}
+
+
+.npc_traits > div {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.npc_information {
+  display: none;
+}
+
+.npc_role.OTHER {
+  background-color: var(--qb-periwinkle-trans);
+  border-color: var(--qb-periwinkle);
+  color: var(--qb-periwinkle);
+}
+
+.npc_status.ALIVE {
+  background-color: var(--qb-blue-slime-trans);
+  border-color: var(--qb-blue-slime);
+  color: var(--qb-blue-slime);
+}
+
+.npc_status.UNKNOWN {
+  background-color: var(--qb-mana-star-trans);
+  border-color: var(--qb-mana-star);
+  color: var(--qb-mana-star);
+}
+
+.npc_role.ALLY,
+.npc_role.QUEST_GIVER {
+  background-color: var(--qb-alien-green-trans);
+  border-color: var(--qb-alien-green);
+  color: var(--qb-alien-green);;
+}
+
+.npc_role.NEUTRAL {
+  background-color: var(--qb-mimic-coin-trans);
+  border-color: var(--qb-mimic-coin);
+  color: var(--qb-mimic-coin);
+}
+
+.npc_role.ENEMY {
+  background-color: var(--qb-error-red-trans);
+  border-color: var(--qb-error-red);
+  color: var(--qb-error-red)
+}
+
+.npc_status.MISSING,
+.npc_role.MERCHANT {
+  background-color: var(--qb-pixie-dust-trans);
+  border-color: var(--qb-pixie-dust);
+  color: var(--qb-pixie-dust);
+}
