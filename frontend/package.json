@@ -12,6 +12,9 @@
     "start:prod": "NODE_ENV=production node server/server.js"
   },
   "dependencies": {
+    "@tiptap/pm": "^3.29.2",
+    "@tiptap/react": "^3.29.2",
+    "@tiptap/starter-kit": "^3.29.2",
     "@types/express": "^5.0.1",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",

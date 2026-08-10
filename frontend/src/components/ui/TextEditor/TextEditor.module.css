@@ -1,0 +1,49 @@
+.editor {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.toolbar {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.toolbar button {
+  border: none;
+  background: transparent;
+  padding: .2rem;
+  cursor: pointer;
+  width: fit-content;
+  transition: color ease-in-out .2s;
+}
+
+.toolbar button > svg {
+  width: 24px;
+  height: 24px;
+}
+
+.toolbar button:hover {
+  color: var(--qb-alien-green);
+}
+
+.toolbar button.active {
+  color: var(--qb-alien-green);
+}
+
+.editor :global(.tiptap) {
+  min-height: 180px;
+  padding: 1rem;
+  outline: none;
+}
+
+.editor :global(.tiptap p) {
+  margin: 0 0 0.75rem;
+}
+
+.editor :global(.tiptap ul),
+.editor :global(.tiptap ol) {
+  padding-left: 1.5rem;
+}

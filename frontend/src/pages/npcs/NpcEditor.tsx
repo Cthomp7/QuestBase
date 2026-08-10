@@ -2,12 +2,12 @@ import Dropdown from "@/components/Dropdown/Dropdown"
 import Editor from "@/components/Editor/Editor"
 import editorStyles from "@/components/Editor/Editor.module.css"
 import { useCampaign } from "@/context/campaign/useCampaign"
-import { CreateNpcRequest } from "@/types/api/npc"
-import { useState } from "react"
+import { CreateNpcRequest, Npc } from "@/types/api/npc"
+import { useEffect, useState } from "react"
 
 interface NpcEditorProps {
   action: string
-  npc?: string | null,
+  npc?: Npc | null,
   onTrigger: (npc: CreateNpcRequest) => void
   onClose: () => void
 }
@@ -31,7 +31,7 @@ export default function NpcEditor ({
 
   const header = action === "Create"
     ? <>Creating an <span>NPC</span></>
-    : <>Editing <span>{npc}</span></>
+    : <>Editing: <span>{npc?.name}</span></>
 
   const statuses = [
     { label: "Alive", value: "ALIVE" },
@@ -48,6 +48,20 @@ export default function NpcEditor ({
     { label: "Quest Giver", value: "QUEST_GIVER" },
     { label: "Other", value: "OTHER" }
   ]
+
+  useEffect(() => {
+    if (npc) {
+      setName(npc.name)
+      setLevel(String(npc?.level))
+      setStatus(npc?.status)
+      setRole(npc?.role)
+      setRace(npc?.race)
+      setOccupation(npc?.occupation)
+      setDescription(npc?.description)
+      setPersonality(npc?.personality)
+      setAppearance(npc?.appearance)
+    }
+  },[npc])
 
   const onClick = () => {
     if (!activeCampaign?.id) {

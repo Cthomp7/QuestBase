@@ -28,6 +28,15 @@ public class NpcService {
         this.campaignRepository = campaignRepository;
     }
 
+    public NpcResponse getNpcById(Long id) {
+        User currentUser = authService.getCurrentUser();
+
+        Npc npc = npcRepository.findByIdAndCampaignUser(id, currentUser)
+            .orElseThrow(() -> new RuntimeException("NPC not found"));
+
+        return toResponse(npc);
+    }
+
     public List<NpcResponse> getAllNpcs() {
         User currentUser = authService.getCurrentUser();
 
@@ -92,6 +101,57 @@ public class NpcService {
         return npcs.stream()
             .map(npc -> toResponse(npc))
             .toList();
+    }
+
+    public NpcResponse updateNpc(
+        Long id,
+        CreateNpcRequest request
+    ) {
+        User currentUser = authService.getCurrentUser();
+
+        Npc npc = npcRepository
+            .findByIdAndCampaignUser(id, currentUser)
+            .orElseThrow(() -> new RuntimeException("NPC not found"));
+
+        npc.setName(request.name());
+        npc.setDescription(request.description());
+        npc.setLevel(request.level());
+        npc.setStatus(request.status());
+        npc.setRole(request.role());
+        npc.setRace(request.race());
+        npc.setOccupation(request.occupation());
+        npc.setPersonality(request.personality());
+        npc.setAppearance(request.appearance());
+
+        Npc savedNpc = npcRepository.save(npc);
+        return toResponse(savedNpc);
+    }
+
+    public void deleteNpc(Long id) {
+        User currentUser = authService.getCurrentUser();
+
+        Npc npc = npcRepository
+            .findByIdAndCampaignUser(id, currentUser)
+            .orElseThrow(() -> new RuntimeException("NPC not found"));
+
+        npcRepository.delete(npc);
+    }
+
+    public NpcResponse saveNpcNotesById(
+        Long id,
+        String notes
+    ) {
+        User currentUser = authService.getCurrentUser();
+
+        Npc npc = npcRepository
+            .findByIdAndCampaignUser(id, currentUser)
+            .orElseThrow(() -> new RuntimeException("NPC not found"));
+
+        npc.setNotes(notes);
+
+        Npc savedNpc = npcRepository.save(npc);
+
+        return toResponse(savedNpc);
     }
 
     // =========================================================================

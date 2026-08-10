@@ -9,10 +9,12 @@ import NpcEditor from "./NpcEditor"
 import { CreateNpcRequest, Npc } from "@/types/api/npc"
 import { useAuth } from "@/context/AuthContext"
 import { Briefcase, ChartNoAxesColumnIncreasing, IdCard } from "lucide-react"
+import { useNavigate } from "react-router-dom"
 
 export default function Npcs () {
   const { user } = useAuth()
   const { activeCampaign } = useCampaign()
+  const navigate = useNavigate()
   const [ npcs, setNpcs ] = useState<Npc[]>([])
   const [ openCreateEditor, setOpenCreateEditor ] = useState<boolean>()
 
@@ -87,12 +89,12 @@ export default function Npcs () {
             onClick={toggleEditor}
           />}
           {npcs.map((npc) => (
-            <div className={layoutStyles.card}>
+            <div key={npc.id} className={layoutStyles.card} onClick={() => navigate(`/npcs/${npc.id}`)}>
               <div className={layoutStyles.card_header}>
                 <h2>{npc.name}</h2>
                 <div className={layoutStyles.card_properties}>
-                  <p className={`${styles.npc_property} ${styles.npc_status} ${styles[npc.status]}`}>{npc.status}</p>
-                  <p className={`${styles.npc_property} ${styles.npc_role} ${styles[npc.role]}`}>{npc.role.replace(/_/g, " ")}</p>
+                  {npc.status && <p className={`${styles.npc_property} ${styles.npc_status} ${styles[npc.status]}`}>{npc.status}</p>}
+                  {npc.role && <p className={`${styles.npc_property} ${styles.npc_role} ${styles[npc.role]}`}>{npc.role.replace(/_/g, " ")}</p>}
                 </div>
               </div>
               <div className={styles.npc_traits}>

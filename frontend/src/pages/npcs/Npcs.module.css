@@ -12,7 +12,7 @@
   flex-wrap: wrap;
 }
 
-.npc_traits p {
+.npc_traits > div > p {
   font-size: 1.05rem;
   line-height: 1.05rem;
   transform: translateY(3px);
@@ -23,15 +23,10 @@
   flex: 0 0 auto;
 }
 
-
 .npc_traits > div {
   display: flex;
   gap: 10px;
   align-items: center;
-}
-
-.npc_information {
-  display: none;
 }
 
 .npc_role.OTHER {
@@ -59,7 +54,8 @@
   color: var(--qb-alien-green);;
 }
 
-.npc_role.NEUTRAL {
+.npc_role.NEUTRAL,
+.npc_role.MERCHANT {
   background-color: var(--qb-mimic-coin-trans);
   border-color: var(--qb-mimic-coin);
   color: var(--qb-mimic-coin);
@@ -71,9 +67,67 @@
   color: var(--qb-error-red)
 }
 
-.npc_status.MISSING,
-.npc_role.MERCHANT {
+.npc_status.MISSING {
   background-color: var(--qb-pixie-dust-trans);
   border-color: var(--qb-pixie-dust);
   color: var(--qb-pixie-dust);
+}
+
+/* ========================================================================== */
+/* NPC Details */
+/* ========================================================================== */
+
+.npc_header h1 {
+  margin-bottom: 10px;
+}
+
+.toolbar {
+  border: 1px solid #ccc;
+  border-radius: 0 0 8px 8px;
+  padding: 0.8em;
+  height: fit-content;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.toolbar svg {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.green_icon:hover,
+.green_icon.active {
+  stroke: var(--qb-alien-green)
+}
+
+.red_icon {
+  transform: translateY(-1px);
+}
+.red_icon:hover {
+  stroke: var(--qb-error-red)
+}
+
+.npc_information {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.npc_info_2 {
+  display: flex;
+  gap: 20px;
+}
+
+.npc_text {
+  font-size: 1.1rem;
+  border-left: 2px solid var(--qb-alien-green-trans);
+  padding-left: 15px;
+}
+
+.npc_text_label {
+  color: var(--qb-alien-green);
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
 }
