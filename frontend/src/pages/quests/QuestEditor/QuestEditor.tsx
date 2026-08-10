@@ -1,5 +1,6 @@
 import { forwardRef, useImperativeHandle, useRef, useState } from "react"
 import styles from "./QuestEditor.module.css"
+import layoutStyles from "@/layouts/AuthLayout/AuthLayout.module.css"
 import Dropdown from "@/components/Dropdown/Dropdown"
 import CloseIcon from "@/assets/x.svg?react"
 import { CreateQuestRequest, Quest } from "@/types/api/quest"
@@ -10,6 +11,7 @@ export type QuestEditorHandle = HTMLDivElement & {
 
 interface QuestEditorProps {
   style?: React.CSSProperties
+  action: string
   activeCampaignId: number | null
   updateQuest: (id: number, quest: CreateQuestRequest) => void
   setEditorVisible: (visible: boolean) => void
@@ -17,6 +19,7 @@ interface QuestEditorProps {
 
 const QuestEditor = forwardRef<QuestEditorHandle, QuestEditorProps>(({ 
   style,
+  action,
   activeCampaignId,
   updateQuest,
   setEditorVisible
@@ -28,9 +31,6 @@ const QuestEditor = forwardRef<QuestEditorHandle, QuestEditorProps>(({
   const [difficulty, setDifficulty] = useState<string>("")
   const [xp, setXp] = useState<string>("")
   const [description, setDescription] = useState<string>("")
-
-  // Dynamic UI 
-  const [header, setHeader] = useState<string>("Create a Quest")
   const [buttonText, setButtontext] = useState<string>("Create")
 
   // TODO: fetch status and difficulty options from backend
@@ -62,7 +62,6 @@ const QuestEditor = forwardRef<QuestEditorHandle, QuestEditorProps>(({
   })
 
   const handleEditQuest = (quest: Quest) => {
-    setHeader("Edit Quest")
     setButtontext("Update")
     setId(quest.id)
     setTitle(quest.title)
@@ -70,6 +69,16 @@ const QuestEditor = forwardRef<QuestEditorHandle, QuestEditorProps>(({
     setStatus(quest.status)
     setDifficulty(quest.difficulty)
     setDescription(quest.description)
+  }
+
+  const resetQuestEditor = () => {
+    setButtontext("Create")
+    setId(-1)
+    setTitle("")
+    setXp("")
+    setStatus("")
+    setDifficulty("")
+    setDescription("")
   }
 
   const handleCreateQuest = () => {
@@ -83,11 +92,8 @@ const QuestEditor = forwardRef<QuestEditorHandle, QuestEditorProps>(({
       campaignId: Number(activeCampaignId)
     }
     updateQuest(id, quest)
+    resetQuestEditor()
   }
-
-  // const editQuest = () => {
-
-  // }
 
   return (
     <div 
@@ -97,7 +103,12 @@ const QuestEditor = forwardRef<QuestEditorHandle, QuestEditorProps>(({
     >
       <div className={styles.editor_content}>
         <div className={styles.editor_title}>
-          <h1>{header}</h1>
+          <h2>
+            {action === "Create" 
+              ? <>Creating a <span>quest</span></>
+              : <>Editing: <span>{title}</span></>
+            }
+          </h2>
           <CloseIcon
             className={styles.closeIcon} 
             onClick={() => setEditorVisible(false)}
@@ -111,6 +122,7 @@ const QuestEditor = forwardRef<QuestEditorHandle, QuestEditorProps>(({
             placeholder="Name"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+            className={layoutStyles.dark_input}
           />
         </div>
         <div className={styles.editor_container}>
@@ -140,7 +152,7 @@ const QuestEditor = forwardRef<QuestEditorHandle, QuestEditorProps>(({
               name=""
               min={0}
               max={1000000}
-              className={styles.quest_property}
+              className={`${styles.quest_property} ${layoutStyles.dark_input}`}
               value={xp}
               onChange={(e) => setXp(e.target.value)}
             />
@@ -148,13 +160,18 @@ const QuestEditor = forwardRef<QuestEditorHandle, QuestEditorProps>(({
         </div>
         <p>Description:</p>
         <textarea 
-          className={styles.quest_description}
+          className={`${styles.quest_description} ${layoutStyles.dark_input}`}
           name="description" 
           placeholder="Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-        <button className={styles.edit_button} onClick={handleCreateQuest}>{buttonText}</button>
+        <div>
+          <button 
+            className={layoutStyles.green_button} 
+            onClick={handleCreateQuest}
+          >{buttonText}</button>
+        </div>
       </div>
     </div>
   )

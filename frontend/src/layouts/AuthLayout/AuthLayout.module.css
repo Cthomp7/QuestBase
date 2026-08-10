@@ -126,3 +126,38 @@
 .trash_icon:hover {
   stroke: rgb(255, 68, 68);
 }
+
+.dark_input {
+  background-color: rgba(61, 61, 61, 0.253);
+  border-color: rgb(10, 10, 10);
+  color: white;
+  padding: .5rem 1rem;
+}
+
+textarea.dark_input {
+  resize: vertical;
+  min-height: 180px;
+}
+
+.green_button {
+  background-color: var(--qb-alien-green-trans);
+  color: var(--qb-alien-green);
+  border: solid 2px var(--qb-alien-green);
+  font-weight: 400;
+  font-size: 1.05rem;
+  line-height: 1rem;
+  width: fit-content;
+  padding: 0.7rem 1.3rem 0.6rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: ease-in-out .2s;
+}
+
+.green_button:hover {
+  background-color: var(--qb-periwinkle-trans);
+  border-color: var(--qb-periwinkle);
+  color: var(--qb-periwinkle);
+}

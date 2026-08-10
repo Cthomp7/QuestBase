@@ -3,7 +3,7 @@ import styles from "./Quests.module.css"
 import EditIcon from "@/assets/edit.svg?react"
 import PlusIcon from "@/assets/plus.svg?react"
 import TrashIcon from "@/assets/trash.svg?react"
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { useAuth } from "@/context/AuthContext"
 import { CreateQuestRequest, Quest } from "@/types/api/quest"
 import { useCampaign } from "@/context/campaign/useCampaign"
@@ -18,23 +18,34 @@ const Quests = () => {
   const createDivRef = useRef<HTMLDivElement | null>(null)
   const questCreateEditorRef = useRef<QuestEditorHandle | null>(null)
   const questEditorRef = useRef<QuestEditorHandle | null>(null)
+  const [editting, setEditting] = useState<number>(-1)
   const [confirmDeletion, setConfirmDeletion] = useState<number>(-1)
 
-  useEffect(() => {
-    if (user && activeCampaign?.id) fetchQuests()
-  },[user, activeCampaign])
+const fetchQuests = useCallback(async () => {
+  if (!activeCampaign?.id) return;
 
-  const fetchQuests = async () => {
-    try {
-      const response = await fetch(`/api/campaigns/${activeCampaign?.id}/quests`, { method: "GET" })
-      if (response.ok) {
-        const quests = await response.json()
-        setQuests(quests)
-      } else console.error(response)
-    } catch (error) {
-      console.error("Failed to fetch quests: ", error)
+  try {
+    const response = await fetch(
+      `/api/campaigns/${activeCampaign.id}/quests`,
+      { method: "GET" }
+    );
+
+    if (response.ok) {
+      const quests = await response.json();
+      setQuests(quests);
+    } else {
+      console.error(response);
     }
+  } catch (error) {
+    console.error("Failed to fetch quests: ", error);
   }
+}, [activeCampaign?.id]);
+
+  useEffect(() => {
+  if (user && activeCampaign?.id) {
+    fetchQuests()
+  }
+}, [user, activeCampaign, fetchQuests])
 
   const createQuest = async (questRequest: CreateQuestRequest) => {
     try {
@@ -107,12 +118,14 @@ const Quests = () => {
       noResultsRef.current.style.display = visible ? "none" : "flex"
     if (createDivRef.current)
       createDivRef.current.style.display = visible ? "none" : "flex"
+
+    if (!visible && type === 'edit') setEditting(-1)
   }
 
   const setEditorToQuest = (quest: Quest, index: number) => {
     if (questEditorRef.current) {
       questEditorRef.current.editQuest(quest)
-      // TODO: remove quest from layout temporarily
+      setEditting(index)
       questEditorRef.current.style.order = index.toString()
       questEditorRef.current.style.display = "block"
     }
@@ -127,6 +140,7 @@ const Quests = () => {
       <hr className={layoutStyles.hr}/>
       <QuestEditor
         ref={questCreateEditorRef}
+        action="Create"
         activeCampaignId={activeCampaign?.id ?? 0}
         updateQuest={(_id, req) => createQuest(req)}
         setEditorVisible={(visible) => setEditorVisible('create', visible)}
@@ -136,7 +150,7 @@ const Quests = () => {
           <CampaignEmptyState type={"quests"} />
         ) : quests.length > 0 ? (
           <>
-            <div 
+            <div
               ref={createDivRef}
               className={layoutStyles.create_button}
               onClick={() => setEditorVisible('create', true)}
@@ -151,7 +165,7 @@ const Quests = () => {
                   <div 
                     key={quest.id} 
                     className={layoutStyles.card}
-                    style={{ order: i }}
+                    style={{ order: i, display: editting === i ? "none" : "flex" }}
                   >
                     <div className={styles.quest_card_header}>
                       <p className={layoutStyles.card_title}>{quest.title}</p>
@@ -190,6 +204,7 @@ const Quests = () => {
                 ))}
                 <QuestEditor
                   ref={questEditorRef}
+                  action="Edit"
                   activeCampaignId={activeCampaign?.id ?? 0}
                   updateQuest={(id, req) => editQuest(id, req)}
                   setEditorVisible={(visible) => setEditorVisible('edit', visible)}
