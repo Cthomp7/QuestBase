@@ -13,15 +13,6 @@
   gap: 10px;
 }
 
-.editor_title {
-  display: flex;
-  justify-content: space-between;
-}
-
-.editor_title > h2 > span {
-  color: var(--qb-alien-green);
-}
-
 .editor_container {
   display: flex;
   align-items: center;
@@ -50,17 +41,6 @@
   min-height: 53px;
   max-height: 250px;
   resize: vertical;
-}
-
-.closeIcon {
-  stroke: var(--qb-alien-green);
-  width: 35px;
-  height: 35px;
-  cursor: pointer;
-  transition: stroke 0.2s ease;
-}
-.editor_title .closeIcon:hover {
-  stroke: var(--qb-alien-green-trans);
 }
 
 .edit_button {

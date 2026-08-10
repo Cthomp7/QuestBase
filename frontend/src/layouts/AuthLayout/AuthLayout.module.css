@@ -127,6 +127,26 @@
   stroke: rgb(255, 68, 68);
 }
 
+/* ========================================================================== */
+/* Editors */
+/* ========================================================================== */
+
+.editor {
+  padding: 20px;
+  border: solid 2px #0a0a0a;
+  border-radius: 15px;
+  background-color: #131313;
+}
+
+.editor_title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.editor_title > h2 > span {
+  color: var(--qb-alien-green);
+}
+
 .dark_input {
   background-color: rgba(61, 61, 61, 0.253);
   border-color: rgb(10, 10, 10);
@@ -160,4 +180,15 @@ textarea.dark_input {
   background-color: var(--qb-periwinkle-trans);
   border-color: var(--qb-periwinkle);
   color: var(--qb-periwinkle);
+}
+
+.green_close_icon {
+  stroke: var(--qb-alien-green);
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  transition: stroke 0.2s ease;
+}
+.editor_title .green_close_icon:hover {
+  stroke: var(--qb-alien-green-trans);
 }

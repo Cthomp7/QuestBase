@@ -98,11 +98,11 @@ const QuestEditor = forwardRef<QuestEditorHandle, QuestEditorProps>(({
   return (
     <div 
       ref={editorRef}
-      className={styles.quest_editor}
+      className={layoutStyles.editor}
       style={style}
     >
       <div className={styles.editor_content}>
-        <div className={styles.editor_title}>
+        <div className={layoutStyles.editor_title}>
           <h2>
             {action === "Create" 
               ? <>Creating a <span>quest</span></>
@@ -110,7 +110,7 @@ const QuestEditor = forwardRef<QuestEditorHandle, QuestEditorProps>(({
             }
           </h2>
           <CloseIcon
-            className={styles.closeIcon} 
+            className={layoutStyles.green_close_icon} 
             onClick={() => setEditorVisible(false)}
           />
         </div>

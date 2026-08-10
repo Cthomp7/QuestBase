@@ -19,21 +19,21 @@ const Campaigns = () => {
   const [system, setSystem] = useState<string>("")
   const [deleteText, setDeleteText] = useState<string>("")
   const [editorButton, setEditorButton] = useState<string>("Create")
-  const [editorHeading, setEditorHeading] = useState<string>("Create a campaign")
+  const [action, setAction] = useState<string>("")
 
   const editorRef = useRef<HTMLDivElement>(null)
   const deletionPopupRef = useRef<HTMLDivElement>(null)
 
   const openEditor = (campaign: Campaign | null) => {
     if (campaign) {
-      setEditorHeading("Edit campaign")
+      setAction("Edit")
       setEditorButton("Update")
       setName(campaign?.name)
       setDescription(campaign?.description)
       setSystem(campaign?.system)
       setCurrentCampaign(campaign)
     } else {
-      setEditorHeading("Create a campaign")
+      setAction("Create")
       setEditorButton("Create")
     }
     editorRef.current?.style.setProperty("display", "flex")
@@ -144,7 +144,7 @@ const Campaigns = () => {
                     <div className={styles.campaign_text}>
                       <p className={layoutStyles.card_title}>{campaign.name}</p>
                       <hr />
-                      <p>{campaign.description}</p>
+                      <p className={styles.campaign_description}>{campaign.description}</p>
                     </div>
                     <div className={styles.campaign_bottom}>
                       <p className={styles.campaign_system}>{campaign.system}</p>
@@ -181,11 +181,16 @@ const Campaigns = () => {
       </div>
       {/* Campaign Editor */}
       <div ref={editorRef} className={styles.campaign_editor}>
-        <div className={styles.editor_content}>
-          <div className={styles.editor_title}>
-            <h1>{editorHeading}</h1>
+        <div className={`${layoutStyles.editor} ${styles.editor_content}`}>
+          <div className={layoutStyles.editor_title}>
+            <h2>
+              {action === "Create" 
+                ? <>Creating a <span>campaign</span></>
+                : <>Editing: <span>{name}</span></>
+              }
+            </h2>
             <CloseIcon
-              className={styles.closeIcon} 
+              className={layoutStyles.green_close_icon} 
               onClick={closeEditor}
             />
           </div>
@@ -196,10 +201,11 @@ const Campaigns = () => {
             placeholder="Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            className={layoutStyles.dark_input}
           />
           <p>Description:</p>
           <textarea 
-            className={styles.description}
+            className={layoutStyles.dark_input}
             name="description" 
             placeholder="Description"
             value={description}
@@ -212,17 +218,21 @@ const Campaigns = () => {
             placeholder="System (ex: D&D 5th Edition)"
             value={system}
             onChange={(e) => setSystem(e.target.value)}
+            className={layoutStyles.dark_input}
           />
-          <button onClick={updateCampaign}>{editorButton}</button>
+          <button 
+            onClick={updateCampaign}
+            className={layoutStyles.green_button}
+          >{editorButton}</button>
         </div>
       </div>
       {/* Delete warning message */}
       <div ref={deletionPopupRef} className={styles.campaign_editor}>
-        <div className={styles.editor_content}>
-          <div className={styles.editor_title}>
-            <h1>Delete Campaign</h1>
+        <div className={`${layoutStyles.editor} ${styles.editor_content}`}>
+          <div className={layoutStyles.editor_title}>
+            <h2><span>Delete</span> Campaign</h2>
             <CloseIcon
-                className={styles.closeIcon} 
+                className={layoutStyles.green_close_icon} 
                 onClick={closeDeletionPopup}
               />
           </div>
@@ -235,8 +245,12 @@ const Campaigns = () => {
             value={deleteText}
             onChange={(e) => setDeleteText(e.target.value)}
             autoComplete="off"
+            className={layoutStyles.dark_input}
           />
-          <button onClick={deleteCampaign}>Delete</button>
+          <button 
+            onClick={deleteCampaign}
+            className={layoutStyles.green_button}
+          >Delete</button>
         </div>
       </div>
     </>
