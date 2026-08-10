@@ -1,7 +1,6 @@
 import layoutStyles from "@/layouts/AuthLayout/AuthLayout.module.css"
 import styles from "./Quests.module.css"
 import EditIcon from "@/assets/edit.svg?react"
-import PlusIcon from "@/assets/plus.svg?react"
 import TrashIcon from "@/assets/trash.svg?react"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useAuth } from "@/context/AuthContext"
@@ -10,6 +9,7 @@ import { useCampaign } from "@/context/campaign/useCampaign"
 import QuestEditor, { QuestEditorHandle } from "./QuestEditor/QuestEditor"
 import CampaignEmptyState from "@/components/CampaignEmptyState/CampaignEmptyState"
 import PageHeader from "@/components/ui/PageHeader/PageHeader"
+import CreateButton from "@/components/ui/CreateButton/CreateButton"
 
 const Quests = () => {
   const { user } = useAuth()
@@ -147,16 +147,10 @@ const fetchQuests = useCallback(async () => {
           <CampaignEmptyState type={"quests"} />
         ) : quests.length > 0 ? (
           <>
-            <div
-              ref={createDivRef}
-              className={layoutStyles.create_button}
+            <CreateButton
+              text="Create a new Quest"
               onClick={() => setEditorVisible('create', true)}
-            >
-              <div className={layoutStyles.plus_icon}>
-                <PlusIcon />
-              </div>
-              <p>Create a new Quest</p>
-            </div>
+            />
             <div className={styles.quests}>
                 {quests.map((quest, i) => (
                   <div 
@@ -217,15 +211,10 @@ const fetchQuests = useCallback(async () => {
                 <h2>No quests Found</h2>
                 <p>Create a new quest for your campaign below!</p>
               </div>
-              <div 
-                className={layoutStyles.create_button}
+              <CreateButton
+                text="Create a new quest"
                 onClick={() => setEditorVisible('create', true)}
-              >
-                <div className={layoutStyles.plus_icon}>
-                  <PlusIcon />
-                </div>
-                <p>Create a new quest</p>
-              </div>
+              />
             </div>
           )
         }

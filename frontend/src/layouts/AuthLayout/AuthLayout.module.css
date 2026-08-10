@@ -54,50 +54,6 @@
   gap: 40px
 }
 
-.plus_icon {
-  background-color: var(--qb-alien-green-trans);
-  border: solid 2px var(--qb-alien-green);
-  border-radius: 25px;
-  padding: 2px;
-  display: flex;
-  align-items: center;
-}
-
-.plus_icon > svg {
-  stroke: var(--qb-alien-green);
-}
-
-.mini .plus_icon > svg {
-  width: 15px;
-  height: 15px;
-}
-
-.create_button {
-  background-color: rgb(51, 51, 51);
-  border: solid 2px rgb(59, 59, 59);
-  border-radius: 15px;
-  padding: 10px 15px 10px 10px;
-  width: fit-content;
-  font-size: 1.1rem;
-  line-height: 1rem;
-  font-weight: 700;
-  display: flex;
-  gap: 11px;
-  align-items: center;
-  cursor: pointer;
-  transition:
-    background-color 0.2s ease;
-}
-.create_button:hover {
-  background-color: rgb(40, 40, 40);
-}
-
-.create_button.mini {
-  padding: 7px 11px 7px 7px;
-  font-size: .9rem;
-  gap: 8px;
-}
-
 .edit_icon {
   stroke: rgb(212, 212, 212);
 }

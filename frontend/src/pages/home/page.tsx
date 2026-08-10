@@ -6,7 +6,7 @@ import MediumSparkle from "@/assets/svgs/medium-sparkle.svg?react"
 import LargeSparkle from "@/assets/svgs/large-sparkle.svg?react"
 import { CircleX, FolderGit2, PartyPopper, Send } from "lucide-react"
 import { useEffect, useState } from "react"
-import Loader from "@/components/ui/loader/Loader"
+import Loader from "@/components/ui/Loader/Loader"
 
 function Home() {
   const [name, setName] = useState<string>("")

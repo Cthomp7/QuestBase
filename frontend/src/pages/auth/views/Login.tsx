@@ -3,7 +3,7 @@ import { useAuth } from "@/context/AuthContext"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import styles from "../Auth.module.css";
-import Loader from "@/components/ui/loader/Loader";
+import Loader from "@/components/ui/Loader/Loader";
 
 interface LoginProps {
   onError: (error: string) => void

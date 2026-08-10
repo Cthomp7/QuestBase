@@ -4,11 +4,11 @@ import { Campaign } from "@/types/api/campaign";
 import { useRef, useState } from "react"
 import CloseIcon from "../../assets/x.svg?react"
 import EditIcon from "../../assets/edit.svg?react"
-import PlusIcon from "../../assets/plus.svg?react"
 import TrashIcon from "../../assets/trash.svg?react"
 import { useCampaign } from "@/context/campaign/useCampaign";
 import CampaignBanner from "@/assets/imgs/Campaign_Banner.png"
 import PageHeader from "@/components/ui/PageHeader/PageHeader";
+import CreateButton from "@/components/ui/CreateButton/CreateButton";
 
 // TODO: add a loading sequence between fetchCampaigns
 
@@ -126,12 +126,10 @@ const Campaigns = () => {
         <PageHeader title="Campaigns"/>
         {campaigns.length > 0 ? (
           <>
-          <div className={layoutStyles.create_button} onClick={() => openEditor(null)}>
-            <div className={layoutStyles.plus_icon}>
-              <PlusIcon />
-            </div>
-            <p>Create a new campaign</p>
-          </div>
+          <CreateButton
+            text="Create a new campaign"
+            onClick={() => openEditor(null)}
+          />
           <div className={styles.campaigns}>
               {campaigns.map((campaign) => (
                 <div key={campaign.id} className={layoutStyles.card}>
@@ -170,12 +168,10 @@ const Campaigns = () => {
               <h2>No Campaigns Found</h2>
               <p>Start your new campaign below!</p>
             </div>
-            <div className={layoutStyles.create_button} onClick={() => openEditor(null)}>
-              <div className={layoutStyles.plus_icon}>
-                <PlusIcon />
-              </div>
-              <p>Create a new campaign</p>
-            </div>
+            <CreateButton
+              text="Create a new campaign"
+              onClick={() => openEditor(null)}
+            />
           </div>
         )}
       </div>
