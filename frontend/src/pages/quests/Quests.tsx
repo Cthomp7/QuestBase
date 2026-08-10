@@ -9,6 +9,7 @@ import { CreateQuestRequest, Quest } from "@/types/api/quest"
 import { useCampaign } from "@/context/campaign/useCampaign"
 import QuestEditor, { QuestEditorHandle } from "./QuestEditor/QuestEditor"
 import CampaignEmptyState from "@/components/CampaignEmptyState/CampaignEmptyState"
+import PageHeader from "@/components/ui/PageHeader/PageHeader"
 
 const Quests = () => {
   const { user } = useAuth()
@@ -133,11 +134,7 @@ const fetchQuests = useCallback(async () => {
 
   return (
     <div className={layoutStyles.page_container}>
-      <div className={layoutStyles.header_container}>
-        <h1 className={layoutStyles.header}>Quests</h1>
-        {activeCampaign && <h2 className={styles.selected_campaign}>{activeCampaign?.name}</h2>}
-      </div>
-      <hr className={layoutStyles.hr}/>
+      <PageHeader title="Quests" activeCampaign={activeCampaign}/>
       <QuestEditor
         ref={questCreateEditorRef}
         action="Create"

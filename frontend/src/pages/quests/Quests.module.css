@@ -1,13 +1,3 @@
-.selected_campaign {
-  background-color: var(--qb-periwinkle-trans);
-  border: solid 2px var(--qb-periwinkle);
-  color: var(--qb-periwinkle);
-  border-radius: 25px;
-  font-weight: 500;
-  padding: 8px 15px;
-  width: fit-content;
-}
-
 .quests {
   display: flex;
   flex-direction: column;

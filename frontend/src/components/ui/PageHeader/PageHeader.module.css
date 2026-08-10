@@ -1,0 +1,26 @@
+.header_container {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.header {
+  font-size: 3rem;
+  font-weight: 600;
+}
+
+.selected_campaign {
+  background-color: var(--qb-periwinkle-trans);
+  border: solid 2px var(--qb-periwinkle);
+  color: var(--qb-periwinkle);
+  border-radius: 25px;
+  font-weight: 500;
+  padding: 8px 15px;
+  width: fit-content;
+}
+
+.hr {
+  border-color: rgb(59, 59, 59);
+  border-top: 1px solid rgb(59, 59, 59);
+  height: 1px;
+}

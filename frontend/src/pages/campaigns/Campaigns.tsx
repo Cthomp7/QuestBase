@@ -8,6 +8,7 @@ import PlusIcon from "../../assets/plus.svg?react"
 import TrashIcon from "../../assets/trash.svg?react"
 import { useCampaign } from "@/context/campaign/useCampaign";
 import CampaignBanner from "@/assets/imgs/Campaign_Banner.png"
+import PageHeader from "@/components/ui/PageHeader/PageHeader";
 
 // TODO: add a loading sequence between fetchCampaigns
 
@@ -122,8 +123,7 @@ const Campaigns = () => {
   return (
     <>
       <div className={styles.campaigns_container}>
-        <h1 className={layoutStyles.header}>Campaigns</h1>
-        <hr className={styles.campaign_hr}/>
+        <PageHeader title="Campaigns"/>
         {campaigns.length > 0 ? (
           <>
           <div className={layoutStyles.create_button} onClick={() => openEditor(null)}>
