@@ -34,4 +34,7 @@ jobs:
 
             cd ..
             docker compose up -d --build --force-recreate
+
+            docker builder prune -af
+            docker image prune -af
           EOF
