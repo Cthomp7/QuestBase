@@ -73,6 +73,11 @@ export default function Npcs () {
       <PageHeader 
         title="NPCs"
         activeCampaign={activeCampaign}/>
+      {openCreateEditor && <NpcEditor
+          action="Create"
+          onTrigger={(npc: CreateNpcRequest) => createNpc(npc)}
+          onClose={toggleEditor}
+        />}
       {!activeCampaign ? (
         <CampaignEmptyState type={"NPCs"} />
       ) : npcs.length > 0 ? (
@@ -80,11 +85,6 @@ export default function Npcs () {
           {!openCreateEditor &&<CreateButton
             text="Create an NPC"
             onClick={toggleEditor}
-          />}
-          {openCreateEditor && <NpcEditor
-            action="Create"
-            onTrigger={(npc: CreateNpcRequest) => createNpc(npc)}
-            onClose={toggleEditor}
           />}
           {npcs.map((npc) => (
             <div className={layoutStyles.card}>
@@ -113,7 +113,22 @@ export default function Npcs () {
             </div>
           ))}
         </>
-      ) : <></>}
+      ) : (
+        <>
+          {!openCreateEditor && 
+            <div className={layoutStyles.no_results}>
+              <div>
+                <h2>No NPCs Found</h2>
+                <p>Create a new NPC for your campaign below!</p>
+              </div>
+              <CreateButton
+                text="Create an NPC"
+                onClick={() => toggleEditor()}
+              />
+            </div>
+          }
+        </>
+      )}
     </div>
   )
 }
