@@ -1,5 +1,5 @@
 import { useCampaign } from "@/context/campaign/useCampaign"
-import styles from "./NPCs.module.css"
+import styles from "./Npcs.module.css"
 import layoutStyles from "@/layouts/AuthLayout/AuthLayout.module.css"
 import PageHeader from "@/components/ui/PageHeader/PageHeader"
 import CampaignEmptyState from "@/components/CampaignEmptyState/CampaignEmptyState"
