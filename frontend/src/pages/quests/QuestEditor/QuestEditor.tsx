@@ -98,7 +98,7 @@ const QuestEditor = forwardRef<QuestEditorHandle, QuestEditorProps>(({
   return (
     <div 
       ref={editorRef}
-      className={layoutStyles.editor}
+      className={`${layoutStyles.editor} ${styles.quest_editor}`}
       style={style}
     >
       <div className={styles.editor_content}>
