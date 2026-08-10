@@ -7,6 +7,7 @@ import EditIcon from "../../assets/edit.svg?react"
 import PlusIcon from "../../assets/plus.svg?react"
 import TrashIcon from "../../assets/trash.svg?react"
 import { useCampaign } from "@/context/campaign/useCampaign";
+import CampaignBanner from "@/assets/imgs/Campaign_Banner.png"
 
 // TODO: add a loading sequence between fetchCampaigns
 
@@ -136,8 +137,8 @@ const Campaigns = () => {
                 <div key={campaign.id} className={layoutStyles.card}>
                   <img 
                     className={styles.campaign_image} 
-                    src="https://cdna.artstation.com/p/assets/images/images/087/888/970/large/sathish-kumar-2526.jpg?1746961387" 
-                    alt=""
+                    src={CampaignBanner} 
+                    alt="Campaign banner image"
                   />
                   <div className={styles.campaign_content}>
                     <div className={styles.campaign_text}>
