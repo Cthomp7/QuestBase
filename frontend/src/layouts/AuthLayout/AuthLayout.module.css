@@ -6,6 +6,8 @@
   flex-shrink: 1;
   flex-grow: 1;
   background-color: #171717;
+  height: 100vh;
+  overflow-y: scroll;
 }
 
 .page_container {
