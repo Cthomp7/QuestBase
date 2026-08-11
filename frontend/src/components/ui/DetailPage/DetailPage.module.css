@@ -24,7 +24,7 @@
 }
 
 .red_icon {
-  transform: translateY(-1px);
+  margin-top: -1px;
 }
 .red_icon:hover {
   stroke: var(--qb-error-red)
