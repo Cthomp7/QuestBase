@@ -1,6 +1,6 @@
 import PasswordInput from "@/components/PasswordInput/PasswordInput"
 import { useAuth } from "@/context/AuthContext"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import styles from "../Auth.module.css";
 import Loader from "@/components/ui/Loader/Loader";
@@ -10,11 +10,19 @@ interface LoginProps {
 } 
 
 export default function Login ({ onError }: LoginProps) {
-  const { login } = useAuth()
+  const { login, user } = useAuth()
   const navigate = useNavigate()
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
   const [submitting, setSubmitting] = useState<boolean>(false)
+  const [waiting, setWaiting] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (user && waiting) {
+      navigate("/campaigns")
+      setSubmitting(false)
+    }
+  },[user, waiting, navigate])
 
   const onLogin = async () => {
     onError("")
@@ -33,11 +41,17 @@ export default function Login ({ onError }: LoginProps) {
     try {
       setSubmitting(true)
       await login(email, password, 
-        () => { navigate("/dashboard") },
-        (error) => { onError(error) }
+        () => setWaiting(true),
+        (error) => onError(error)
       )
-    } finally {
+    } catch (error) {
       setSubmitting(false)
+      console.error("Failed to login user: ", error)
+      if (error instanceof Error) {
+        onError(error.message)
+      } else {
+        onError("An unexpected error occurred. Please try again later.")
+      }
     }
   }
 
