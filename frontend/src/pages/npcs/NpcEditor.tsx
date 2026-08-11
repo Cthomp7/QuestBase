@@ -1,6 +1,7 @@
 import Dropdown from "@/components/Dropdown/Dropdown"
 import Editor from "@/components/Editor/Editor"
 import editorStyles from "@/components/Editor/Editor.module.css"
+import Loader from "@/components/ui/Loader/Loader"
 import { useCampaign } from "@/context/campaign/useCampaign"
 import { CreateNpcRequest, Npc } from "@/types/api/npc"
 import { useEffect, useState } from "react"
@@ -8,6 +9,7 @@ import { useEffect, useState } from "react"
 interface NpcEditorProps {
   action: string
   npc?: Npc | null,
+  loading: boolean,
   onTrigger: (npc: CreateNpcRequest) => void
   onClose: () => void
 }
@@ -15,10 +17,12 @@ interface NpcEditorProps {
 export default function NpcEditor ({ 
   action, 
   npc = null,
+  loading,
   onTrigger,
   onClose
 }: NpcEditorProps) {
   const { activeCampaign } = useCampaign()
+
   const [ name, setName ] = useState<string>("")
   const [ level, setLevel ] = useState<string>("")
   const [ status, setStatus ] = useState<string>("")
@@ -179,10 +183,14 @@ export default function NpcEditor ({
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
-          <button 
-            className={editorStyles.button}
-            onClick={onClick}
-          >{action}</button>
+          {!loading ? (
+            <button 
+              className={editorStyles.button}
+              onClick={onClick}
+            >{action}</button>
+          ) : (
+            <Loader/>
+          )}
         </>
       }
     />

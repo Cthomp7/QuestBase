@@ -17,6 +17,7 @@ export default function NpcsDetails () {
   const [ npc, setNpc ] = useState<Npc | null>(null)
   const [ notes, setNotes ] = useState<string>("")
   const [ loading, setLoading ] = useState<boolean>(true)
+  const [ submitting, setSubmitting ] = useState<boolean>(true)
   const [ editting, setEditting ] = useState<boolean>(false)
 
   const toggleEdit = () => {
@@ -49,6 +50,7 @@ export default function NpcsDetails () {
 
   const updateNpc = async (npcRequest: CreateNpcRequest) => {
     try {
+      setSubmitting(true)
       const response = await fetch(`/api/npcs/${npcId}`, { 
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -61,6 +63,8 @@ export default function NpcsDetails () {
       } else console.error(response)
     } catch (error) {
       console.error("Failed to create NPC: ", error)
+    } finally {
+      setSubmitting(false)
     }
   }
 
@@ -120,6 +124,7 @@ export default function NpcsDetails () {
                     <NpcEditor 
                       action="Update"
                       npc={npc}
+                      loading={submitting}
                       onTrigger={(npc) => updateNpc(npc)}
                       onClose={toggleEdit}
                     />
@@ -129,7 +134,7 @@ export default function NpcsDetails () {
                     <div className={PageDetailStyles.traits}>
                       {npc.status && <p className={`${styles.npc_property} ${styles.npc_status} ${styles[npc.status]}`}>{npc.status}</p>}
                       {npc.role && <p className={`${styles.npc_property} ${styles.npc_role} ${styles[npc.role]}`}>{npc.role.replace(/_/g, " ")}</p>}
-                      {npc.level && <div>
+                      {npc.level > 0 && <div>
                         <ChartNoAxesColumnIncreasing/>
                         <p>Level {npc.level}</p>
                       </div>}

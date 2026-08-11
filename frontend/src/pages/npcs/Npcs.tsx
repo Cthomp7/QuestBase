@@ -17,6 +17,7 @@ export default function Npcs () {
   const navigate = useNavigate()
   const [ npcs, setNpcs ] = useState<Npc[]>([])
   const [ openCreateEditor, setOpenCreateEditor ] = useState<boolean>()
+  const [ submitting, setSubmitting ] = useState<boolean>(false)
 
   const toggleEditor = () => {
     setOpenCreateEditor(!openCreateEditor)
@@ -48,11 +49,12 @@ export default function Npcs () {
 
   const createNpc = async (npcRequest: CreateNpcRequest) => {
     try {
-      validateNPCRequest(npcRequest)
+      setSubmitting(true)
+      const data = validateNPCRequest(npcRequest)
       const response = await fetch('/api/npcs', { 
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(npcRequest)
+        body: JSON.stringify(data)
       })
       if (response.ok) {
         const newNpc = await response.json()
@@ -61,13 +63,24 @@ export default function Npcs () {
       } else console.error(response)
     } catch (error) {
       console.error("Failed to create NPC: ", error)
+    } finally {
+      setSubmitting(false)
     }
   }
 
   const validateNPCRequest = (npc: CreateNpcRequest) => {
-    if (!npc.name) {
+    const cleanedNpc = Object.fromEntries(
+      Object.entries(npc).map(([key, value]) => [
+        key,
+        typeof value === "string" && value.trim() === ""
+          ? null
+          : value
+      ])
+    );
+    if (!cleanedNpc.name) {
       throw new Error("A name is required.")
     }
+    return cleanedNpc
   }
 
   return (
@@ -75,8 +88,10 @@ export default function Npcs () {
       <PageHeader 
         title="NPCs"
         activeCampaign={activeCampaign}/>
-      {openCreateEditor && <NpcEditor
+      {openCreateEditor && 
+        <NpcEditor
           action="Create"
+          loading={submitting}
           onTrigger={(npc: CreateNpcRequest) => createNpc(npc)}
           onClose={toggleEditor}
         />}
@@ -93,12 +108,20 @@ export default function Npcs () {
               <div className={layoutStyles.card_header}>
                 <h2>{npc.name}</h2>
                 <div className={layoutStyles.card_properties}>
-                  {npc.status && <p className={`${styles.npc_property} ${styles.npc_status} ${styles[npc.status]}`}>{npc.status}</p>}
-                  {npc.role && <p className={`${styles.npc_property} ${styles.npc_role} ${styles[npc.role]}`}>{npc.role.replace(/_/g, " ")}</p>}
+                  {npc.status && 
+                    <p className={`${styles.npc_property} ${styles.npc_status} ${styles[npc.status]}`}>
+                      {npc.status}
+                    </p>
+                  }
+                  {npc.role && 
+                    <p className={`${styles.npc_property} ${styles.npc_role} ${styles[npc.role]}`}>
+                      {npc.role.replace(/_/g, " ")}
+                    </p>
+                  }
                 </div>
               </div>
               <div className={styles.npc_traits}>
-                {npc.level && <div>
+                {npc.level > 0 && <div>
                   <ChartNoAxesColumnIncreasing/>
                   <p>Level {npc.level}</p>
                 </div>}
