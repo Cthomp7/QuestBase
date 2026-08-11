@@ -7,7 +7,7 @@ import { Briefcase, ChartNoAxesColumnIncreasing, IdCard } from "lucide-react"
 import TextEditor from "@/components/ui/TextEditor/TextEditor"
 import NpcEditor from "./NpcEditor"
 import DetailPage from "@/components/ui/DetailPage/DetailPage"
-import PageDetailStyles from "@/components/ui/DetailPage/DetailPage.module.css"
+import DetailPageStyles from "@/components/ui/DetailPage/DetailPage.module.css"
 import Loader from "@/components/ui/Loader/Loader"
 import DetailNotFound from "@/components/states/DetailNotFound/DetailNotFound"
 
@@ -118,7 +118,7 @@ export default function NpcsDetails () {
             onEdit={(active) => setEditting(active)}
             onDelete={deleteNpc}
             children={
-              <div className={PageDetailStyles.information}>
+              <div className={DetailPageStyles.information}>
                 {editting ? (
                   <>
                     <NpcEditor 
@@ -131,7 +131,7 @@ export default function NpcsDetails () {
                   </>
                 ) : (
                   <>
-                    <div className={PageDetailStyles.traits}>
+                    <div className={DetailPageStyles.traits}>
                       {npc.status && <p className={`${styles.npc_property} ${styles.npc_status} ${styles[npc.status]}`}>{npc.status}</p>}
                       {npc.role && <p className={`${styles.npc_property} ${styles.npc_role} ${styles[npc.role]}`}>{npc.role.replace(/_/g, " ")}</p>}
                       {npc.level > 0 && <div>
@@ -149,25 +149,25 @@ export default function NpcsDetails () {
                       {/* add class later */}
                     </div>
                     {npc.description && 
-                      <div className={PageDetailStyles.text}>
-                        <p className={PageDetailStyles.text_label}>Description:</p>
+                      <div className={DetailPageStyles.text}>
+                        <p className={DetailPageStyles.text_label}>Description:</p>
                         <p>{npc.description}</p>
                       </div>
                     }
-                    <div className={styles.npc_info_2}>
-                      {npc.personality && <div className={PageDetailStyles.text}>
-                        <p className={PageDetailStyles.text_label}>Personality:</p>
+                    <div className={DetailPageStyles.info_2}>
+                      {npc.personality && <div className={DetailPageStyles.text}>
+                        <p className={DetailPageStyles.text_label}>Personality:</p>
                         <p>{npc.personality}</p>
                       </div>}
-                      {npc.appearance && <div className={PageDetailStyles.text}>
-                        <p className={PageDetailStyles.text_label}>Appearance:</p>
+                      {npc.appearance && <div className={DetailPageStyles.text}>
+                        <p className={DetailPageStyles.text_label}>Appearance:</p>
                         <p>{npc.appearance}</p>
                       </div>}
                     </div>
                   </>
                 )}
                 <div>
-                  <p className={PageDetailStyles.text_label}>Notes:</p>
+                  <p className={DetailPageStyles.text_label}>Notes:</p>
                   <TextEditor
                     value={notes}
                     onChange={setNotes}
