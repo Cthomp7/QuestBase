@@ -1,20 +1,23 @@
-import PageHeader from "@/components/ui/PageHeader/PageHeader";
-import { CreateNpcRequest, Npc } from "@/types/api/npc";
-import { useCallback, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { CreateNpcRequest, Npc } from "@/types/api/npc"
+import { useCallback, useEffect, useState } from "react"
+import { useNavigate, useParams } from "react-router-dom"
 import styles from "./Npcs.module.css"
 import layoutStyles from "@/layouts/AuthLayout/AuthLayout.module.css"
-import { Briefcase, ChartNoAxesColumnIncreasing, Check, IdCard, SquarePen, Trash2, X } from "lucide-react";
-import TextEditor from "@/components/ui/TextEditor/TextEditor";
-import NpcEditor from "./NpcEditor";
+import { Briefcase, ChartNoAxesColumnIncreasing, IdCard } from "lucide-react"
+import TextEditor from "@/components/ui/TextEditor/TextEditor"
+import NpcEditor from "./NpcEditor"
+import DetailPage from "@/components/ui/DetailPage/DetailPage"
+import PageDetailStyles from "@/components/ui/DetailPage/DetailPage.module.css"
+import Loader from "@/components/ui/Loader/Loader"
+import DetailNotFound from "@/components/states/DetailNotFound/DetailNotFound"
 
 export default function NpcsDetails () {
   const { npcId } = useParams()
   const navigate = useNavigate()
   const [ npc, setNpc ] = useState<Npc | null>(null)
   const [ notes, setNotes ] = useState<string>("")
+  const [ loading, setLoading ] = useState<boolean>(true)
   const [ editting, setEditting ] = useState<boolean>(false)
-  const [ deleting, setDeleting ] = useState<boolean>(false)
 
   const toggleEdit = () => {
     setEditting(!editting)
@@ -27,14 +30,16 @@ export default function NpcsDetails () {
         { method: "GET" }
       )
       if (response.ok) {
-        const npc = await response.json();
-        setNpc(npc);
+        const npc = await response.json()
+        setNpc(npc)
         setNotes(npc?.notes)
       } else {
-        console.error(response);
+        console.error(response)
       }
     } catch (error) {
       console.error("Failed to fetch NPC: ", error)
+    } finally {
+      setLoading(false)
     }
   },[npcId])
 
@@ -81,10 +86,10 @@ export default function NpcsDetails () {
         body: JSON.stringify({ notes })
       })
       if (response.ok) {
-        const npc = await response.json();
-        setNpc(npc);
+        const npc = await response.json()
+        setNpc(npc)
       } else {
-        console.error(response);
+        console.error(response)
       }
     } catch (error) {
       console.error("Failed to save NPC notes: ", error)
@@ -93,102 +98,88 @@ export default function NpcsDetails () {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      if (!notes) return;
+      if (!notes) return
+      saveNotes(notes)
+    }, 1500)
 
-      saveNotes(notes);
-    }, 1500);
-
-    return () => clearTimeout(timeout);
-  }, [notes, saveNotes]);
+    return () => clearTimeout(timeout)
+  }, [notes, saveNotes])
 
   return (
     <div className={layoutStyles.page_container}>
       {npc ? (
-        <>
-          <div className={styles.npc_header}>
-            <PageHeader title={npc?.name}/>
-            <div className={styles.toolbar}>
-              <SquarePen 
-                className={`${styles.green_icon} ${editting ? styles.active : ""}`}
-                onClick={toggleEdit}
-              />
-              {!deleting && <Trash2 
-                className={styles.red_icon}
-                onClick={() => setDeleting(true)}
-              />}
-              {deleting && 
-                <>
-                  <p>Are you sure?</p>
-                  <Check 
-                    className={styles.green_icon}
-                    onClick={deleteNpc}
+          <DetailPage
+            title={npc.name}
+            editting={editting}
+            onEdit={(active) => setEditting(active)}
+            onDelete={deleteNpc}
+            children={
+              <div className={PageDetailStyles.information}>
+                {editting ? (
+                  <>
+                    <NpcEditor 
+                      action="Update"
+                      npc={npc}
+                      onTrigger={(npc) => updateNpc(npc)}
+                      onClose={toggleEdit}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <div className={PageDetailStyles.traits}>
+                      {npc.status && <p className={`${styles.npc_property} ${styles.npc_status} ${styles[npc.status]}`}>{npc.status}</p>}
+                      {npc.role && <p className={`${styles.npc_property} ${styles.npc_role} ${styles[npc.role]}`}>{npc.role.replace(/_/g, " ")}</p>}
+                      {npc.level && <div>
+                        <ChartNoAxesColumnIncreasing/>
+                        <p>Level {npc.level}</p>
+                      </div>}
+                      {npc.race && <div>
+                        <IdCard />
+                        <p>{npc.race}</p>
+                      </div>}
+                      {npc.occupation && <div>
+                        <Briefcase />
+                        <p>{npc.occupation}</p>
+                      </div>}
+                      {/* add class later */}
+                    </div>
+                    {npc.description && 
+                      <div className={PageDetailStyles.text}>
+                        <p className={PageDetailStyles.text_label}>Description:</p>
+                        <p>{npc.description}</p>
+                      </div>
+                    }
+                    <div className={styles.npc_info_2}>
+                      {npc.personality && <div className={PageDetailStyles.text}>
+                        <p className={PageDetailStyles.text_label}>Personality:</p>
+                        <p>{npc.personality}</p>
+                      </div>}
+                      {npc.appearance && <div className={PageDetailStyles.text}>
+                        <p className={PageDetailStyles.text_label}>Appearance:</p>
+                        <p>{npc.appearance}</p>
+                      </div>}
+                    </div>
+                  </>
+                )}
+                <div>
+                  <p className={PageDetailStyles.text_label}>Notes:</p>
+                  <TextEditor
+                    value={notes}
+                    onChange={setNotes}
                   />
-                  <X 
-                    className={styles.red_icon}
-                    onClick={() => setDeleting(false)}
-                  />
-                </>
-              }
-            </div>
-          </div>
-          <div className={styles.npc_information}>
-            {editting ? (
-              <>
-                <NpcEditor 
-                  action="Update"
-                  npc={npc}
-                  onTrigger={(npc) => updateNpc(npc)}
-                  onClose={toggleEdit}
-                />
-              </>
-            ) : (
-              <>
-                <div className={styles.npc_traits}>
-                  {npc.status && <p className={`${styles.npc_property} ${styles.npc_status} ${styles[npc.status]}`}>{npc.status}</p>}
-                  {npc.role && <p className={`${styles.npc_property} ${styles.npc_role} ${styles[npc.role]}`}>{npc.role.replace(/_/g, " ")}</p>}
-                  {npc.level && <div>
-                    <ChartNoAxesColumnIncreasing/>
-                    <p>Level {npc.level}</p>
-                  </div>}
-                  {npc.race && <div>
-                    <IdCard />
-                    <p>{npc.race}</p>
-                  </div>}
-                  {npc.occupation && <div>
-                    <Briefcase />
-                    <p>{npc.occupation}</p>
-                  </div>}
-                  {/* add class later */}
                 </div>
-                {npc.description && 
-                  <div className={styles.npc_text}>
-                    <p className={styles.npc_text_label}>Description:</p>
-                    <p>{npc.description}</p>
-                  </div>
-                }
-                <div className={styles.npc_info_2}>
-                  {npc.personality && <div className={styles.npc_text}>
-                    <p className={styles.npc_text_label}>Personality:</p>
-                    <p>{npc.personality}</p>
-                  </div>}
-                  {npc.appearance && <div className={styles.npc_text}>
-                    <p className={styles.npc_text_label}>Appearance:</p>
-                    <p>{npc.appearance}</p>
-                  </div>}
-                </div>
-              </>
-            )}
-            <div>
-              <p className={styles.npc_text_label}>Notes:</p>
-              <TextEditor
-                value={notes}
-                onChange={setNotes}
-              />
-            </div>
-          </div>
-        </>
+              </div>
+            }
+          />
+      ) : loading ? (
+        <Loader />
       ) : (
-        <></>
+        <DetailNotFound 
+          title={<><span>NPC</span> Not Found</>}
+          message="This NPC seems to have vanished from the realm."
+          buttonText="Back to NPCs"
+          onClick={() => navigate("/npcs")}
+        />
       )}
     </div>
   )

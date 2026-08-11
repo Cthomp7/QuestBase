@@ -1,0 +1,79 @@
+.header h1 {
+  margin-bottom: 10px;
+}
+
+.toolbar {
+  border: 1px solid #ccc;
+  border-radius: 0 0 8px 8px;
+  padding: 0.8em;
+  height: fit-content;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.toolbar svg {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.green_icon:hover,
+.green_icon.active {
+  stroke: var(--qb-alien-green)
+}
+
+.red_icon {
+  transform: translateY(-1px);
+}
+.red_icon:hover {
+  stroke: var(--qb-error-red)
+}
+
+.traits {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.traits > div > p {
+  font-size: 1.05rem;
+  line-height: 1.05rem;
+  transform: translateY(3px);
+}
+
+.traits svg {
+  color: var(--qb-alien-green);
+  flex: 0 0 auto;
+}
+
+.traits > div {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+
+.information {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.info_2 {
+  display: flex;
+  gap: 20px;
+}
+
+.text {
+  font-size: 1.1rem;
+  border-left: 2px solid var(--qb-alien-green-trans);
+  padding-left: 15px;
+}
+
+.text_label {
+  color: var(--qb-alien-green);
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}

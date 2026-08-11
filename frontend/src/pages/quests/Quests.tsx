@@ -6,20 +6,21 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { useAuth } from "@/context/AuthContext"
 import { CreateQuestRequest, Quest } from "@/types/api/quest"
 import { useCampaign } from "@/context/campaign/useCampaign"
-import QuestEditor, { QuestEditorHandle } from "./QuestEditor/QuestEditor"
-import CampaignEmptyState from "@/components/CampaignEmptyState/CampaignEmptyState"
+import QuestEditor from "./QuestEditor/QuestEditor"
+import CampaignEmptyState from "@/components/states/CampaignEmptyState/CampaignEmptyState"
 import PageHeader from "@/components/ui/PageHeader/PageHeader"
 import CreateButton from "@/components/ui/CreateButton/CreateButton"
+import { useNavigate } from "react-router-dom"
 
 const Quests = () => {
   const { user } = useAuth()
   const { activeCampaign } = useCampaign()
+  const navigate = useNavigate()
   const [quests, setQuests] = useState<Quest[]>([])
   const noResultsRef = useRef<HTMLDivElement | null>(null)
   const createDivRef = useRef<HTMLDivElement | null>(null)
-  const questCreateEditorRef = useRef<QuestEditorHandle | null>(null)
-  const questEditorRef = useRef<QuestEditorHandle | null>(null)
-  const [editting, setEditting] = useState<number>(-1)
+  const [creating, setCreating] = useState<boolean>(false)
+  const [editting, setEditting] = useState<{ quest: Quest | null, index: number}>({ quest: null, index: -1 })
   const [confirmDeletion, setConfirmDeletion] = useState<number>(-1)
 
 const fetchQuests = useCallback(async () => {
@@ -109,10 +110,8 @@ const fetchQuests = useCallback(async () => {
   }
 
   const setEditorVisible = (type: string, visible: boolean) => {
-    if (type === 'create' && questCreateEditorRef.current) {
-      questCreateEditorRef.current.style.display = visible ? "block" : "none"
-    } else if (type === 'edit' && questEditorRef.current) {
-      questEditorRef.current.style.display = visible ? "block" : "none"
+    if (type === 'create') {
+      setCreating(visible ? true : false)
     }
 
     if (noResultsRef.current && quests.length <= 0) 
@@ -120,43 +119,34 @@ const fetchQuests = useCallback(async () => {
     if (createDivRef.current)
       createDivRef.current.style.display = visible ? "none" : "flex"
 
-    if (!visible && type === 'edit') setEditting(-1)
-  }
-
-  const setEditorToQuest = (quest: Quest, index: number) => {
-    if (questEditorRef.current) {
-      questEditorRef.current.editQuest(quest)
-      setEditting(index)
-      questEditorRef.current.style.order = index.toString()
-      questEditorRef.current.style.display = "block"
-    }
+    if (!visible && type === 'edit') setEditting({ quest: null, index: -1})
   }
 
   return (
     <div className={layoutStyles.page_container}>
       <PageHeader title="Quests" activeCampaign={activeCampaign}/>
-      <QuestEditor
-        ref={questCreateEditorRef}
+      {creating && <QuestEditor
         action="Create"
-        activeCampaignId={activeCampaign?.id ?? 0}
+        activeCampaignId={activeCampaign?.id}
         updateQuest={(_id, req) => createQuest(req)}
         setEditorVisible={(visible) => setEditorVisible('create', visible)}
-      />
+      />}
       {/* QUESTS */}
       {!activeCampaign ? (
           <CampaignEmptyState type={"quests"} />
         ) : quests.length > 0 ? (
           <>
-            <CreateButton
+            {!creating && <CreateButton
               text="Create a new Quest"
               onClick={() => setEditorVisible('create', true)}
-            />
+            />}
             <div className={styles.quests}>
                 {quests.map((quest, i) => (
                   <div 
                     key={quest.id} 
                     className={layoutStyles.card}
-                    style={{ order: i, display: editting === i ? "none" : "flex" }}
+                    style={{ order: i, display: editting.index === i ? "none" : "flex" }}
+                    onClick={() => navigate(`/quests/${quest.id}`)}
                   >
                     <div className={styles.quest_card_header}>
                       <p className={layoutStyles.card_title}>{quest.title}</p>
@@ -177,29 +167,41 @@ const fetchQuests = useCallback(async () => {
                       {confirmDeletion === quest.id
                         ? <div className={styles.confirm_deletion}>
                             <p>Are you sure you want to <span>DELETE</span> this quest?</p>
-                            <button onClick={() => deleteQuest(quest.id)}>Yes</button>
-                            <button onClick={() => setConfirmDeletion(-1)}>No</button>
+                            <button onClick={(e) => {
+                              e.stopPropagation()
+                              deleteQuest(quest.id)
+                            }}>Yes</button>
+                            <button onClick={(e) => {
+                              e.stopPropagation()
+                              setConfirmDeletion(-1)
+                            }}>No</button>
                           </div>
                         : <>
                             <EditIcon
                               className={layoutStyles.edit_icon}
-                              onClick={() => setEditorToQuest(quest, i)} 
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                setEditting({ quest, index: i })
+                              }} 
                             />
                             <TrashIcon 
                               className={layoutStyles.trash_icon}
-                              onClick={() => setConfirmDeletion(quest.id)}
+                              onClick={(e) => {
+                                e.preventDefault()
+                                setConfirmDeletion(quest.id)
+                              }}
                             />
                           </>}
                     </div>
                   </div>
                 ))}
-                <QuestEditor
-                  ref={questEditorRef}
+                {editting.index >= 0 && <QuestEditor
                   action="Edit"
                   activeCampaignId={activeCampaign?.id ?? 0}
+                  quest={editting.quest}
                   updateQuest={(id, req) => editQuest(id, req)}
                   setEditorVisible={(visible) => setEditorVisible('edit', visible)}
-                />
+                />}
             </div>
           </>
           ) : (

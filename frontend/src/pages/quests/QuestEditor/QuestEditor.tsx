@@ -1,29 +1,28 @@
-import { forwardRef, useImperativeHandle, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import styles from "./QuestEditor.module.css"
 import layoutStyles from "@/layouts/AuthLayout/AuthLayout.module.css"
 import Dropdown from "@/components/Dropdown/Dropdown"
 import CloseIcon from "@/assets/x.svg?react"
 import { CreateQuestRequest, Quest } from "@/types/api/quest"
 
-export type QuestEditorHandle = HTMLDivElement & {
-  editQuest: (quest: Quest) => void;
-};
-
 interface QuestEditorProps {
   style?: React.CSSProperties
   action: string
-  activeCampaignId: number | null
+  activeCampaignId: number | undefined
+  quest?: Quest | null
   updateQuest: (id: number, quest: CreateQuestRequest) => void
   setEditorVisible: (visible: boolean) => void
 }
 
-const QuestEditor = forwardRef<QuestEditorHandle, QuestEditorProps>(({ 
+const QuestEditor = ({ 
   style,
   action,
   activeCampaignId,
+  quest,
   updateQuest,
   setEditorVisible
-}, ref) => {
+}: QuestEditorProps) => {
+
   const editorRef = useRef<HTMLDivElement | null>(null)
   const [id, setId] = useState<number>(-1)
   const [title, setTitle] = useState<string>("")
@@ -48,28 +47,17 @@ const QuestEditor = forwardRef<QuestEditorHandle, QuestEditorProps>(({
     { label: "Deadly", value: "DEADLY" }
   ]
 
-  useImperativeHandle(ref, () => {
-    const element = editorRef.current;
-    if (!element) {
-      throw new Error("QuestEditor element is not mounted");
+  useEffect(() => {
+    if (quest) {
+      setButtontext("Update")
+      setId(quest.id)
+      setTitle(quest.title)
+      setXp(quest.rewardXp)
+      setStatus(quest.status)
+      setDifficulty(quest.difficulty)
+      setDescription(quest.description)
     }
-
-    return Object.assign(element, {
-      editQuest(quest: Quest) {
-        handleEditQuest(quest)
-      }
-    })
-  })
-
-  const handleEditQuest = (quest: Quest) => {
-    setButtontext("Update")
-    setId(quest.id)
-    setTitle(quest.title)
-    setXp(quest.rewardXp)
-    setStatus(quest.status)
-    setDifficulty(quest.difficulty)
-    setDescription(quest.description)
-  }
+  },[quest])
 
   const resetQuestEditor = () => {
     setButtontext("Create")
@@ -175,6 +163,6 @@ const QuestEditor = forwardRef<QuestEditorHandle, QuestEditorProps>(({
       </div>
     </div>
   )
-})
+}
 
 export default QuestEditor

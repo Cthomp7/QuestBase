@@ -16,6 +16,7 @@ public record QuestResponse (
     QuestStatus status,
     QuestDifficulty difficulty,
     Integer rewardXp,
+    String notes,
     LocalDateTime createdAt,
     Campaign campaign
 ) {}

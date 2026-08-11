@@ -22,6 +22,8 @@ public record CreateQuestRequest (
 
     @Positive
     Integer rewardXp,
+
+    String notes,
     
     @NotNull
     Long campaignId

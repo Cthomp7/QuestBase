@@ -1,7 +1,3 @@
-.quest_editor {
-  display: none;
-}
-
 .editor_content {
   display: flex;
   flex-direction: column;

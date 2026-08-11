@@ -1,10 +1,10 @@
 import { useCampaign } from "@/context/campaign/useCampaign"
 import styles from "./CampaignEmptyState.module.css"
 import layoutStyles from "@/layouts/AuthLayout/AuthLayout.module.css"
-import Dropdown, { DropdownOption } from "../Dropdown/Dropdown"
+import Dropdown, { DropdownOption } from "@/components/Dropdown/Dropdown"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import CreateButton from "../ui/CreateButton/CreateButton"
+import CreateButton from "@/components/ui/CreateButton/CreateButton"
 
 interface CampaignEmptyStateProps {
   type: string

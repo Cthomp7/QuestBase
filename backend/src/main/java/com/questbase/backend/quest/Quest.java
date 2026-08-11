@@ -55,6 +55,9 @@ public class Quest {
     @Column(name = "reward_xp")
     private Integer rewardXp;
 
+    @Column(columnDefinition = "TEXT")
+    private String notes;
+
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;

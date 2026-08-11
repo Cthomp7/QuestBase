@@ -4,6 +4,8 @@ import com.questbase.backend.auth.AuthService;
 import com.questbase.backend.auth.User;
 import com.questbase.backend.campaign.Campaign;
 import com.questbase.backend.campaign.CampaignRepository;
+import com.questbase.backend.npc.Npc;
+import com.questbase.backend.npc.dto.NpcResponse;
 import com.questbase.backend.quest.dto.CreateQuestRequest;
 import com.questbase.backend.quest.dto.QuestResponse;
 
@@ -169,6 +171,23 @@ public class QuestService {
             .toList();
     }
 
+    public QuestResponse saveQuestNotesById(
+        Long id,
+        String notes
+    ) {
+        User currentUser = authService.getCurrentUser();
+
+        Quest quest = questRepository
+            .findByIdAndCampaignUser(id, currentUser)
+            .orElseThrow(() -> new RuntimeException("Quest not found"));
+
+        quest.setNotes(notes);
+
+        Quest savedQuest = questRepository.save(quest);
+
+        return toResponse(savedQuest);
+    }
+
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
@@ -183,6 +202,7 @@ public class QuestService {
             .rewardXp(quest.getRewardXp())
             .createdAt(quest.getCreatedAt())
             .campaign(quest.getCampaign())
+            .notes(quest.getNotes())
             .build();
     }
 }

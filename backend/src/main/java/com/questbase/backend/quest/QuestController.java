@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.questbase.backend.npc.dto.NpcResponse;
+import com.questbase.backend.npc.dto.SaveNpcNotesRequest;
 import com.questbase.backend.quest.dto.CreateQuestRequest;
 import com.questbase.backend.quest.dto.QuestResponse;
+import com.questbase.backend.quest.dto.SaveQuestNotesById;
 
 import jakarta.validation.Valid;
 
@@ -65,5 +68,16 @@ public class QuestController {
     @DeleteMapping("/{id}")
     public void deleteQuest(@PathVariable Long id) {
         questService.deleteQuest(id);
+    }
+
+    @PatchMapping("/{id}/save-notes")
+    public QuestResponse saveQuestNotesById(
+        @PathVariable Long id,
+        @RequestBody SaveQuestNotesById request
+    ) {
+        return questService.saveQuestNotesById(
+            id,
+            request.notes()
+        );
     }
 }
