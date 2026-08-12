@@ -3,26 +3,44 @@ import { useCallback, useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import styles from "./Npcs.module.css"
 import layoutStyles from "@/layouts/AuthLayout/AuthLayout.module.css"
-import { Briefcase, ChartNoAxesColumnIncreasing, IdCard } from "lucide-react"
+import { BookPlus, Briefcase, ChartNoAxesColumnIncreasing, IdCard } from "lucide-react"
 import TextEditor from "@/components/ui/TextEditor/TextEditor"
 import NpcEditor from "./NpcEditor"
 import DetailPage from "@/components/ui/DetailPage/DetailPage"
 import DetailPageStyles from "@/components/ui/DetailPage/DetailPage.module.css"
 import Loader from "@/components/ui/Loader/Loader"
 import DetailNotFound from "@/components/states/DetailNotFound/DetailNotFound"
+import { DetailDropdownOption } from "@/components/ui/DetailPage/DetailDropdown"
+import QuestNpcEditor, { QuestNpcEditorAction } from "./QuestNpcEditor"
+import { fetchQuestsForNpc } from "@/api/npcs"
+import { type NpcQuest as NpcQuestType } from "@/types/api/questnpc"
+import NpcQuest from "./NpcQuest"
 
 export default function NpcsDetails () {
   const { npcId } = useParams()
   const navigate = useNavigate()
   const [ npc, setNpc ] = useState<Npc | null>(null)
   const [ notes, setNotes ] = useState<string>("")
+  const [ npcQuests, setNpcQuests ] = useState<NpcQuestType[]>([])
   const [ loading, setLoading ] = useState<boolean>(true)
-  const [ submitting, setSubmitting ] = useState<boolean>(true)
+  const [ submitting, setSubmitting ] = useState<boolean>(false)
   const [ editting, setEditting ] = useState<boolean>(false)
+  const [ showNpcQuestEditor, setShowNpcQuestEditor ] = useState<boolean>(false)
 
   const toggleEdit = () => {
     setEditting(!editting)
   }
+
+  const fetchQuests = useCallback(async () => {
+    if (!npcId) return
+    try {
+      const quests = await fetchQuestsForNpc(Number(npcId))
+      console.log("quests: ", quests)
+      if (quests) setNpcQuests(quests)
+    } catch (error) {
+      console.error("Failed to fetch NPC's quests: ", error)
+    }
+  },[npcId])
 
   const fetchNpc = useCallback(async () => {
     try {
@@ -34,6 +52,7 @@ export default function NpcsDetails () {
         const npc = await response.json()
         setNpc(npc)
         setNotes(npc?.notes)
+        fetchQuests()
       } else {
         console.error(response)
       }
@@ -42,7 +61,7 @@ export default function NpcsDetails () {
     } finally {
       setLoading(false)
     }
-  },[npcId])
+  },[npcId, fetchQuests])
 
   useEffect(() => {
     fetchNpc()
@@ -109,16 +128,40 @@ export default function NpcsDetails () {
     return () => clearTimeout(timeout)
   }, [notes, saveNotes])
 
+  // ===========================================================================
+  // Add Dropdown Functionality 
+  // ===========================================================================
+
+  const onAdd = (option: string) => {
+    switch (option) {
+      case "Add to Quest": setShowNpcQuestEditor(true)
+    }
+  }
+
+  const dropdownOptions: DetailDropdownOption[] = [
+    { icon: <BookPlus/>, text: "Add to Quest" }
+  ]
+
   return (
     <div className={layoutStyles.page_container}>
       {npc ? (
           <DetailPage
             title={npc.name}
+            dropdownOptions={dropdownOptions}
             editting={editting}
+            onAdd={onAdd}
             onEdit={(active) => setEditting(active)}
             onDelete={deleteNpc}
             children={
               <div className={DetailPageStyles.information}>
+                {showNpcQuestEditor && 
+                    <QuestNpcEditor 
+                      npcId={Number(npcId)}
+                      action={QuestNpcEditorAction.CREATE}
+                      onAction={fetchQuests}
+                      onClose={() => setShowNpcQuestEditor(false)}
+                    />
+                  }
                 {editting ? (
                   <>
                     <NpcEditor 
@@ -166,6 +209,19 @@ export default function NpcsDetails () {
                     </div>
                   </>
                 )}
+                {npcQuests.length > 0 && 
+                  <div>
+                    <p className={DetailPageStyles.text_label}>Quests:</p>
+                      <div className={DetailPageStyles.information_2}>
+                        {npcQuests.map((npcQuest) => (
+                          <NpcQuest 
+                            npcQuest={npcQuest}
+                            fetchQuests={fetchQuests}
+                          />
+                        ))}
+                      </div>
+                  </div>
+                }
                 <div>
                   <p className={DetailPageStyles.text_label}>Notes:</p>
                   <TextEditor

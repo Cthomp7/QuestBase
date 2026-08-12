@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.questbase.backend.npc.dto.CreateNpcRequest;
+import com.questbase.backend.npc.dto.NpcQuestResponse;
 import com.questbase.backend.npc.dto.NpcResponse;
 import com.questbase.backend.npc.dto.SaveNpcNotesRequest;
 
@@ -70,6 +71,13 @@ public class NpcController {
             id,
             request.notes()
         );
+    }
+
+    @GetMapping("/{id}/quests")
+    public List<NpcQuestResponse> getQuestsByNpcId(
+        @PathVariable Long id
+    ) {
+        return npcService.getQuestsByNpcId(id);
     }
     
 }

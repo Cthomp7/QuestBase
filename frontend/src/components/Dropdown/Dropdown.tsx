@@ -8,7 +8,7 @@ export interface DropdownOption {
 
 interface DropdownProps {
   options: DropdownOption[];
-  value: string;
+  value: string | number;
   onChange: (value: string) => void;
   className?: string;
 }

@@ -19,7 +19,8 @@
   gap: 20px;
 }
 
-.card {
+.card,
+.mini_card {
   background-color: rgba(51, 51, 51, 0.267);
   border: solid 2px rgba(59, 59, 59, 0.507);
   border-radius: 15px;
@@ -34,9 +35,14 @@
     box-shadow 0.2s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
-.card:hover {
+.card:hover,
+.mini_card:hover {
   transform: translateY(-6px) scale(1.02) translateZ(0);
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+.mini_card {
+  padding: 10px;
 }
 
 .card_header {

@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.questbase.backend.npc.dto.NpcResponse;
-import com.questbase.backend.npc.dto.SaveNpcNotesRequest;
 import com.questbase.backend.quest.dto.CreateQuestRequest;
 import com.questbase.backend.quest.dto.QuestResponse;
 import com.questbase.backend.quest.dto.SaveQuestNotesById;

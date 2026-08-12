@@ -34,6 +34,12 @@
   width: 100%;
   max-width: 170px;
 }
+
+.dropdown_property.larger {
+  width: 100%;
+  max-width: 500px;
+}
+
 .dropdown_property span,
 .dropdown_property div {
   white-space: nowrap;

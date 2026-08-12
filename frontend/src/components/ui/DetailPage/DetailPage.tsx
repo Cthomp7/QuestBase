@@ -1,12 +1,16 @@
-import { Check, SquarePen, Trash2, X } from "lucide-react";
+import { Plus, SquarePen } from "lucide-react";
 import PageHeader from "../PageHeader/PageHeader";
 import styles from "./DetailPage.module.css"
 import { useState } from "react";
+import DetailDropdown, { DetailDropdownOption } from "./DetailDropdown";
+import TrashButton from "./TrashIcon";
 
 interface DetailPageProps {
   title: string
   children: React.ReactNode
+  dropdownOptions?: DetailDropdownOption[]
   editting: boolean
+  onAdd?: (option: string) => void
   onEdit: (active: boolean) => void
   onDelete: () => void
 }
@@ -14,19 +18,22 @@ interface DetailPageProps {
 export default function DetailPage ({ 
   title,
   children,
+  dropdownOptions,
   editting,
+  onAdd,
   onEdit,
   onDelete 
 }: DetailPageProps) {
-  const [ deleting, setDeleting ] = useState<boolean>(false)
+  
+  const [ adding, setAdding ] = useState<boolean>(false)
 
   const toggleEdit = () => {
     onEdit(!editting)
   }
 
-  const handleDelete = () => {
-    setDeleting(false)
-    onDelete()
+  const handleSelect = (option: string) => {
+    setAdding(!adding)
+    onAdd?.(option)
   }
 
   return (
@@ -34,27 +41,25 @@ export default function DetailPage ({
       <div className={styles.header}>
         <PageHeader title={title}/>
         <div className={styles.toolbar}>
-          <SquarePen
-            className={`${styles.green_icon} ${editting ? styles.active : ""}`}
-            onClick={toggleEdit}
-          />
-          {!deleting && <Trash2
-            className={styles.red_icon}
-            onClick={() => setDeleting(true)}
-          />}
-          {deleting && 
-            <>
-              <p>Are you sure?</p>
-              <Check
-                className={styles.green_icon}
-                onClick={handleDelete}
+          {(onAdd && dropdownOptions) && 
+           <>
+              <Plus 
+                className={`${styles.green_icon} ${styles.add_icon} ${adding ? styles.active : ""}`}
+                onClick={() => setAdding(!adding)}
               />
-              <X
-                className={styles.red_icon}
-                onClick={() => setDeleting(false)}
-              />
+              {adding && 
+                <DetailDropdown
+                  options={dropdownOptions}
+                  onSelect={handleSelect}
+                />
+              }
             </>
           }
+          <SquarePen
+            className={`${styles.blue_icon} ${editting ? styles.active : ""}`}
+            onClick={toggleEdit}
+          />
+          <TrashButton onDelete={onDelete}/>
         </div>
       </div>
       {children}

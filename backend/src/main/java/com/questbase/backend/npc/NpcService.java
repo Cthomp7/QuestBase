@@ -8,24 +8,30 @@ import com.questbase.backend.auth.AuthService;
 import com.questbase.backend.auth.User;
 import com.questbase.backend.campaign.Campaign;
 import com.questbase.backend.campaign.CampaignRepository;
+import com.questbase.backend.exception.ResourceNotFoundException;
 import com.questbase.backend.npc.dto.CreateNpcRequest;
+import com.questbase.backend.npc.dto.NpcQuestResponse;
 import com.questbase.backend.npc.dto.NpcResponse;
+import com.questbase.backend.relationship.questnpc.QuestNpcRepository;
 
 @Service
 public class NpcService {
     
-    private final NpcRepository npcRepository;
     private final AuthService authService;
     private final CampaignRepository campaignRepository;
+    private final NpcRepository npcRepository;
+    private final QuestNpcRepository questNpcRepository;
 
     public NpcService(
-        NpcRepository npcRepository,
         AuthService authService,
-        CampaignRepository campaignRepository
+        CampaignRepository campaignRepository,
+        NpcRepository npcRepository,
+        QuestNpcRepository questNpcRepository
     ) {
-        this.npcRepository = npcRepository;
         this.authService = authService;
         this.campaignRepository = campaignRepository;
+        this.npcRepository = npcRepository;
+        this.questNpcRepository = questNpcRepository;
     }
 
     public NpcResponse getNpcById(Long id) {
@@ -152,6 +158,24 @@ public class NpcService {
         Npc savedNpc = npcRepository.save(npc);
 
         return toResponse(savedNpc);
+    }
+
+    // =========================================================================
+    // RELATIONSHIPS
+    // =========================================================================
+
+    public List<NpcQuestResponse> getQuestsByNpcId (Long npcId) {
+        User currentUser = authService.getCurrentUser();
+
+        if (!npcRepository.existsByIdAndCampaignUserId(npcId, currentUser.getId())) {
+            throw new ResourceNotFoundException("NPC");
+        }
+
+        return questNpcRepository
+            .findByNpcIdAndNpcCampaignUserId(npcId, currentUser.getId())
+            .stream()
+            .map(NpcQuestResponse::from)
+            .toList();
     }
 
     // =========================================================================

@@ -10,6 +10,7 @@
   display: flex;
   gap: 10px;
   align-items: center;
+  position: relative;
 }
 
 .toolbar svg {
@@ -18,10 +19,20 @@
   cursor: pointer;
 }
 
+.toolbar .add_icon > path {
+  margin-right: -5px;
+}
+
 .green_icon:hover,
 .green_icon.active {
   stroke: var(--qb-alien-green)
 }
+
+.blue_icon:hover,
+.blue_icon.active {
+  stroke: var(--qb-blue-slime)
+}
+
 
 .red_icon {
   margin-top: -1px;
@@ -61,6 +72,12 @@
   gap: 20px;
 }
 
+.information_2 {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .info_2 {
   display: flex;
   gap: 20px;
@@ -76,4 +93,57 @@
   color: var(--qb-alien-green);
   font-size: 1.2rem;
   margin-bottom: 0.5rem;
+}
+
+/* ========================================================================== */
+/* Detail Dropdown */
+/* ========================================================================== */
+
+.dropdown {
+  position: absolute;
+  background-color: #171717;
+  top: calc(100% + 10px);
+  left: 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  padding: 0.8em;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.dropdown_option {
+  display: flex;
+  gap: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: color 0.1s ease-in-out;
+}
+
+.dropdown_option:hover {
+  color: var(--qb-periwinkle);
+}
+
+.dropdown_option > p {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown_option > p::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s ease;
+}
+
+.dropdown_option > p:hover::after {
+  transform: scaleX(1);
 }

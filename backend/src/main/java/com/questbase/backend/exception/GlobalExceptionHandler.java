@@ -26,6 +26,24 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest()
             .body(Map.of("message", message));
     }
+    
+    @ExceptionHandler(InsufficientPermissionException.class)
+    public ResponseEntity<Map<String, String>> handleInsufficientPermission(
+            InsufficientPermissionException ex) {
+
+        return ResponseEntity
+            .status(HttpStatus.FORBIDDEN)
+            .body(Map.of("message", ex.getMessage()));
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleResourceNotFound(
+            ResourceNotFoundException ex) {
+
+        return ResponseEntity
+            .status(HttpStatus.NOT_FOUND)
+            .body(Map.of("message", ex.getMessage()));
+    }
 
     // =========================================================================
     // AUTH EXCEPTIONS

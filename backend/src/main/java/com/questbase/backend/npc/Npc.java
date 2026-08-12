@@ -1,13 +1,17 @@
 package com.questbase.backend.npc;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.questbase.backend.campaign.Campaign;
 import com.questbase.backend.npc.enums.NpcRole;
 import com.questbase.backend.npc.enums.NpcStatus;
+import com.questbase.backend.relationship.questnpc.QuestNpc;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -18,6 +22,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -74,4 +79,11 @@ public class Npc {
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
+
+    @OneToMany(
+        mappedBy = "npc",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    private Set<QuestNpc> quests = new HashSet<>();
 }

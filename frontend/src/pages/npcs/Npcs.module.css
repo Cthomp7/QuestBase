@@ -72,3 +72,27 @@
   border-color: var(--qb-pixie-dust);
   color: var(--qb-pixie-dust);
 }
+
+.quest_info {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.quest_info.spaced {
+  justify-content: space-between;
+  margin: 0 8px;
+}
+
+.quest_title {
+  font-size: 1.1rem;
+  font-weight: 400;
+  margin-top: 3px;
+}
+
+.quest_notes {
+  margin: 0 35px;
+  border-left: 2px solid var(--qb-blue-slime-trans);
+  padding-left: 15px;
+  max-width: 800px;
+}

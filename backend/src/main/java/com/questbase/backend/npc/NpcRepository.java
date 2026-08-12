@@ -12,6 +12,8 @@ public interface NpcRepository extends JpaRepository<Npc, Long> {
 
     Optional<Npc> findByIdAndCampaignUser(Long id, User user);
 
+    Boolean existsByIdAndCampaignUserId(Long npcId, Long userId);
+
     List<Npc> findByCampaignIdAndCampaignUserIdOrderByCreatedAtAsc(
         Long campaignId,
         Long userId
