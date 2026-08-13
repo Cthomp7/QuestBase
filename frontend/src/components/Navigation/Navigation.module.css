@@ -150,11 +150,11 @@ a.title h1:hover span {
 }
 
 .profile_picture {
-  width: 43px;
-  height: 43px;
+  width: 40px;
+  height: 40px;
   border-radius: 25px;
+  margin-top: 1px;
   cursor: pointer;
-  border: 1px solid #1b1b1b;
 }
 
 .account_info {

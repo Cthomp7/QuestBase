@@ -1,36 +1,23 @@
 import { Link, useNavigate } from "react-router-dom"
 import styles from "./DashboardNavigation.module.css"
-import { useEffect, useState } from "react"
-import Dropdown, { DropdownOption } from "@/components/Dropdown/Dropdown"
+import { useState } from "react"
 import { useCampaign } from "@/context/campaign/useCampaign"
-import ProfilePicture from "@/assets/imgs/profiles/Ribbert.png"
+import ProfilePicture from "@/assets/imgs/profiles/default.png"
 import { useAuth } from "@/context/AuthContext"
 import MenuDropdown from "../MenuDropdown/MenuDropdown"
-import { ArrowLeft } from "lucide-react"
-import CreateButton from "../ui/CreateButton/CreateButton"
+import { ArrowLeft, Book, ChartBar, ChevronDown, FolderBookmark, Map, User } from "lucide-react"
 
 const DashboardNavigation = () => {
   const navigate = useNavigate()
   const { logout, user } = useAuth()
-  const { campaigns, activeCampaignId, setActiveCampaignId } = useCampaign()
-  const [campaignDropdownOptions, setCampaignDropdownOptions] = useState<DropdownOption[]>([])
+  const { campaigns, activeCampaign, setActiveCampaignId } = useCampaign()
+  const [ showDropdown, setShowDropdown ] = useState<boolean>(false)
   const [accountMenuOpen, setAccountMenuOpen] = useState(false)
 
   const pages = [
-    { name: "NPCs", url: "/npcs" },
-    { name: "Quests", url: "/quests" }
+    { icon: <User />, name: "NPCs", url: "/npcs" },
+    { icon: <Book /> ,name: "Quests", url: "/quests" }
   ]
-
-  // configure dropdown
-  useEffect(() => {
-    if (campaigns.length > 0) {
-      const options = campaigns.map((campaign) => ({
-        label: campaign.name,
-        value: String(campaign.id),
-      }))
-      setCampaignDropdownOptions(options)
-    }
-  },[campaigns])
 
   const switchCampaign = (id: string) => {
     setActiveCampaignId(id)
@@ -52,7 +39,7 @@ const DashboardNavigation = () => {
           <div className={styles.dashboard_user_navigation}>
             <img 
               src={ProfilePicture} 
-              alt="Profile Picture of Ribbert the Frog"
+              alt="default profile picture"
               className={styles.profile_picture} 
               onClick={() => setAccountMenuOpen(!accountMenuOpen)}
             />
@@ -71,7 +58,7 @@ const DashboardNavigation = () => {
                 <div className={styles.account_info}>
                   <img 
                     src={ProfilePicture} 
-                    alt="Profile Picture of Ribbert the Frog"
+                    alt="default profile picture"
                     className={styles.profile_picture}
                   />
                   <div>
@@ -87,35 +74,68 @@ const DashboardNavigation = () => {
           ></MenuDropdown>
         </section>
         <section className={styles.navigation_section}>
-          <div className={styles.campaign_container}>
-            <p>Campaign:</p>
-            <button onClick={() => navigate("/campaigns")}>view all</button>
+          <div>
+            <p className={styles.navigation_header}>GENERAL</p>
+            <div
+              className={styles.navigation_page}
+              onClick={() => navigate("/dashboard")}
+            >
+              <ChartBar />
+              <p>Dashboard</p>
+            </div>
+            <div
+              className={styles.navigation_page}
+              onClick={() => navigate("/campaigns")}
+            >
+              <Map />
+              <p>Campaigns</p>
+            </div>
           </div>
-          {campaigns.length > 0 
-            ? <Dropdown
-                options={campaignDropdownOptions}
-                value={activeCampaignId}
-                onChange={(c) => switchCampaign(c)}
-              ></Dropdown>
-            : <CreateButton 
-                text="Create a new campaign"
-                size="small"
-                onClick={() => navigate("/campaigns")}
-              />
-          }
         </section>
-        <section className={styles.navigation_pages}>
+        <section className={styles.navigation_section}>
+          <p className={styles.navigation_header}>RESOURCES</p>
           {pages.map((p) => (
             <div
               key={p.url}
               className={styles.navigation_page}
               onClick={() => navigate(p.url)}
             >
+              {p.icon}
               <p>{p.name}</p>
             </div>
           ))}
         </section>
-        <p style={{ margin: "10px" }}>More coming soon...</p>
+        <p 
+          style={{ marginTop: "20px"}}
+          className={styles.navigation_header}
+        >MORE COMING SOON...</p>
+      </div>
+      <div>
+        <p className={styles.navigation_header}>ACTIVE CAMPAIGN</p>
+        <div 
+          className={styles.active_campaign_section}
+          onClick={() => setShowDropdown(!showDropdown)}
+        >
+          <ChevronDown className={showDropdown ? styles.flip : ""}/>
+          <p>{activeCampaign?.name}</p>
+          {showDropdown &&
+            <div className={styles.campaign_dropdown}>
+              {campaigns.length > 0 && activeCampaign &&
+                campaigns.map((campaign) => (
+                  activeCampaign != campaign 
+                    ? <div 
+                        className={styles.campaign_dropdown_option}
+                        onClick={() => switchCampaign(String(campaign.id))}
+                      >
+                        <FolderBookmark/>
+                        <p>{campaign.name}</p>
+                      </div>
+                    : <></>
+                ))
+              }
+            </div>
+          }
+        </div>
       </div>
     </div>
   )

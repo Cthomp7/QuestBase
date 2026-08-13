@@ -4,7 +4,7 @@ import SmallSparkle from "@/assets/svgs/small-sparkle.svg?react"
 import styles from "./Navigation.module.css"
 import { useAuth } from "@/context/AuthContext"
 import { useState } from "react"
-import ProfilePicture from "@/assets/imgs/profiles/Ribbert.png"
+import ProfilePicture from "@/assets/imgs/profiles/default.png"
 import MenuDropdown from "../MenuDropdown/MenuDropdown";
 
 export default function Navigation () {
@@ -35,7 +35,7 @@ export default function Navigation () {
               <div className={styles.profile_picture_wrapper}>
                 <img 
                   src={ProfilePicture} 
-                  alt="Profile Picture of Ribbert the Frog"
+                  alt="default profile picture"
                   className={styles.profile_picture} 
                   onClick={() => setAccountMenuOpen(!accountMenuOpen)}
                   style={{ transform: "translateY(-5px) translateX(4px)" }}
@@ -50,7 +50,7 @@ export default function Navigation () {
                     <div className={styles.account_info}>
                       <img 
                         src={ProfilePicture} 
-                        alt="Profile Picture of Ribbert the Frog"
+                        alt="default profile picture"
                         className={styles.profile_picture} 
                         onClick={() => setAccountMenuOpen(!accountMenuOpen)}
                       />
