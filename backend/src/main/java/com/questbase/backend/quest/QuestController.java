@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.questbase.backend.quest.dto.CreateQuestRequest;
+import com.questbase.backend.quest.dto.QuestNpcResponse;
 import com.questbase.backend.quest.dto.QuestResponse;
 import com.questbase.backend.quest.dto.SaveQuestNotesById;
 
@@ -77,5 +78,12 @@ public class QuestController {
             id,
             request.notes()
         );
+    }
+
+    @GetMapping("/{id}/npcs")
+    public List<QuestNpcResponse> getNpcsByQuestId(
+        @PathVariable Long id
+    ) {
+        return questService.getNpcsByQuestId(id);
     }
 }

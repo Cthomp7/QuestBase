@@ -23,31 +23,31 @@ const Quests = () => {
   const [editting, setEditting] = useState<{ quest: Quest | null, index: number}>({ quest: null, index: -1 })
   const [confirmDeletion, setConfirmDeletion] = useState<number>(-1)
 
-const fetchQuests = useCallback(async () => {
-  if (!activeCampaign?.id) return;
+  const fetchQuests = useCallback(async () => {
+    if (!activeCampaign?.id) return;
 
-  try {
-    const response = await fetch(
-      `/api/campaigns/${activeCampaign.id}/quests`,
-      { method: "GET" }
-    );
+    try {
+      const response = await fetch(
+        `/api/campaigns/${activeCampaign.id}/quests`,
+        { method: "GET" }
+      );
 
-    if (response.ok) {
-      const quests = await response.json();
-      setQuests(quests);
-    } else {
-      console.error(response);
+      if (response.ok) {
+        const quests = await response.json();
+        setQuests(quests);
+      } else {
+        console.error(response);
+      }
+    } catch (error) {
+      console.error("Failed to fetch quests: ", error);
     }
-  } catch (error) {
-    console.error("Failed to fetch quests: ", error);
-  }
-}, [activeCampaign?.id]);
+  }, [activeCampaign?.id]);
 
-  useEffect(() => {
-  if (user && activeCampaign?.id) {
-    fetchQuests()
-  }
-}, [user, activeCampaign, fetchQuests])
+    useEffect(() => {
+    if (user && activeCampaign?.id) {
+      fetchQuests()
+    }
+  }, [user, activeCampaign, fetchQuests])
 
   const createQuest = async (questRequest: CreateQuestRequest) => {
     try {

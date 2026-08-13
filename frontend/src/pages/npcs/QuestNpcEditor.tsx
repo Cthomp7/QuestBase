@@ -7,69 +7,112 @@ import { useCampaign } from "@/context/campaign/useCampaign"
 import { Quest } from "@/types/api/quest"
 import { fetchQuests } from "@/api/quests"
 import { createQuestNpc, updateQuestNpc } from "@/api/questnpc"
-import { CreateQuestNpcRequest, NpcQuest, UpdateQuestNpcRequest } from "@/types/api/questnpc"
+import { CreateQuestNpcRequest, NpcQuest, QuestNpc, UpdateQuestNpcRequest } from "@/types/api/questnpc"
+import { Npc } from "@/types/api/npc"
+import { fetchNpcs } from "@/api/npcs"
 
 export enum QuestNpcEditorAction {
   "CREATE",
   "UPDATE"
 }
 
+interface QuestNpcParent {
+  id: string,
+  type: string
+}
+
 interface QuestNpcEditorProps {
-  npcId: number,
-  npcQuest?: NpcQuest
+  parent: QuestNpcParent
+  questNpc?: NpcQuest | QuestNpc
   action: QuestNpcEditorAction
   onAction: () => void
   onClose: () => void
 }
 
-export default function QuestNpcEditor ({ 
-  npcId,
-  npcQuest,
+export default function QuestNpcEditor ({
+  parent,
+  questNpc,
   action,
   onAction,
   onClose
 }: QuestNpcEditorProps) {
   const { activeCampaign } = useCampaign()
   const [ questId, setQuestId ] = useState<string>("")
+  const [ npcId, setNpcId ] = useState<string>("")
   const [ role, setRole ] = useState<string>("")
   const [ notes, setNotes ] = useState<string>("")
-  const [ questDropdownOptions, setQuestDropdownOptions ] = useState<DropdownOption[]>([])
+  const [ dropdownOptions, setDropdownOptions ] = useState<DropdownOption[]>([])
   const [ loading, setLoading ] = useState<boolean>(false)
 
-  const header = action === QuestNpcEditorAction.CREATE
+  // generate dynamic UI elements
+  const header =
+  action === QuestNpcEditorAction.CREATE
     ? <>Add <span>NPC</span> to a <span>quest</span></>
-    : <>Editting: <span>{npcQuest?.quest.title}</span> Quest</>
+    : questNpc && "npc" in questNpc
+      ? <>Editing NPC: <span>{questNpc.npc.name}</span></>
+      : questNpc && "quest" in questNpc
+        ? <>Editing Quest: <span>{questNpc.quest.title}</span></>
+        : null
 
   const button = action === QuestNpcEditorAction.CREATE ? "Create" : "Update"
 
   useEffect(() => {
-    if (npcQuest) {
-      setQuestId(String(npcQuest.questId))
-      setRole(npcQuest.role ?? "")
-      setNotes(npcQuest.notes ?? "")
+    if (parent.type === "quest") setQuestId(parent.id)
+    else if (parent.type === "npc") setNpcId(parent.id)
+  },[parent])
+
+  // Set editor values if quest NPC is passed down
+  useEffect(() => {
+    if (questNpc) {
+      setQuestId(String(questNpc.questId))
+      setNpcId(String(questNpc.npcId))
+      setRole(questNpc.role ?? "")
+      setNotes(questNpc.notes ?? "")
     }
-  }, [npcQuest])
+  }, [questNpc])
+
+  const loadNpcs = useCallback(async () => {
+    if (!activeCampaign?.id) return
+    try {
+      const npcs = await fetchNpcs(activeCampaign.id)
+      generateNpcDropdownOptions(npcs)
+    } catch (error) {
+      console.error("Failed to load NPCs:", error)
+    }
+  }, [activeCampaign?.id])
 
   const loadQuests = useCallback(async () => {
     if (!activeCampaign?.id) return
     try {
       const quests = await fetchQuests(activeCampaign.id)
-      generateDropdownOptions(quests)
+      generateQuestDropdownOptions(quests)
     } catch (error) {
       console.error("Failed to load quests:", error)
     }
   }, [activeCampaign?.id])
 
+  // Fetch and generate dropdown options based on parent type
   useEffect(() => {
-    loadQuests()
-  },[loadQuests])
+    if (action === QuestNpcEditorAction.CREATE) {
+      if (parent.type === 'quest') loadNpcs()
+      else if (parent.type === 'npc') loadQuests()
+    }
+  },[action, parent, loadNpcs, loadQuests])
 
-  const generateDropdownOptions = (quests: Quest[]) => {
+  const generateNpcDropdownOptions = (npcs: Npc[]) => {
+    const options: DropdownOption[] = 
+      npcs.map((npc) => 
+        ({ label: npc.name, value: String(npc.id) })
+      )
+    setDropdownOptions(options)
+  }
+
+  const generateQuestDropdownOptions = (quests: Quest[]) => {
     const options: DropdownOption[] = 
       quests.map((quest) => 
         ({ label: quest.title, value: String(quest.id) })
       )
-    setQuestDropdownOptions(options)
+    setDropdownOptions(options)
   }
 
   const handleClick = async () => {
@@ -88,14 +131,23 @@ export default function QuestNpcEditor ({
 
   const create = async () => {
     const request: CreateQuestNpcRequest = { 
-      questId: Number(questId), npcId, role, notes 
+      questId: Number(questId), 
+      npcId: Number(npcId), 
+      role, 
+      notes 
     }
     await createQuestNpc(request)
   }
 
   const update = async () => {
+    if (!questNpc) return
     const request: UpdateQuestNpcRequest = { role, notes }
-    await updateQuestNpc(npcId, request)
+    await updateQuestNpc(questNpc.id, request)
+  }
+
+  const setId = (id: string) => {
+    if (parent.type === 'quest') setNpcId(id)
+    else if (parent.type === 'npc') setQuestId(id)
   }
 
   return (
@@ -108,9 +160,9 @@ export default function QuestNpcEditor ({
             <div className={editorStyles.editor_property}>
               <p>Select a quest:</p>
               <Dropdown
-                options={questDropdownOptions}
-                value={questId}
-                onChange={(id) => setQuestId(id)}
+                options={dropdownOptions}
+                value={parent.type === 'quest' ? npcId : questId}
+                onChange={(id) => setId(id)}
                 className={`${editorStyles.dropdown_property} ${editorStyles.larger}`}
               ></Dropdown>
             </div>
@@ -125,7 +177,7 @@ export default function QuestNpcEditor ({
               onChange={(e) => setRole(e.target.value)}
             />
           </div>
-          <p>Description:</p>
+          <p>Notes:</p>
           <textarea 
             name="notes" 
             placeholder="Notes"

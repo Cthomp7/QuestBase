@@ -12,6 +12,8 @@ public interface QuestRepository extends JpaRepository<Quest, Long> {
 
     Optional<Quest> findByIdAndCampaignUser(Long id, User user);
 
+    Boolean existsByIdAndCampaignUserId(Long questId, Long userId);
+
     List<Quest> findByCampaignIdAndCampaignUserId(
         Long campaignId,
         Long userId

@@ -40,7 +40,7 @@ export async function updateQuestNpc(
       console.error(response)
     }
   } catch (error) {
-    console.error("Failed to create quest NPC: ", error)
+    console.error("Failed to update quest NPC: ", error)
   }
 }
 
@@ -53,7 +53,7 @@ export async function deleteQuestNpc(npcId: number) {
       console.error(response)
     }
   } catch (error) {
-    console.error("Failed to create quest NPC: ", error)
+    console.error("Failed to delete quest NPC: ", error)
   }
 }
 

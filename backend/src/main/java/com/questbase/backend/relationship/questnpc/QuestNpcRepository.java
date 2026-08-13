@@ -11,4 +11,7 @@ public interface QuestNpcRepository extends JpaRepository<QuestNpc, Long> {
     Optional<QuestNpc> findById(Long questId);
 
     List<QuestNpc> findByNpcIdAndNpcCampaignUserId(Long npcId, Long userId);
+
+    List<QuestNpc> findByQuestIdAndNpcCampaignUserId(Long questId, Long userId);
+
 }

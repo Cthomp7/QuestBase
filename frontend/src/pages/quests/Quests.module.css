@@ -58,6 +58,16 @@
   padding: 0.5rem 1rem;
 }
 
+.blue_bubble {
+  padding: 0.3rem 0.5rem;
+  border-radius: 25px;
+  border-width: 2px;
+  border-style: solid;
+  background-color: var(--qb-blue-slime-trans);
+  border-color: var(--qb-blue-slime);
+  color: var(--qb-blue-slime);
+}
+
 .quest_xp {
   background-color: var(--qb-periwinkle-trans);
   border-color: var(--qb-periwinkle);

@@ -1,29 +1,30 @@
-import { type NpcQuest } from "@/types/api/questnpc"
-import styles from "./Npcs.module.css"
+import { type QuestNpc } from "@/types/api/questnpc"
+import styles from "./Quests.module.css"
 import layoutStyles from "@/layouts/AuthLayout/AuthLayout.module.css"
 import detailPageStyles from "@/components/ui/DetailPage/DetailPage.module.css"
-import questStyles from "@/pages/quests/Quests.module.css"
+import npcStyles from "@/pages/npcs/Npcs.module.css"
 import SmallSparkle from "@/assets/svgs/small-sparkle.svg?react"
 import { SquarePen } from "lucide-react"
 import { useNavigate } from "react-router-dom"
-import QuestNpcEditor, { QuestNpcEditorAction } from "./QuestNpcEditor"
+// import QuestNpcEditor, { QuestNpcEditorAction } from "./QuestNpcEditor"
 import { useState } from "react"
 import TrashIcon from "@/components/ui/DetailPage/TrashIcon"
 import { deleteQuestNpc } from "@/api/questnpc"
+import QuestNpcEditor, { QuestNpcEditorAction } from "../npcs/QuestNpcEditor"
 
-interface NpcQuestProps {
-  npcQuest: NpcQuest
-  fetchQuests: () => void
+interface QuestNpcProps {
+  questNpc: QuestNpc
+  fetchNpcs: () => void
 }
 
-export default function NpcQuest ({ npcQuest, fetchQuests }: NpcQuestProps) {
+export default function QuestNpc ({ questNpc, fetchNpcs }: QuestNpcProps) {
   const navigate = useNavigate()
   const [ showNpcQuestEditor, setShowNpcQuestEditor ] = useState<boolean>(false)
 
   const onDelete = async () => {
     try {
-      await deleteQuestNpc(npcQuest.id)
-      fetchQuests()
+      await deleteQuestNpc(questNpc.id)
+      fetchNpcs()
     } catch (error) {
       console.error("Failed to delete NPC quest: ", error)
     }
@@ -32,9 +33,9 @@ export default function NpcQuest ({ npcQuest, fetchQuests }: NpcQuestProps) {
   return (
     <>
       {!showNpcQuestEditor && <div 
-        key={npcQuest.id} 
+        key={questNpc.id} 
         className={layoutStyles.mini_card}
-        onClick={() => navigate(`/quests/${npcQuest.questId}`)}
+        onClick={() => navigate(`/npcs/${questNpc.npcId}`)}
       >
         <div className={`${detailPageStyles.relationship_info} ${detailPageStyles.spaced}`}>
           <div className={detailPageStyles.relationship_info}>
@@ -46,18 +47,18 @@ export default function NpcQuest ({ npcQuest, fetchQuests }: NpcQuestProps) {
               }}
             />
             <p className={detailPageStyles.relationship_title}>
-              {npcQuest.quest.title}
+              {questNpc.npc.name}
             </p>
-            {npcQuest.role && 
-              <p className={`${styles.npc_property} ${styles.npc_status} ${styles.ALIVE}`}>
-                {npcQuest.role}
+            {questNpc.role && 
+              <p className={styles.blue_bubble}>
+                {questNpc.role}
               </p>
             }
           </div>
           <div className={detailPageStyles.relationship_info}>
-            {npcQuest.quest.status &&
-              <p className={`${styles.npc_property} ${questStyles.quest_status} ${questStyles[npcQuest.quest.status]}`}>
-                {npcQuest.quest.status}
+            {questNpc.npc.status &&
+              <p className={`${npcStyles.npc_property} ${npcStyles.npc_status} ${npcStyles[questNpc.npc.status]}`}>
+                {questNpc.npc.status}
               </p>
             }
             <SquarePen
@@ -70,15 +71,15 @@ export default function NpcQuest ({ npcQuest, fetchQuests }: NpcQuestProps) {
             <TrashIcon onDelete={onDelete}/>
           </div>
         </div>
-        {npcQuest.notes && 
-          <p className={detailPageStyles.relationship_notes}>{npcQuest.notes}</p>
+        {questNpc.notes && 
+          <p className={detailPageStyles.relationship_notes}>{questNpc.notes}</p>
         }
       </div>}
       {showNpcQuestEditor && <QuestNpcEditor
-        parent={{ id: String(npcQuest.npcId), type: "npc"}}
-        questNpc={npcQuest}
+        parent={{ id: String(questNpc.questId), type: "quest" }}
+        questNpc={questNpc}
         action={QuestNpcEditorAction.UPDATE}
-        onAction={fetchQuests}
+        onAction={fetchNpcs}
         onClose={() => setShowNpcQuestEditor(false)}
       />}
     </>

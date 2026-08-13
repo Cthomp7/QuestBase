@@ -154,9 +154,9 @@ export default function NpcsDetails () {
             onDelete={deleteNpc}
             children={
               <div className={DetailPageStyles.information}>
-                {showNpcQuestEditor && 
+                {showNpcQuestEditor && npcId &&
                     <QuestNpcEditor 
-                      npcId={Number(npcId)}
+                      parent={{ id: npcId, type: "npc" }}
                       action={QuestNpcEditorAction.CREATE}
                       onAction={fetchQuests}
                       onClose={() => setShowNpcQuestEditor(false)}
