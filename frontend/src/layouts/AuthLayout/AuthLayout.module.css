@@ -21,8 +21,8 @@
 
 .card,
 .mini_card {
-  background-color: rgba(51, 51, 51, 0.267);
-  border: solid 2px rgba(59, 59, 59, 0.507);
+  background-color: #1F1F1F;
+  border: solid 2px #2D2D2D;
   border-radius: 15px;
   padding: 20px;
   display: flex;

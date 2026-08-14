@@ -24,7 +24,7 @@ export default function Navigation () {
       </Link>
       {/* Desktop Links */}
       <div className={styles.navigation}>
-        <HashLink smooth to="/#project">Project</HashLink>
+        <HashLink smooth to="/#mission">Mission</HashLink>
         <HashLink smooth to="/#features">Features</HashLink>
         <HashLink smooth to="/#contact">Contact</HashLink>
         {/* <HashLink smooth to="/#support">Support</HashLink> */}
@@ -92,7 +92,7 @@ export default function Navigation () {
           <>
             <Link to="/">Home</Link>
             {isAuthenticated && <Link to="/dashboard">Dashboard</Link>}
-            <Link to="#project">Project</Link>
+            <Link to="#mission">Mission</Link>
             <HashLink smooth to="/#contact">Contact</HashLink>
             {/* <Link to="#support">Support</Link> */}
             {isAuthenticated 

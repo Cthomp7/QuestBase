@@ -4,9 +4,12 @@ import Sparkle from "@/assets/svgs/sparkle.svg?react"
 import SmallSparkle from "@/assets/svgs/small-sparkle.svg?react"
 import MediumSparkle from "@/assets/svgs/medium-sparkle.svg?react"
 import LargeSparkle from "@/assets/svgs/large-sparkle.svg?react"
-import { CircleX, FolderGit2, PartyPopper, Send } from "lucide-react"
-import { useEffect, useState } from "react"
+import { Book, CircleAlert, CircleX, FolderBookmarkIcon, FolderGit2, PartyPopper, Send, User } from "lucide-react"
+import React, { useEffect, useState } from "react"
+import { HashLink } from "react-router-hash-link";
 import Loader from "@/components/ui/Loader/Loader"
+import MissionImg from "@/assets/imgs/mission-img.png"
+import authLayoutStyles from "@/layouts/AuthLayout/AuthLayout.module.css"
 
 function Home() {
   const [name, setName] = useState<string>("")
@@ -16,6 +19,27 @@ function Home() {
   const [submitting, setSubmitting] = useState<boolean>(false)
   const [errorMessage, setErrorMessage] = useState<string>("")
   const [successMessage, setSuccessMessage] = useState<string>("")
+
+  const features = [
+    {
+      icon: <FolderBookmarkIcon/>,
+      color: "var(--qb-mimic-coin)",
+      title: "Campaigns",
+      description: "Give every adventure a home. Keep your quests, characters, notes, and campaign details organized in one shared space."
+    },
+    { 
+      icon: <User/>,
+      color: "var(--qb-alien-green)",
+      title: "NPCs", 
+      description: "Build memorable NPCs with their roles, personalities, details, and notes all in one place." 
+    },
+    { 
+      icon: <Book/>,
+      color: "var(--qb-blue-slime)",
+      title: "Quests", 
+      description: "Create and organize quests, track their progress, set rewards, and keep every adventure moving forward." 
+    }
+  ]
 
   useEffect(() => {
     window.onTurnstileSuccess = (token: string) => {
@@ -80,6 +104,7 @@ function Home() {
 
   return (
     <div className={styles.home_page}>
+
       <section className={styles.hero}>
         <div className={styles.hero_text_cont}>
           <SmallSparkle className={styles.small_sparkle_1}/>
@@ -89,10 +114,14 @@ function Home() {
           <MediumSparkle className={styles.medium_sparkle_2}/>
           <h1>Org<span>a</span>nize Every <span className={styles.green_text}>ADVENTURE</span>.</h1>
           <p>QuestBase keeps your campaigns, quests, NPCs, and session notes together so you're always ready for game night!</p>
-          <div className={styles.sparkle_button}>
+          <HashLink 
+            smooth 
+            to="/#features"
+            className={styles.sparkle_button}
+          >
             <Sparkle className={styles.sparkle_icon} />
             <p>Learn more</p>
-          </div>
+          </HashLink>
         </div>
         <div className={styles.hero_image_cont}>
           <img 
@@ -102,6 +131,54 @@ function Home() {
           />
         </div>
       </section>
+
+      <section id="mission" className={styles.mission}>
+        <div className={styles.mission_text_box}>
+          <h1>Our <span>Mission</span></h1>
+          <p>
+            QuestBase is a{" "}
+            <span>campaign management platform</span>
+            {" "}built for Dungeon Masters running virtual tabletop RPG campaigns. It provides a centralized place to organize <span>quests</span>, track <span>party progress</span>, manage <span>session notes</span>, and keep important campaign details in one place.</p>
+          <br />
+          <p>
+            As the project evolves, QuestBase aims to become a hub for creating and sharing{" "}
+            <span>homebrew content</span>
+            , building{" "}
+            <span>reusable campaign templates</span>
+            , and managing multiple campaigns from a single platform.
+          </p>
+        </div>
+        <div className={styles.mission_image_wrapper}>
+          <img src={MissionImg} />
+        </div>
+      </section>
+
+      <section id="features" className={styles.features}>
+        <h1>Features</h1>
+        <div className={styles.features_container}>
+          {features.map((feat) => (
+            <div 
+              className={`${authLayoutStyles.card} ${styles.features_card}`}
+              style={{ borderColor: feat.color }}
+            >
+              <div className={styles.features_header}>
+                {React.cloneElement(feat.icon, {
+                  size: "30",
+                  style: { stroke: feat.color }
+                })}
+                <h3 style={{ color: feat.color }}>{feat.title}</h3>
+              </div>
+              <p>{feat.description}</p>
+            </div>
+          ))}
+        </div>
+        <div className={styles.message}>
+          <CircleAlert color={"#adff5d"} size={25}/>
+          <p>QuestBase is in early development.</p>
+        </div>
+      </section>
+      <div className={styles.features_blob_container}></div>
+
       <section id="contact" className={styles.contact}>
         <div className={styles.contact_text_container}>
           <div className={styles.contact_text}>
@@ -171,6 +248,7 @@ function Home() {
           </div>
         </div>
       </section>
+      
       <script
         src="https://challenges.cloudflare.com/turnstile/v0/api.js"
         async
