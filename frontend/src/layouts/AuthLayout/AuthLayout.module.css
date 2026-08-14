@@ -153,3 +153,26 @@ textarea.dark_input {
 .editor_title .green_close_icon:hover {
   stroke: var(--qb-alien-green-trans);
 }
+
+.periwinkle_button {
+  background-color: var(--qb-periwinkle-trans);
+  color: var(--qb-periwinkle);
+  border: solid 2px var(--qb-periwinkle);
+  font-weight: 400;
+  font-size: 1.05rem;
+  line-height: 1rem;
+  width: fit-content;
+  padding: 0.7rem 1.3rem 0.6rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: ease-in-out .2s;
+}
+
+.periwinkle_button:hover {
+  background-color: var(--qb-pixie-dust-trans);
+  border-color: var(--qb-pixie-dust);
+  color: var(--qb-pixie-dust);
+}

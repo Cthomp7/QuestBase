@@ -1,53 +1,43 @@
 import layoutStyles from "@/layouts/AuthLayout/AuthLayout.module.css"
 import styles from "./Quests.module.css"
-import EditIcon from "@/assets/edit.svg?react"
-import TrashIcon from "@/assets/trash.svg?react"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useAuth } from "@/context/AuthContext"
-import { CreateQuestRequest, Quest } from "@/types/api/quest"
+import { CreateQuestRequest, Quest as QuestType } from "@/types/api/quest"
 import { useCampaign } from "@/context/campaign/useCampaign"
 import QuestEditor from "./QuestEditor/QuestEditor"
 import CampaignEmptyState from "@/components/states/CampaignEmptyState/CampaignEmptyState"
 import PageHeader from "@/components/ui/PageHeader/PageHeader"
 import CreateButton from "@/components/ui/CreateButton/CreateButton"
-import { useNavigate } from "react-router-dom"
+import Quest from "./Quest"
+import { fetchQuests } from "@/api/quests"
 
 const Quests = () => {
   const { user } = useAuth()
   const { activeCampaign } = useCampaign()
-  const navigate = useNavigate()
-  const [quests, setQuests] = useState<Quest[]>([])
+  const [quests, setQuests] = useState<QuestType[]>([])
   const noResultsRef = useRef<HTMLDivElement | null>(null)
   const createDivRef = useRef<HTMLDivElement | null>(null)
   const [creating, setCreating] = useState<boolean>(false)
-  const [editting, setEditting] = useState<{ quest: Quest | null, index: number}>({ quest: null, index: -1 })
-  const [confirmDeletion, setConfirmDeletion] = useState<number>(-1)
+  const [editing, setEditing] = useState<{ 
+    quest: QuestType | null, 
+    index: number
+  }>({ quest: null, index: -1 })
 
-  const fetchQuests = useCallback(async () => {
+  const handleFetchQuests = useCallback(async () => {
     if (!activeCampaign?.id) return;
-
     try {
-      const response = await fetch(
-        `/api/campaigns/${activeCampaign.id}/quests`,
-        { method: "GET" }
-      );
-
-      if (response.ok) {
-        const quests = await response.json();
-        setQuests(quests);
-      } else {
-        console.error(response);
-      }
+      const quests = await fetchQuests(activeCampaign?.id)
+      if (quests) setQuests(quests)
     } catch (error) {
       console.error("Failed to fetch quests: ", error);
     }
   }, [activeCampaign?.id]);
 
-    useEffect(() => {
+  useEffect(() => {
     if (user && activeCampaign?.id) {
-      fetchQuests()
+      handleFetchQuests()
     }
-  }, [user, activeCampaign, fetchQuests])
+  }, [user, activeCampaign, handleFetchQuests])
 
   const createQuest = async (questRequest: CreateQuestRequest) => {
     try {
@@ -80,20 +70,8 @@ const Quests = () => {
         body: JSON.stringify(questRequest)
       })
       if (response.ok) {
-        fetchQuests()
+        handleFetchQuests()
         setEditorVisible('edit', false)
-      } else console.error(response)
-    } catch (error) {
-      console.error("Failed to update quest: ", error)
-    }
-  }
-
-  const deleteQuest = async (id: number) => {
-    try {
-      const response = await fetch(`/api/quests/${id}`, { method: "DELETE" })
-      if (response.ok) {
-        fetchQuests()
-        setConfirmDeletion(-1)
       } else console.error(response)
     } catch (error) {
       console.error("Failed to update quest: ", error)
@@ -119,7 +97,7 @@ const Quests = () => {
     if (createDivRef.current)
       createDivRef.current.style.display = visible ? "none" : "flex"
 
-    if (!visible && type === 'edit') setEditting({ quest: null, index: -1})
+    if (!visible && type === 'edit') setEditing({ quest: null, index: -1})
   }
 
   return (
@@ -142,63 +120,20 @@ const Quests = () => {
             />}
             <div className={styles.quests}>
                 {quests.map((quest, i) => (
-                  <div 
-                    key={quest.id} 
-                    className={layoutStyles.card}
-                    style={{ order: i, display: editting.index === i ? "none" : "flex" }}
-                    onClick={() => navigate(`/quests/${quest.id}`)}
-                  >
-                    <div className={styles.quest_card_header}>
-                      <p className={layoutStyles.card_title}>{quest.title}</p>
-                      <div className={styles.quest_card_properties}>
-                        <p className={`${styles.quest_card_property} ${styles.quest_status} ${styles[quest.status]}`}>
-                          {quest.status.replace(/_/g, " ")}
-                        </p>
-                        <p className={`${styles.quest_card_property} ${styles.quest_difficulty} ${styles[quest.difficulty]}`}>
-                          {quest.difficulty}
-                        </p>
-                        <p className={`${styles.quest_card_property} ${styles.quest_xp}`}>
-                          {quest.rewardXp}{" "}XP
-                        </p>
-                      </div>
-                    </div>
-                    <p>{quest.description}</p>
-                    <div className={styles.quest_actions}>
-                      {confirmDeletion === quest.id
-                        ? <div className={styles.confirm_deletion}>
-                            <p>Are you sure you want to <span>DELETE</span> this quest?</p>
-                            <button onClick={(e) => {
-                              e.stopPropagation()
-                              deleteQuest(quest.id)
-                            }}>Yes</button>
-                            <button onClick={(e) => {
-                              e.stopPropagation()
-                              setConfirmDeletion(-1)
-                            }}>No</button>
-                          </div>
-                        : <>
-                            <EditIcon
-                              className={layoutStyles.edit_icon}
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                setEditting({ quest, index: i })
-                              }} 
-                            />
-                            <TrashIcon 
-                              className={layoutStyles.trash_icon}
-                              onClick={(e) => {
-                                e.preventDefault()
-                                setConfirmDeletion(quest.id)
-                              }}
-                            />
-                          </>}
-                    </div>
-                  </div>
+                  <Quest
+                    key={i}
+                    quest={quest}
+                    index={i}
+                    editable={true}
+                    fetchQuests={handleFetchQuests}
+                    editing={editing}
+                    setEditing={setEditing}
+                  />
                 ))}
-                {editting.index >= 0 && <QuestEditor
+                {editing.index >= 0 && <QuestEditor
                   action="Edit"
                   activeCampaignId={activeCampaign?.id ?? 0}
-                  quest={editting.quest}
+                  quest={editing.quest}
                   updateQuest={(id, req) => editQuest(id, req)}
                   setEditorVisible={(visible) => setEditorVisible('edit', visible)}
                 />}
