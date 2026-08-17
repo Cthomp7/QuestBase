@@ -174,7 +174,7 @@ a.title h1:hover span {
 
 .account_info .user_display_name {
   font-weight: 400;
-  color: var(--qb-alien-green);
+  color: white;
 }
 
 .account_info .user_email {

@@ -5,7 +5,7 @@ import { useCampaign } from "@/context/campaign/useCampaign"
 import ProfilePicture from "@/assets/imgs/profiles/default.png"
 import { useAuth } from "@/context/AuthContext"
 import MenuDropdown from "../MenuDropdown/MenuDropdown"
-import { ArrowLeft, Book, ChartBar, ChevronDown, FolderBookmark, Map, User } from "lucide-react"
+import { ArrowLeft, Book, ChartBar, ChevronDown, FolderBookmark, LogOut, Map, Settings, User } from "lucide-react"
 
 const DashboardNavigation = () => {
   const navigate = useNavigate()
@@ -67,8 +67,14 @@ const DashboardNavigation = () => {
                   </div>
                 </div>
                 <hr />
-                <Link to="/settings">Settings</Link>
-                <Link onClick={() => logout(redirectToLogin)} to="#">Logout</Link>
+                <Link to="/settings">
+                  <Settings/>
+                  <p>Settings</p>
+                </Link>
+                <Link onClick={() => logout(redirectToLogin)} to="#">
+                  <LogOut />
+                  <p>Logout</p>
+                </Link>
               </>
             }
           ></MenuDropdown>

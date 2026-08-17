@@ -6,6 +6,7 @@ import { useAuth } from "@/context/AuthContext"
 import { useState } from "react"
 import ProfilePicture from "@/assets/imgs/profiles/default.png"
 import MenuDropdown from "../MenuDropdown/MenuDropdown";
+import { ChartBar, LogOut, Map, Settings } from "lucide-react";
 
 export default function Navigation () {
   const navigate = useNavigate()
@@ -60,11 +61,25 @@ export default function Navigation () {
                       </div>
                     </div>
                     <hr />
-                    <Link to="/dashboard">Dashboard</Link>
-                    <Link to="/campaigns">Campaigns</Link>
-                    <Link to="/settings">Settings</Link>
+                    <Link to="/dashboard">
+                      <ChartBar />
+                      <p>Dashboard</p>
+                    </Link>
+                    <Link to="/campaigns">
+                      <Map />
+                      <p>Campaigns</p>
+                    </Link>
+                    <Link to="/settings">
+                      <Settings/>
+                      <p>Settings</p>
+                    </Link>
                     <hr />
-                    <Link onClick={() => logout(redirectToLogin)} to="#">Logout</Link>
+                    <Link 
+                      onClick={() => logout(redirectToLogin)} to="#"
+                    >
+                      <LogOut/>
+                      <p>Logout</p>
+                    </Link>
                   </>
                 }
               ></MenuDropdown>

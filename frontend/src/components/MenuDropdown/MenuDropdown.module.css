@@ -12,7 +12,7 @@
   background: var(--primary-);
   border-radius: 12px;
   padding: 1rem;
-  border: 1px solid var(--qb-frog-green);
+  border: 1px solid var(--qb-periwinkle);
 
   opacity: 0;
   pointer-events: none;
@@ -27,11 +27,14 @@
 
 .menu_dropdown a,
 .menu_dropdown button {
-  color: var(--qb-frog-green);
+  color: var(--qb-periwinkle);
   padding: 0.5rem 0.7rem;
   border-radius: 8px;
   transition: 0.25s;
   font-weight: 300;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .menu_dropdown a:hover,
@@ -50,6 +53,17 @@
   text-align: left;
 }
 
+.menu_dropdown p {
+  color: var(--qb-periwinkle);
+  font-size: 1.1rem;
+  transition: 0.25s;
+}
+
+.menu_dropdown a:hover p,
+.menu_dropdown button:hover p {
+  color: #c084fc;
+}
+
 .open {
   opacity: 1;
   pointer-events: auto;
@@ -58,7 +72,7 @@
 
 .menu_dropdown hr {
   border: none;
-  border-top: 1px solid rgb(131, 131, 131);
+  border-top: 1px solid #ccc;
   margin: 8px;
 }
 
