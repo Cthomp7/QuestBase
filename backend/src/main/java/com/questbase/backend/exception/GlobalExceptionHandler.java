@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.questbase.backend.exception.auth.EmailAlreadyExistsException;
 import com.questbase.backend.exception.auth.InvalidCredentialsException;
+import com.questbase.backend.exception.auth.InvalidPasswordException;
 import com.questbase.backend.exception.auth.UserNotFoundException;
 
 @RestControllerAdvice
@@ -61,6 +62,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidCredentialsException.class)
     public ResponseEntity<Map<String, String>> handleInvalidCredentials(
             InvalidCredentialsException ex) {
+
+        return ResponseEntity
+            .status(HttpStatus.UNAUTHORIZED)
+            .body(Map.of("message", ex.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ResponseEntity<Map<String, String>> handleInvalidPassword(
+            InvalidPasswordException ex) {
 
         return ResponseEntity
             .status(HttpStatus.UNAUTHORIZED)

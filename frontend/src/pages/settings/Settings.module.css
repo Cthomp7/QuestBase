@@ -4,9 +4,15 @@
   gap: 20px;
 }
 
+.account_information hr {
+  border-color: rgb(59, 59, 59);
+  height: 1px;
+}
+
 .input_fields_container {
-  display: flex;
-  gap: 30px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px 30px;
 }
 
 .input_field {
@@ -30,6 +36,7 @@
 .status_message {
   display: flex;
   gap: 10px;
+  align-items: center;
   padding: 0.6rem 1rem;
   border-radius: 25px;
   width: fit-content;
@@ -38,6 +45,8 @@
 .status_message p {
   font-weight: 400;
   font-size: 1.05rem;
+  line-height: 1.05rem;
+  margin-top: 2px;
 }
 
 .status_message.success {

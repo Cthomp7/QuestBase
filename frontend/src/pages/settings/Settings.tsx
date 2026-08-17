@@ -5,13 +5,19 @@ import layoutStyles from "@/layouts/AuthLayout/AuthLayout.module.css"
 import { useEffect, useState } from "react";
 import Loader from "@/components/ui/Loader/Loader";
 import { CircleAlert, PartyPopper } from "lucide-react";
+import PasswordInput from "@/components/PasswordInput/PasswordInput";
 
 export default function Settings () {
   const { user } = useAuth()
   const [ displayName, setDisplayName ] = useState<string>("")
-  const [ statusMessage, setStatusMessage ] = useState<
-  { message: string, type: string} | null>(null)
-  const [ submitting, setSubmitting ] = useState<boolean>(false)
+  const [ submitting, setSubmitting ] = useState<string>("")
+  const [ accountMessage, setAccountMessage ] = useState<
+  { message: string, type: string } | null>(null)
+  const [ passwordMessage, setPasswordMessage ] = useState<
+  { message: string, type: string } | null>(null)
+  const [ currentPassword, setCurrentPassword ] = useState<string>("")
+  const [ newPassword, setNewPassword ] = useState<string>("")
+  const [ confirmNewPassword, setConfirmNewPassword ] = useState<string>("")
 
   useEffect(() => {
     if (user) {
@@ -20,8 +26,9 @@ export default function Settings () {
   },[user])
 
   const saveChanges = async () => {
+    setAccountMessage(null)
     if (!displayName) {
-      setStatusMessage({
+      setAccountMessage({
           message: "Your name can not be blank.",
           type: "error"
         })
@@ -29,14 +36,14 @@ export default function Settings () {
       return
     }
     try {
-      setSubmitting(true)
+      setSubmitting("changes")
       const response = await fetch(`/api/auth/me`, { 
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ displayName })
       })
       if (response.ok) {
-        setStatusMessage({
+        setAccountMessage({
           message: "Changes saved!",
           type: "success"
         })
@@ -48,7 +55,7 @@ export default function Settings () {
     } catch (error) {
       if (error instanceof Error) {
         console.error("Failed to save account information changes: ", error)
-        setStatusMessage({
+        setAccountMessage({
           message: error.message,
           type: "error"
         })
@@ -56,9 +63,59 @@ export default function Settings () {
         console.error("Failed to save account information changes: ", error)
       }
     } finally {
-      setSubmitting(false)
+      setSubmitting("")
     }
-  } 
+  }
+
+  const savePassword = async () => {
+    setPasswordMessage(null)
+    try {
+      setSubmitting("password")
+      validatePasswords()
+
+      const response = await fetch(`/api/auth/password`, { 
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ currentPassword, newPassword })
+      })
+      if (response.ok) {
+        setPasswordMessage({
+          message: "Password saved!",
+          type: "success"
+        })
+        setCurrentPassword("")
+        setNewPassword("")
+        setConfirmNewPassword("")
+      } else {
+        const error = await response.json()
+        if (error.message) throw new Error(error.message)
+        else throw new Error("Failed for unknown reason. Try again later.")
+      }
+
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error("Failed to save new password: ", error)
+        setPasswordMessage({
+          message: error.message,
+          type: "error"
+        })
+      } else {
+        console.error("Failed to to save new password: ", error)
+      }
+    } finally {
+      setSubmitting("")
+    }
+  }
+
+  const validatePasswords = () => {
+    if (!currentPassword) {
+      throw new Error("Enter your current password.")
+    } else if (!newPassword) {
+      throw new Error("Enter a new password.")
+    } else if (newPassword !== confirmNewPassword) {
+      throw new Error("New passwords do not match.")
+    }
+  }
 
   return (
     <div className={layoutStyles.page_container}>
@@ -89,31 +146,83 @@ export default function Settings () {
           </div>
         </div>
         <div className={styles.input_buttons}>
-          <button 
-            className={layoutStyles.periwinkle_button}
-            onClick={() => {}}
-          >
-            Change my password
-          </button>
-          {submitting ? (
+          {submitting === "changes" ? (
             <Loader/>
           ) : (
             <button 
-              className={layoutStyles.green_button}
+              className={layoutStyles.periwinkle_button}
               onClick={saveChanges}
             >
               Save Changes
             </button>
           )}
-        </div>
-        {statusMessage && 
-            <div className={`${styles.status_message} ${statusMessage.type === "success" ? styles.success : styles.error}`}>
-              {statusMessage.type === "success"
-                ? <PartyPopper/>
+          {accountMessage && 
+            <div className={`${styles.status_message} ${accountMessage.type === "success" ? styles.success : styles.error}`}>
+              {accountMessage.type === "success"
+                ? <PartyPopper size={20}/>
                 : <CircleAlert/>}
-              <p>{statusMessage.message}</p>
+              <p>{accountMessage.message}</p>
             </div>
           }
+        </div>
+        <hr/>
+        <h2>Password</h2>
+        <div className={styles.input_fields_container}>
+          <div className={styles.input_field}>
+            <p className={styles.input_field_key}>Current Password:</p>
+            <PasswordInput
+              id="currentPassword"
+              name="currentPassword"
+              placeholder="current password"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              color="dark"
+            />
+          </div>
+          <div></div>
+          <div className={styles.input_field}>
+            <p className={styles.input_field_key}>New Password:</p>
+            <PasswordInput 
+              id="newPassword"
+              name="newPassword"
+              placeholder="new password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              color="dark"
+            />
+          </div>
+          <div className={styles.input_field}>
+            <p className={styles.input_field_key}>Confirm New Password:</p>
+            <PasswordInput 
+              id="confirmNewPassword"
+              name="confirmNewPassword"
+              placeholder="confirm new password"
+              value={confirmNewPassword}
+              onChange={(e) => setConfirmNewPassword(e.target.value)}
+              color="dark"
+            />
+          </div>
+        </div>
+        <div className={styles.input_buttons}>
+          {submitting === "password" ? (
+            <Loader/>
+          ) : (
+            <button 
+              className={layoutStyles.periwinkle_button}
+              onClick={savePassword}
+            >
+              Save Password
+            </button>
+          )}
+          {passwordMessage && 
+            <div className={`${styles.status_message} ${passwordMessage.type === "success" ? styles.success : styles.error}`}>
+              {passwordMessage.type === "success"
+                ? <PartyPopper size={20}/>
+                : <CircleAlert/>}
+              <p>{passwordMessage.message}</p>
+            </div>
+          }
+        </div>
       </div>
     </div>
   )

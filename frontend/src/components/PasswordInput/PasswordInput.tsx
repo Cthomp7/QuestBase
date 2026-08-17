@@ -9,6 +9,7 @@ type PasswordInputProps = {
   onChange: React.ChangeEventHandler<HTMLInputElement>;
   placeholder?: string;
   required?: boolean;
+  color?: string 
 };
 
 export default function PasswordInput({
@@ -18,15 +19,18 @@ export default function PasswordInput({
   onChange,
   placeholder,
   required = false,
+  color = "light"
 }: PasswordInputProps) {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className={styles.wrapper}>
+    <div className={`${styles.wrapper}  ${styles[color]}`}>
       <input
         id={id}
         name={name}
         type={showPassword ? "text" : "password"}
+        min={8}
+        max={255}
         value={value}
         onChange={onChange}
         placeholder={placeholder}

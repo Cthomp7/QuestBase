@@ -3,6 +3,7 @@ package com.questbase.backend.auth;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.questbase.backend.auth.dto.ChangePasswordRequest;
 import com.questbase.backend.auth.dto.CustomUserDetails;
 import com.questbase.backend.auth.dto.LoginRequest;
 import com.questbase.backend.auth.dto.RegisterRequest;
@@ -75,6 +76,27 @@ public class AuthController {
         );
     }
 
+    @PatchMapping("/me")
+    public UserResponse updateAccount(
+        @Valid @RequestBody UpdateAccountRequest request
+    ) {
+        return userService.updateAccount(request);
+    }
+
+    private ResponseEntity<Void> generateHTTPCookie(String token) {
+        ResponseCookie cookie = ResponseCookie.from("jwt", token)
+            .httpOnly(true)
+            .secure(secureCookie)
+            .path("/")
+            .maxAge(Duration.ofDays(1))
+            .sameSite("Lax")
+            .build();
+
+        return ResponseEntity.ok()
+            .header(HttpHeaders.SET_COOKIE, cookie.toString())
+            .build();
+    }
+
     @PostMapping("/register")
     public ResponseEntity<?> register(
         @Valid @RequestBody RegisterRequest request,
@@ -141,25 +163,10 @@ public class AuthController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/me")
-    public UserResponse updateAccount(
-        @Valid @RequestBody UpdateAccountRequest request
+    @PatchMapping("/password")
+    public void changePassword(
+        @Valid @RequestBody ChangePasswordRequest request
     ) {
-        return userService.updateAccount(request);
+        userService.changePassword(request);
     }
-
-    private ResponseEntity<Void> generateHTTPCookie(String token) {
-        ResponseCookie cookie = ResponseCookie.from("jwt", token)
-            .httpOnly(true)
-            .secure(secureCookie)
-            .path("/")
-            .maxAge(Duration.ofDays(1))
-            .sameSite("Lax")
-            .build();
-
-        return ResponseEntity.ok()
-            .header(HttpHeaders.SET_COOKIE, cookie.toString())
-            .build();
-    }
-    
 }
