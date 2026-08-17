@@ -12,7 +12,7 @@ const DashboardNavigation = () => {
   const { logout, user } = useAuth()
   const { campaigns, activeCampaign, setActiveCampaignId } = useCampaign()
   const [ showDropdown, setShowDropdown ] = useState<boolean>(false)
-  const [accountMenuOpen, setAccountMenuOpen] = useState(false)
+  const [ accountMenuOpen, setAccountMenuOpen ] = useState(false)
 
   const pages = [
     { icon: <User />, name: "NPCs", url: "/npcs" },
@@ -67,7 +67,10 @@ const DashboardNavigation = () => {
                   </div>
                 </div>
                 <hr />
-                <Link to="/settings">
+                <Link 
+                  to="/settings"
+                  onClick={() => setAccountMenuOpen(false)}
+                >
                   <Settings/>
                   <p>Settings</p>
                 </Link>
