@@ -13,6 +13,7 @@ import Auth from "./pages/auth/Auth";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import NpcsDetails from "./pages/npcs/NpcDetails";
 import QuestDetails from "./pages/quests/QuestDetails";
+import Settings from "./pages/settings/Settings";
 // import NotFound from "./pages/NotFound";
 
 const App: React.FC = () => {
@@ -39,6 +40,7 @@ const App: React.FC = () => {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/npcs" element={<Npcs />} />
             <Route path="/npcs/:npcId" element={<NpcsDetails />} />
+            <Route path="/settings" element={<Settings />} />
             <Route path="/quests" element={<Quests />} />
             <Route path="/quests/:questId" element={<QuestDetails />} />
           </Route>

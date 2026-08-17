@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.questbase.backend.auth.AuthService;
 import com.questbase.backend.auth.User;
+import com.questbase.backend.auth.service.AuthService;
 import com.questbase.backend.campaign.dto.CampaignResponse;
 import com.questbase.backend.campaign.dto.CreateCampaignRequest;
 

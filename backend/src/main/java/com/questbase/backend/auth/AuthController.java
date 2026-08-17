@@ -6,7 +6,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.questbase.backend.auth.dto.CustomUserDetails;
 import com.questbase.backend.auth.dto.LoginRequest;
 import com.questbase.backend.auth.dto.RegisterRequest;
+import com.questbase.backend.auth.dto.UpdateAccountRequest;
 import com.questbase.backend.auth.dto.UserResponse;
+import com.questbase.backend.auth.service.AuthService;
+import com.questbase.backend.auth.service.UserService;
 import com.questbase.backend.security.ClientIpUtils;
 import com.questbase.backend.security.ratelimiter.RateLimiterService;
 import com.questbase.backend.security.turnstile.TurnstileService;
@@ -27,6 +30,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 
 
 @RestController
@@ -39,15 +43,18 @@ public class AuthController {
     private final AuthService authService;
     private final TurnstileService turnstileService;
     private final RateLimiterService rateLimiter;
+    private final UserService userService;
 
     AuthController(
         AuthService authService,
         RateLimiterService rateLimiter,
-        TurnstileService turnstileService
+        TurnstileService turnstileService,
+        UserService userService
     ) {
         this.authService = authService;
         this.rateLimiter = rateLimiter;
         this.turnstileService = turnstileService;
+        this.userService = userService;
     }
 
     @GetMapping("/me")
@@ -132,6 +139,13 @@ public class AuthController {
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
         return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/me")
+    public UserResponse updateAccount(
+        @Valid @RequestBody UpdateAccountRequest request
+    ) {
+        return userService.updateAccount(request);
     }
 
     private ResponseEntity<Void> generateHTTPCookie(String token) {

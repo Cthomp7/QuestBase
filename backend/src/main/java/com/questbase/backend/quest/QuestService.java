@@ -1,13 +1,10 @@
 package com.questbase.backend.quest;
 
-import com.questbase.backend.auth.AuthService;
 import com.questbase.backend.auth.User;
+import com.questbase.backend.auth.service.AuthService;
 import com.questbase.backend.campaign.Campaign;
 import com.questbase.backend.campaign.CampaignRepository;
 import com.questbase.backend.exception.ResourceNotFoundException;
-import com.questbase.backend.npc.Npc;
-import com.questbase.backend.npc.dto.NpcQuestResponse;
-import com.questbase.backend.npc.dto.NpcResponse;
 import com.questbase.backend.quest.dto.CreateQuestRequest;
 import com.questbase.backend.quest.dto.QuestNpcResponse;
 import com.questbase.backend.quest.dto.QuestResponse;

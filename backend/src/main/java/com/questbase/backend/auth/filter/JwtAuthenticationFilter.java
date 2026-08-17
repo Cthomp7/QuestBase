@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.questbase.backend.auth.CustomUserDetailsService;
-import com.questbase.backend.auth.JwtService;
 import com.questbase.backend.auth.dto.CustomUserDetails;
+import com.questbase.backend.auth.service.JwtService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

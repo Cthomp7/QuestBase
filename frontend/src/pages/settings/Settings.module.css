@@ -1,0 +1,53 @@
+.account_information {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input_fields_container {
+  display: flex;
+  gap: 30px;
+}
+
+.input_field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.input_field_key {
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+.input_buttons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.status_message {
+  display: flex;
+  gap: 10px;
+  padding: 0.6rem 1rem;
+  border-radius: 25px;
+  width: fit-content;
+}
+
+.status_message p {
+  font-weight: 400;
+  font-size: 1.05rem;
+}
+
+.status_message.success {
+  color: var(--qb-alien-green);
+  background-color: var(--qb-alien-green-trans);
+  border: 2px solid var(--qb-alien-green);
+}
+
+.status_message.error {
+  color: var(--qb-error-red);
+  background-color: var(--qb-error-red-trans);
+  border: 2px solid var(--qb-error-red);
+}

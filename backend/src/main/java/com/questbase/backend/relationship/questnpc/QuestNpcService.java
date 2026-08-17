@@ -2,8 +2,8 @@ package com.questbase.backend.relationship.questnpc;
 
 import org.springframework.stereotype.Service;
 
-import com.questbase.backend.auth.AuthService;
 import com.questbase.backend.auth.User;
+import com.questbase.backend.auth.service.AuthService;
 import com.questbase.backend.exception.InsufficientPermissionException;
 import com.questbase.backend.exception.ResourceNotFoundException;
 import com.questbase.backend.npc.Npc;

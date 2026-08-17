@@ -1,4 +1,4 @@
-package com.questbase.backend.auth;
+package com.questbase.backend.auth.service;
 
 import java.util.Date;
 
@@ -7,6 +7,8 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import com.questbase.backend.auth.User;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

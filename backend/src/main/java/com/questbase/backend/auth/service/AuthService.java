@@ -1,9 +1,11 @@
-package com.questbase.backend.auth;
+package com.questbase.backend.auth.service;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.questbase.backend.auth.User;
+import com.questbase.backend.auth.UserRepository;
 import com.questbase.backend.auth.dto.LoginRequest;
 import com.questbase.backend.auth.dto.RegisterRequest;
 import com.questbase.backend.exception.auth.EmailAlreadyExistsException;
