@@ -245,6 +245,7 @@
 
 .account_info .user_display_name {
   font-weight: 400;
+  font-size: 1rem;
   color: white;
 }
 
