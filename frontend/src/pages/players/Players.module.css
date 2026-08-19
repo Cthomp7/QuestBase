@@ -1,0 +1,79 @@
+.invitation_prompt {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.invitation_prompt h2 span {
+  color: var(--qb-alien-green);
+}
+
+.invitation_input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status_message {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 0.6rem 1rem;
+  border-radius: 25px;
+  width: fit-content;
+}
+
+.status_message p {
+  font-weight: 400;
+  font-size: 1.05rem;
+  line-height: 1.05rem;
+  margin-top: 2px;
+}
+
+.status_message.success {
+  color: var(--qb-alien-green);
+  background-color: var(--qb-alien-green-trans);
+  border: 2px solid var(--qb-alien-green);
+}
+
+.status_message.error {
+  color: var(--qb-error-red);
+  background-color: var(--qb-error-red-trans);
+  border: 2px solid var(--qb-error-red);
+}
+
+.expires_at {
+  padding: 0.3rem 0.8rem;
+  border-radius: 25px;
+  background-color: var(--qb-mimic-coin-trans);
+  border: 2px solid var(--qb-mimic-coin);
+  color: var(--qb-mimic-coin);
+  width: fit-content;
+}
+
+.ACCEPTED {
+  padding: 0.3rem 0.5rem;
+  border-radius: 25px;
+  background-color: var(--qb-alien-green-trans);
+  border: 2px solid var(--qb-alien-green);
+  color: var(--qb-alien-green);
+  width: fit-content;
+}
+
+.PENDING {
+  padding: 0.3rem 0.5rem;
+  border-radius: 25px;
+  background-color: var(--qb-blue-slime-trans);
+  border: 2px solid var(--qb-blue-slime);
+  color: var(--qb-blue-slime);
+  width: fit-content;
+}
+
+.npc_role.ENEMY {
+  padding: 0.3rem 0.5rem;
+  border-radius: 25px;
+  background-color: var(--qb-error-red-trans);
+  border: 2px solid var(--qb-error-red);
+  color: var(--qb-error-red);
+  width: fit-content;
+}

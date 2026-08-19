@@ -19,6 +19,18 @@
   gap: 20px;
 }
 
+.non_interactive_card {
+  background-color: #1F1F1F;
+  border: solid 2px #2D2D2D;
+  border-radius: 15px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
 .card,
 .mini_card {
   background-color: #1F1F1F;
@@ -62,6 +74,12 @@
   align-items: center;
   gap: 10px;
   width: fit-content;
+}
+
+.card_flex {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .no_results {

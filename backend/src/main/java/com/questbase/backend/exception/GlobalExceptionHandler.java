@@ -27,6 +27,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest()
             .body(Map.of("message", message));
     }
+
+    @ExceptionHandler(EmailSendException.class)
+    public ResponseEntity<Map<String, String>> handleEmailSend(
+            EmailSendException ex) {
+
+        return ResponseEntity
+            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(Map.of("message", ex.getMessage()));
+    }
     
     @ExceptionHandler(InsufficientPermissionException.class)
     public ResponseEntity<Map<String, String>> handleInsufficientPermission(

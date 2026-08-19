@@ -11,6 +11,9 @@ import com.questbase.backend.npc.NpcService;
 import com.questbase.backend.npc.dto.NpcResponse;
 import com.questbase.backend.quest.QuestService;
 import com.questbase.backend.quest.dto.QuestResponse;
+import com.questbase.backend.relationship.campaignInvite.CampaignInviteService;
+import com.questbase.backend.relationship.campaignInvite.dto.CampaignInviteResponse;
+import com.questbase.backend.relationship.campaignInvite.dto.CreateCampaignInviteRequest;
 
 import jakarta.validation.Valid;
 
@@ -32,15 +35,18 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RequestMapping("/api/campaigns")
 public class CampaignController {
     private final CampaignService campaignService;
+    private final CampaignInviteService campaignInviteService;
     private final NpcService npcService;
     private final QuestService questService;
 
     public CampaignController(
         CampaignService campaignService,
+        CampaignInviteService campaignInviteService,
         NpcService npcService,
         QuestService questService
     ) {
         this.campaignService = campaignService;
+        this.campaignInviteService = campaignInviteService;
         this.npcService = npcService;
         this.questService = questService;
     }
@@ -83,6 +89,10 @@ public class CampaignController {
         campaignService.deleteCampaign(id);
     }
 
+    // =========================================================================
+    // Relationships
+    // =========================================================================
+
     @GetMapping("/{campaignId}/npcs")
     public ResponseEntity<List<NpcResponse>> getCampaignNpcs(
         @PathVariable Long campaignId,
@@ -120,4 +130,25 @@ public class CampaignController {
 
         return ResponseEntity.ok(quests);
     }
+
+    @GetMapping("/{campaignId}/invites")
+    public List<CampaignInviteResponse> getPlayerInvites(
+        @PathVariable Long campaignId
+    ) {
+        return campaignInviteService.getInvites(
+            campaignId
+        );
+    }
+
+    @PostMapping("/{campaignId}/invites")
+    public CampaignInviteResponse invitePlayer(
+        @PathVariable Long campaignId,
+        @RequestBody CreateCampaignInviteRequest request
+    ) {
+        return campaignInviteService.createInvite(
+            campaignId,
+            request
+        );
+    }
+    
 }

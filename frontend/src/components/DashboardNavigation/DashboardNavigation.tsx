@@ -5,7 +5,7 @@ import { useCampaign } from "@/context/campaign/useCampaign"
 import ProfilePicture from "@/assets/imgs/profiles/default.png"
 import { useAuth } from "@/context/AuthContext"
 import MenuDropdown from "../MenuDropdown/MenuDropdown"
-import { ArrowLeft, Book, ChartBar, ChevronDown, FolderBookmark, LogOut, Map, Settings, User } from "lucide-react"
+import { ArrowLeft, Book, BookUser, ChartBar, ChevronDown, FolderBookmark, LogOut, Map, Settings, UsersRound } from "lucide-react"
 
 const DashboardNavigation = () => {
   const navigate = useNavigate()
@@ -15,7 +15,8 @@ const DashboardNavigation = () => {
   const [ accountMenuOpen, setAccountMenuOpen ] = useState(false)
 
   const pages = [
-    { icon: <User />, name: "NPCs", url: "/npcs" },
+    { icon: <BookUser />, name: "NPCs", url: "/npcs" },
+    { icon: <UsersRound/>, name: "Players", url: "/players" },
     { icon: <Book /> ,name: "Quests", url: "/quests" }
   ]
 

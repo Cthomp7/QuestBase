@@ -1,0 +1,163 @@
+import CreateButton from "@/components/ui/CreateButton/CreateButton"
+import PageHeader from "@/components/ui/PageHeader/PageHeader"
+import { useCampaign } from "@/context/campaign/useCampaign"
+import styles from "./Players.module.css"
+import layoutStyles from "@/layouts/AuthLayout/AuthLayout.module.css"
+import { useCallback, useEffect, useState } from "react"
+import Editor from "@/components/Editor/Editor"
+import { CampaignInvite } from "@/types/api/campaignInvite"
+import Loader from "@/components/ui/Loader/Loader"
+import { CircleAlert, Flag, PartyPopper, UserRound } from "lucide-react"
+
+export default function Players () {
+  const { activeCampaign } = useCampaign()
+  const [ sending, setSending ] = useState<boolean>()
+  const [ sendStatus, setSendStatus ] = 
+    useState<{ message: string, type: string } | null>(null)
+  const [ invites, setInvites ] = useState<CampaignInvite[]>([])
+  const [ inviteEmail, setInviteEmail ] = useState<string>("")
+  const [ openEditor, setOpenEditor ] = useState<boolean>(false)
+
+  const fetchInvites = useCallback(async () => {
+    try {
+      const response = await fetch(
+        `/api/campaigns/${activeCampaign?.id}/invites`, 
+        { method: "GET" }
+      )
+      if (response.ok) {
+        const invites = await response.json()
+        if (invites) setInvites(invites)
+      } else {
+        const error = await response.json()
+        if (error.message) throw new Error(error.message)
+        else throw new Error("Failed for unknown reason. Try again later.")
+      }
+    } catch (error) {
+      if (error instanceof Error) 
+        console.error("Failed to fetch invitations: ", error.message)
+      else console.error("Failed to fetch invitations: ", error)
+    }
+  },[activeCampaign?.id])
+
+  useEffect(() => {
+    if (activeCampaign) fetchInvites()
+  },[activeCampaign, fetchInvites])
+
+  const sendInvite = async () => {
+    if (!activeCampaign) return
+    try {
+      if (!inviteEmail)
+        throw new Error("An email address is required to send a campaign invitation.")
+
+      setSending(true)
+      const response = await fetch(`/api/campaigns/${activeCampaign?.id}/invites`, { 
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: inviteEmail })
+      })
+
+      if (response.ok) {
+        const newInvite = await response.json()
+        setInvites([...invites, newInvite])
+        setOpenEditor(false)
+        setSendStatus({ message: "Invitation Sent!", type: "success" })
+      } else {
+        const error = await response.json()
+        if (error.message) throw new Error(error.message)
+        else throw new Error("Failed for unknown reason. Try again later.")
+      }
+      
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error("Failed to send invitation: ", error.message)
+        setSendStatus({ message: error.message, type: "error" })
+      } else {
+        console.error("Failed to send invitation: ", error)
+      }
+    } finally {
+      setSending(false)
+    }
+  }
+
+  const getTimeUntilExpiration = (expiresAt: string) => {
+    const now = new Date()
+    const expiration = new Date(expiresAt)
+
+    const diff = expiration.getTime() - now.getTime()
+    if (diff <= 0) return "Expired"
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24))
+    if (days < 1) return "< 1 day"
+
+    return `${days} ${days === 1 ? "day" : "days"}`
+  }
+
+  return (
+    <div className={layoutStyles.page_container}>
+      <PageHeader
+        title="Players"
+        activeCampaign={activeCampaign}/>
+      <div className={styles.invitation_input}>
+        <CreateButton 
+          text="Invite Player"
+          onClick={() => setOpenEditor(!openEditor)}
+        />
+        {sendStatus && 
+          <div className={`${styles.status_message} ${sendStatus?.type === "error" ? styles.error : styles.success}`}>
+            {sendStatus?.type === "error"
+              ? <CircleAlert/>
+              : <PartyPopper/>
+            }
+            <p>{sendStatus?.message}</p>
+          </div>
+        }
+      </div>
+      {openEditor && <Editor
+        onClose={() => setOpenEditor(false)}
+        header={<><span>Invite player</span> to {activeCampaign?.name}</>}
+        children={
+          <>
+            <p>Enter the player’s email below, and we’ll send them an invitation to join.</p>
+            <div className={styles.invitation_input}>
+              <p>Email:</p>
+              <input 
+                type="text"
+                value={inviteEmail}
+                onChange={(e) => setInviteEmail(e.target.value)}
+                className={layoutStyles.dark_input}
+              />
+            </div>
+            {sending 
+              ? <Loader/>
+              : <button 
+                  className={layoutStyles.green_button}
+                  onClick={() => sendInvite()}
+                >Send Invite</button>}
+          </>
+        }
+      />}
+      <h2>Invites</h2>
+      {invites.length > 0 ? (
+        invites.map((invite) => 
+          <div className={layoutStyles.non_interactive_card}>
+            <div className={layoutStyles.card_header}>
+              <div className={layoutStyles.card_flex}>
+                <UserRound color={"var(--qb-alien-green)"}/>
+                <h3>{invite.email}</h3>
+              </div>
+              <div className={layoutStyles.card_properties}>
+                <div className={`${layoutStyles.card_flex} ${styles.expires_at}`}>
+                  <Flag size={20}/>
+                  <p>Expires in {getTimeUntilExpiration(invite.expiresAt)}</p>
+                </div>
+                <p className={styles[invite.status]}>{invite.status}</p>
+              </div>
+            </div>
+          </div>
+        )
+      ) : (
+        <p>No invitations sent yet.</p>
+      )}
+    </div>
+  )
+}
