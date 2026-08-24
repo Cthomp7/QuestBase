@@ -127,10 +127,10 @@ const DashboardNavigation = () => {
           onClick={() => setShowDropdown(!showDropdown)}
         >
           <ChevronDown className={showDropdown ? styles.flip : ""}/>
-          <p>{activeCampaign?.name}</p>
+          <p>{activeCampaign?.name ?? "NOT SELECTED"}</p>
           {showDropdown &&
             <div className={styles.campaign_dropdown}>
-              {campaigns.length > 0 && activeCampaign &&
+              {campaigns.length > 0 &&
                 campaigns.map((campaign) => (
                   activeCampaign != campaign 
                     ? <div 
