@@ -36,6 +36,15 @@ public class GlobalExceptionHandler {
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(Map.of("message", ex.getMessage()));
     }
+
+    @ExceptionHandler(CustomIllegalStateException.class)
+    public ResponseEntity<Map<String, String>> handleCustomIllegalState(
+            CustomIllegalStateException ex) {
+
+        return ResponseEntity
+            .status(HttpStatus.CONFLICT)
+            .body(Map.of("message", ex.getMessage()));
+    }
     
     @ExceptionHandler(InsufficientPermissionException.class)
     public ResponseEntity<Map<String, String>> handleInsufficientPermission(

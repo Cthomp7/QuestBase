@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "../Auth.module.css";
 import PasswordInput from "@/components/PasswordInput/PasswordInput";
 import Loader from "@/components/ui/Loader/Loader";
+import { useAuth } from "@/context/AuthContext";
 
 interface RegisterProps {
   turnstileToken: string
@@ -15,6 +16,7 @@ export default function Register ({
   setTurnstileToken, 
   onError 
 } : RegisterProps) {
+  const { fetchUser, acceptInvitation } = useAuth()
   const navigate = useNavigate()
   const [name, setName] = useState<string>("")
   const [email, setEmail] = useState<string>("")
@@ -42,7 +44,15 @@ export default function Register ({
         body: JSON.stringify({ displayName: name, email, password, turnstileToken })
       })
       if (response.ok) {
-        navigate("/dashboard")
+        await fetchUser()
+        const inviteToken = sessionStorage.getItem("campaignInviteToken");
+        if (inviteToken) {
+          acceptInvitation(
+            inviteToken, 
+            () => navigate("/dashboard"),
+            (error: string) => onError(error)
+          )
+        } else navigate("/dashboard")
       } else {
         const error = await response.json();
         throw new Error(error.message)

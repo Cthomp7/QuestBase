@@ -14,6 +14,8 @@ import com.questbase.backend.quest.dto.QuestResponse;
 import com.questbase.backend.relationship.campaignInvite.CampaignInviteService;
 import com.questbase.backend.relationship.campaignInvite.dto.CampaignInviteResponse;
 import com.questbase.backend.relationship.campaignInvite.dto.CreateCampaignInviteRequest;
+import com.questbase.backend.relationship.campaignMember.CampaignMemberService;
+import com.questbase.backend.relationship.campaignMember.dto.CampaignMemberResponse;
 
 import jakarta.validation.Valid;
 
@@ -36,17 +38,20 @@ import org.springframework.web.bind.annotation.PutMapping;
 public class CampaignController {
     private final CampaignService campaignService;
     private final CampaignInviteService campaignInviteService;
+    private final CampaignMemberService campaignMemberService;
     private final NpcService npcService;
     private final QuestService questService;
 
     public CampaignController(
         CampaignService campaignService,
         CampaignInviteService campaignInviteService,
+        CampaignMemberService campaignMemberService,
         NpcService npcService,
         QuestService questService
     ) {
         this.campaignService = campaignService;
         this.campaignInviteService = campaignInviteService;
+        this.campaignMemberService = campaignMemberService;
         this.npcService = npcService;
         this.questService = questService;
     }
@@ -129,6 +134,13 @@ public class CampaignController {
             );
 
         return ResponseEntity.ok(quests);
+    }
+
+    @GetMapping("/{campaignId}/players")
+    public List<CampaignMemberResponse> getPlayers(
+        @PathVariable Long campaignId
+    ) {
+        return campaignMemberService.getPlayers(campaignId);
     }
 
     @GetMapping("/{campaignId}/invites")

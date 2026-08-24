@@ -52,6 +52,8 @@ export default function Login ({ onError }: LoginProps) {
       } else {
         onError("An unexpected error occurred. Please try again later.")
       }
+    } finally {
+      setSubmitting(false)
     }
   }
 

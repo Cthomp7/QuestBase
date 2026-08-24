@@ -7,16 +7,39 @@ import { useCallback, useEffect, useState } from "react"
 import Editor from "@/components/Editor/Editor"
 import { CampaignInvite } from "@/types/api/campaignInvite"
 import Loader from "@/components/ui/Loader/Loader"
-import { CircleAlert, Flag, PartyPopper, UserRound } from "lucide-react"
+import { Astroid, CircleAlert, Flag, PartyPopper, UserRound } from "lucide-react"
+import { CampaignMember } from "@/types/api/campaignMember"
 
 export default function Players () {
   const { activeCampaign } = useCampaign()
   const [ sending, setSending ] = useState<boolean>()
   const [ sendStatus, setSendStatus ] = 
     useState<{ message: string, type: string } | null>(null)
+  const [ players, setPlayers ] = useState<CampaignMember[]>([])
   const [ invites, setInvites ] = useState<CampaignInvite[]>([])
   const [ inviteEmail, setInviteEmail ] = useState<string>("")
   const [ openEditor, setOpenEditor ] = useState<boolean>(false)
+
+  const fetchPlayers = useCallback(async () => {
+    try {
+      const response = await fetch(
+        `/api/campaigns/${activeCampaign?.id}/players`, 
+        { method: "GET" }
+      )
+      if (response.ok) {
+        const players = await response.json()
+        if (players) setPlayers(players)
+      } else {
+        const error = await response.json()
+        if (error.message) throw new Error(error.message)
+        else throw new Error("Failed for unknown reason. Try again later.")
+      }
+    } catch (error) {
+      if (error instanceof Error) 
+        console.error("Failed to fetch players: ", error.message)
+      else console.error("Failed to fetch players: ", error)
+    }
+  },[activeCampaign?.id])
 
   const fetchInvites = useCallback(async () => {
     try {
@@ -40,8 +63,11 @@ export default function Players () {
   },[activeCampaign?.id])
 
   useEffect(() => {
-    if (activeCampaign) fetchInvites()
-  },[activeCampaign, fetchInvites])
+    if (activeCampaign) {
+      fetchPlayers()
+      fetchInvites()
+    }
+  },[activeCampaign, fetchPlayers, fetchInvites])
 
   const sendInvite = async () => {
     if (!activeCampaign) return
@@ -136,6 +162,30 @@ export default function Players () {
           </>
         }
       />}
+      <h2>Players</h2>
+        {players.length > 0 ? (
+          players.map((player) => 
+            <div className={layoutStyles.non_interactive_card}>
+              <div className={layoutStyles.card_header}>
+                <div className={layoutStyles.card_flex}>
+                  <UserRound color={"var(--qb-alien-green)"}/>
+                  <div>
+                    <h3>{player.user.displayName}</h3>
+                    <p>{player.user.email}</p>
+                  </div>
+                </div>
+                <div className={layoutStyles.card_properties}>
+                  <div className={`${layoutStyles.card_flex} ${styles.role}`}>
+                    <Astroid size={20}/>
+                    <p>{player.role}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )
+        ) : (
+          <p>No players found.</p>
+        )}
       <h2>Invites</h2>
       {invites.length > 0 ? (
         invites.map((invite) => 

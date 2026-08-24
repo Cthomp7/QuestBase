@@ -15,6 +15,7 @@ import NpcsDetails from "./pages/npcs/NpcDetails";
 import QuestDetails from "./pages/quests/QuestDetails";
 import Settings from "./pages/settings/Settings";
 import Players from "./pages/players/Players";
+import Invite from "./pages/invite/Invite";
 // import NotFound from "./pages/NotFound";
 
 const App: React.FC = () => {
@@ -24,6 +25,7 @@ const App: React.FC = () => {
         <Route element={<PublicLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Auth view={"login"}/>} />
+          <Route path="/invite/:token" element={<Invite/>} />
           <Route path="/register" element={<Auth view={"register"} />} />
           {/* <Route path="*" element={<NotFound />} /> */}
         </Route>

@@ -11,3 +11,9 @@ enum CampaignInviteStatus {
   ACCEPTED,
   DECLINED
 }
+
+export interface CampaignInviteDetails {
+  status: CampaignInviteStatus,
+  expiresAt: string,
+  campaignName: string
+}

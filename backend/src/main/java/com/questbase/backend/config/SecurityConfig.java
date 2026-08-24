@@ -32,7 +32,12 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/health").permitAll()
-                        .requestMatchers("/api/auth/login", "/api/auth/register", "/api/contact").permitAll()
+                        .requestMatchers(
+                            "/api/auth/login", 
+                            "/api/auth/register", 
+                            "/api/contact",
+                            "/api/campaign-invites/**"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

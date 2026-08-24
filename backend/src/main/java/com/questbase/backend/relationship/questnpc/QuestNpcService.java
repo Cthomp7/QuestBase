@@ -81,7 +81,7 @@ public class QuestNpcService {
                 .equals(currentUser.getId());
 
         if (!ownsQuest || !ownsNpc) {
-            throw new InsufficientPermissionException();
+            throw new InsufficientPermissionException("Requester does not have permission to update this Quest NPC.");
         }
 
         questNpc.setRole(request.role());
@@ -108,7 +108,7 @@ public class QuestNpcService {
                 .equals(currentUser.getId());
 
         if (!ownsQuest || !ownsNpc) {
-            throw new InsufficientPermissionException();
+            throw new InsufficientPermissionException("Requester does not have permission to delete this Quest NPC.");
         }
 
         questNpcRepository.delete(questNpc);

@@ -1,11 +1,5 @@
+import { User } from "@/types/api/user"
 import { createContext, ReactNode, useContext, useEffect, useState } from "react"
-
-interface User {
-  id: number
-  displayName: string
-  email: string
-  createdAt: string
-}
 
 interface AuthContextType {
   user: User | null
@@ -19,6 +13,12 @@ interface AuthContextType {
   ) => Promise<void>
   logout: (onSuccess?: () => void) => Promise<void>
   setUser: React.Dispatch<React.SetStateAction<User | null>>
+  fetchUser: () => Promise<void>
+  acceptInvitation: (
+    token: string,
+    onSuccess?: () => void,
+    onError?: (error: string) => void
+  ) => void
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -58,7 +58,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       })
       if (response.ok) {
         await fetchUser()
-        onSuccess?.()
+        const inviteToken = sessionStorage.getItem("campaignInviteToken");
+        if (inviteToken) acceptInvitation(inviteToken, onSuccess, onError)
+        else onSuccess?.()
       } else {
         const error = await response.json()
         throw new Error(error.message)
@@ -80,15 +82,54 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         credentials: "include",
       })
       setUser(null)
-      if (response.ok) onSuccess?.()
-      // handle if not okay
+      if (response.ok) {
+        const inviteToken = sessionStorage.getItem("campaignInviteToken");
+        if (inviteToken) acceptInvitation(inviteToken, onSuccess)
+        else onSuccess?.()
+      }
+      // TODO: handle if not okay
     } catch (error) {
       console.error("Failed to logout user: ", error)
     }
   }
 
+  const acceptInvitation = async (
+    token: string,
+    onSuccess?: () => void,
+    onError?: (error: string) => void
+  ) => {
+    try {
+      const response = await fetch(
+        `/api/campaign-invites/${token}/accept`,
+        { method: "POST" }
+      )
+      if (response.ok) {
+        console.log("Invitation accepted");
+        sessionStorage.removeItem("campaignInviteToken");
+        console.log("Calling onSuccess", onSuccess);
+        onSuccess?.()
+      } else {
+        const error = await response.json()
+        if (error.message) throw new Error(error.message)
+        else throw new Error("Failed for unknown reason. Try again later.")
+      }
+    } catch (error) {
+      if (error instanceof Error) 
+        onError?.(error.message)
+      else onError?.(`Failed to accept invitation: ${error}`)
+    }
+  } 
+
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated: !!user, loading, login, logout, setUser }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      isAuthenticated: !!user, 
+      loading, 
+      login, 
+      logout, 
+      setUser,
+      fetchUser,
+      acceptInvitation }}>
       {children}
     </AuthContext.Provider>
   )

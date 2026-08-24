@@ -51,6 +51,15 @@
   width: fit-content;
 }
 
+.role {
+  padding: 0.3rem 0.8rem;
+  border-radius: 25px;
+  background-color: var(--qb-pixie-dust-trans);
+  border: 2px solid var(--qb-pixie-dust);
+  color: var(--qb-pixie-dust);
+  width: fit-content;
+}
+
 .ACCEPTED {
   padding: 0.3rem 0.5rem;
   border-radius: 25px;
