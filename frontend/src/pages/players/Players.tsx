@@ -142,7 +142,7 @@ export default function Players () {
   const deleteInvite = async (id: number) => {
     setSendStatus(null)
     try {
-      setLoading({ id, action: "DELETE" })
+      setLoading({ id, action: "DELETE_INVITE" })
       const response = await fetch(
         `/api/campaign-invites/${id}`, 
         { method: "DELETE"}
@@ -156,6 +156,29 @@ export default function Players () {
         setSendStatus({ message: error.message, type: "error" })
       } else {
         console.error("Failed to delete invitation: ", error)
+      }
+    } finally {
+      setLoading(null)
+    }
+  }
+
+  const deletePlayer = async (id: number) => {
+    setSendStatus(null)
+    try {
+      setLoading({ id, action: "DELETE_PLAYER" })
+      const response = await fetch(
+        `/api/campaign-members/${id}`, 
+        { method: "DELETE"}
+      )
+      if (response.ok) {
+        fetchPlayers()
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error("Failed to delete player: ", error.message)
+        setSendStatus({ message: error.message, type: "error" })
+      } else {
+        console.error("Failed to delete player: ", error)
       }
     } finally {
       setLoading(null)
@@ -222,7 +245,7 @@ export default function Players () {
       <h2>Players</h2>
         {players.length > 0 ? (
           players.map((player) => 
-            <div className={layoutStyles.non_interactive_card}>
+            <div key={player.id} className={layoutStyles.non_interactive_card}>
               <div className={layoutStyles.card_header}>
                 <div className={layoutStyles.card_flex}>
                   <UserRound color={"var(--qb-alien-green)"}/>
@@ -236,6 +259,13 @@ export default function Players () {
                     <Astroid size={20}/>
                     <p>{player.role}</p>
                   </div>
+                  {loading?.id === player.id && loading?.action === "DELETE_PLAYER" 
+                  ? <Loader/>
+                  : <Trash2
+                      className={layoutStyles.trash_icon}
+                      onClick={() => deletePlayer(player.id)}
+                    />
+                }
                 </div>
               </div>
             </div>
@@ -246,7 +276,7 @@ export default function Players () {
       <h2>Invites</h2>
       {invites.length > 0 ? (
         invites.map((invite) => 
-          <div className={layoutStyles.non_interactive_card}>
+          <div key={invite.id} className={layoutStyles.non_interactive_card}>
             <div className={layoutStyles.card_header}>
               <div className={layoutStyles.card_flex}>
                 <UserRound color={"var(--qb-alien-green)"}/>
@@ -267,7 +297,7 @@ export default function Players () {
                       onClick={() => resendInvite(invite.id)}
                     ><Send/>Resend</div>
                 )}
-                {loading?.id === invite.id && loading?.action === "DELETE" 
+                {loading?.id === invite.id && loading?.action === "DELETE_INVITE" 
                   ? <Loader/>
                   : <Trash2
                       className={layoutStyles.trash_icon}
