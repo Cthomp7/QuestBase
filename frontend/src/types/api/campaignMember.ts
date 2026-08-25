@@ -8,7 +8,7 @@ export interface CampaignMember {
   joinedAt: string
 }
 
-enum CampaignMemberRole {
-  OWNER,
-  PLAYER
+export enum CampaignMemberRole {
+  OWNER = "OWNER",
+  PLAYER = "PLAYER"
 }

@@ -19,12 +19,21 @@
 
 .campaigns {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
+}
+
+.campaign {
+  height: 450px;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .campaign_image {
   width: 100%;
+  min-height: 0;
+  flex: 1 1 auto;
+  object-fit: cover;
   border-radius: 9px 9px 0 0;
   mask-image: linear-gradient(
     to bottom,
@@ -72,6 +81,26 @@
   margin-top: 10px;
 }
 
+.role {
+  border-radius: 25px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 8px 13px;
+  width: fit-content;
+}
+
+.role.OWNER {
+  background-color: var(--qb-mimic-coin-trans);
+  border: solid 2px var(--qb-mimic-coin);
+  color: var(--qb-mimic-coin);
+}
+
+.role.PLAYER {
+  background-color: var(--qb-alien-green-trans);
+  border: solid 2px var(--qb-alien-green);
+  color: var(--qb-alien-green);
+}
+
 .campaign_system {
   background-color: var(--qb-blue-slime-trans);
   border: solid 2px var(--qb-blue-slime);
@@ -110,6 +139,12 @@
   flex-direction: column;
   align-items: center;
   gap: 40px
+}
+
+@media (max-width: 1000px) {
+  .campaigns {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
 
 /* ========================================================================== */

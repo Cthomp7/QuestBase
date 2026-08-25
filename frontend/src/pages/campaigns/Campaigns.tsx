@@ -9,11 +9,14 @@ import { useCampaign } from "@/context/campaign/useCampaign";
 import CampaignBanner from "@/assets/imgs/Campaign_Banner.png"
 import PageHeader from "@/components/ui/PageHeader/PageHeader";
 import CreateButton from "@/components/ui/CreateButton/CreateButton";
+import { CampaignMemberRole } from "@/types/api/campaignMember";
+import { useNavigate } from "react-router-dom";
 
 // TODO: add a loading sequence between fetchCampaigns
 
 const Campaigns = () => {
   const { campaigns, setCampaigns, setActiveCampaignId } = useCampaign()
+  const navigate = useNavigate()
   const [currentCampaign, setCurrentCampaign] = useState<Campaign | null>(null)
   const [name, setName] = useState<string>("")
   const [description, setDescription] = useState<string>("")
@@ -65,6 +68,11 @@ const Campaigns = () => {
     } catch (error) {
       console.error("Failed to add new campaign: ", error)
     }
+  }
+
+  const selectCampaign = (campaign: Campaign) => {
+    setActiveCampaignId(String(campaign.id))
+    navigate("/dashboard")
   }
 
   const editCampaign = async () => {
@@ -132,7 +140,11 @@ const Campaigns = () => {
           />
           <div className={styles.campaigns}>
               {campaigns.map((campaign) => (
-                <div key={campaign.id} className={layoutStyles.card}>
+                <div 
+                  key={campaign.id} 
+                  className={`${layoutStyles.card} ${styles.campaign}`}
+                  onClick={() => selectCampaign(campaign)}
+                >
                   <img 
                     className={styles.campaign_image} 
                     src={CampaignBanner} 
@@ -145,17 +157,22 @@ const Campaigns = () => {
                       <p className={styles.campaign_description}>{campaign.description}</p>
                     </div>
                     <div className={styles.campaign_bottom}>
-                      <p className={styles.campaign_system}>{campaign.system}</p>
-                      <div className={styles.campaign_actions}>
-                        <EditIcon
-                          className={styles.campaign_edit}
-                          onClick={() => openEditor(campaign)} 
-                        />
-                        <TrashIcon 
-                          className={styles.campaign_trash}
-                          onClick={() => openDeletionPopup(campaign)}
-                        />
+                      <div className={layoutStyles.card_flex}>
+                        <p className={`${styles.role} ${styles[campaign.role]}`}>{campaign.role}</p>
+                        <p className={styles.campaign_system}>{campaign.system}</p>
                       </div>
+                      {campaign.role === CampaignMemberRole.OWNER && 
+                        <div className={styles.campaign_actions}>
+                          <EditIcon
+                            className={styles.campaign_edit}
+                            onClick={() => openEditor(campaign)} 
+                          />
+                          <TrashIcon 
+                            className={styles.campaign_trash}
+                            onClick={() => openDeletionPopup(campaign)}
+                          />
+                        </div>
+                      }
                     </div>
                   </div>
                 </div>

@@ -8,19 +8,25 @@ import com.questbase.backend.auth.User;
 import com.questbase.backend.auth.service.AuthService;
 import com.questbase.backend.campaign.dto.CampaignResponse;
 import com.questbase.backend.campaign.dto.CreateCampaignRequest;
+import com.questbase.backend.relationship.campaignMember.CampaignMember;
+import com.questbase.backend.relationship.campaignMember.CampaignMemberRepository;
+import com.questbase.backend.relationship.campaignMember.enums.CampaignMemberRole;
 
 @Service
 public class CampaignService {
     
     private final AuthService authService;
     private final CampaignRepository campaignRepository;
+    private final CampaignMemberRepository campaignMemberRepository;
 
     public CampaignService(
         AuthService authService, 
-        CampaignRepository campaignRepository
+        CampaignRepository campaignRepository,
+        CampaignMemberRepository campaignMemberRepository
     ) {
-        this.campaignRepository = campaignRepository;
         this.authService = authService;
+        this.campaignRepository = campaignRepository;
+        this.campaignMemberRepository = campaignMemberRepository;
     }
     
     public CampaignResponse getCampaignById(Long id) {
@@ -29,16 +35,16 @@ public class CampaignService {
         Campaign campaign = campaignRepository.findByIdAndUser(id, currentUser)
             .orElseThrow(() -> new RuntimeException("Campaign not found"));
 
-        return toResponse(campaign);
+        return toResponse(campaign, currentUser);
     }
 
     public List<CampaignResponse> getAllCampaigns() {
         User currentUser = authService.getCurrentUser();
 
-        List<Campaign> campaigns = campaignRepository.findByUser(currentUser);
-
-        return campaigns.stream()
-            .map(campaign -> toResponse(campaign))
+        return campaignRepository
+            .findAllAccessibleByUser(currentUser)
+            .stream()
+            .map(campaign -> toResponse(campaign, currentUser))
             .toList();
     }
 
@@ -54,7 +60,7 @@ public class CampaignService {
 
         Campaign savedCampaign = campaignRepository.save(campaign);
 
-        return toResponse(savedCampaign);
+        return toResponse(savedCampaign, currentUser);
     }
 
     public CampaignResponse updateCampaign(
@@ -72,7 +78,7 @@ public class CampaignService {
 
         Campaign savedCampaign = campaignRepository.save(campaign);
 
-        return toResponse(savedCampaign);
+        return toResponse(savedCampaign, currentUser);
     }
 
     public CampaignResponse patchCampaign(
@@ -98,7 +104,7 @@ public class CampaignService {
 
         Campaign savedCampaign = campaignRepository.save(campaign);
 
-        return toResponse(savedCampaign);
+        return toResponse(savedCampaign, currentUser);
     }
 
     public void deleteCampaign(Long id) {
@@ -114,12 +120,27 @@ public class CampaignService {
     // HELPER FUNCTIONS
     // =========================================================================
 
-    private CampaignResponse toResponse(Campaign campaign) {
+    private CampaignResponse toResponse(Campaign campaign, User currentUser) {
+        CampaignMemberRole role;
+
+        if (campaign.getUser().getId().equals(currentUser.getId())) {
+            role = CampaignMemberRole.OWNER;
+        } else {
+            role = campaignMemberRepository
+                .findByCampaignIdAndUserId(
+                    campaign.getId(),
+                    currentUser.getId()
+                )
+                .map(CampaignMember::getRole)
+                .orElseThrow();
+        }
+
         return CampaignResponse.builder()
                 .id(campaign.getId())
                 .name(campaign.getName())
                 .system(campaign.getSystem())
                 .description(campaign.getDescription())
+                .role(role)
                 .build();
     }
 }

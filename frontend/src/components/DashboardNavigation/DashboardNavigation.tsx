@@ -6,6 +6,7 @@ import ProfilePicture from "@/assets/imgs/profiles/default.png"
 import { useAuth } from "@/context/AuthContext"
 import MenuDropdown from "../MenuDropdown/MenuDropdown"
 import { ArrowLeft, Book, BookUser, ChartBar, ChevronDown, FolderBookmark, LogOut, Map, Settings, UsersRound } from "lucide-react"
+import { CampaignMemberRole } from "@/types/api/campaignMember"
 
 const DashboardNavigation = () => {
   const navigate = useNavigate()
@@ -15,9 +16,9 @@ const DashboardNavigation = () => {
   const [ accountMenuOpen, setAccountMenuOpen ] = useState(false)
 
   const pages = [
-    { icon: <BookUser />, name: "NPCs", url: "/npcs" },
-    { icon: <UsersRound/>, name: "Players", url: "/players" },
-    { icon: <Book /> ,name: "Quests", url: "/quests" }
+    { icon: <BookUser />, name: "NPCs", url: "/npcs", access: "ALL" },
+    { icon: <UsersRound/>, name: "Players", url: "/players", access: "ADMIN" },
+    { icon: <Book /> , name: "Quests", url: "/quests", access: "ALL" }
   ]
 
   const switchCampaign = (id: string) => {
@@ -83,6 +84,7 @@ const DashboardNavigation = () => {
             }
           ></MenuDropdown>
         </section>
+
         <section className={styles.navigation_section}>
           <div>
             <p className={styles.navigation_header}>GENERAL</p>
@@ -102,9 +104,18 @@ const DashboardNavigation = () => {
             </div>
           </div>
         </section>
+
         <section className={styles.navigation_section}>
           <p className={styles.navigation_header}>RESOURCES</p>
-          {pages.map((p) => (
+          {pages
+            .filter((p) => 
+              activeCampaign?.role === CampaignMemberRole.OWNER ||
+              (
+                activeCampaign?.role === CampaignMemberRole.PLAYER &&
+                p.access === "ALL"
+              )
+            )
+            .map((p) => (
             <div
               key={p.url}
               className={styles.navigation_page}
@@ -120,18 +131,19 @@ const DashboardNavigation = () => {
           className={styles.navigation_header}
         >MORE COMING SOON...</p>
       </div>
+
       <div>
         <p className={styles.navigation_header}>ACTIVE CAMPAIGN</p>
         <div 
           className={styles.active_campaign_section}
           onClick={() => setShowDropdown(!showDropdown)}
         >
-          <ChevronDown className={showDropdown ? styles.flip : ""}/>
+          {(campaigns.length > 1 || !activeCampaign) 
+            && <ChevronDown className={showDropdown ? styles.flip : ""}/>}
           <p>{activeCampaign?.name ?? "NOT SELECTED"}</p>
-          {showDropdown &&
+          {showDropdown && (campaigns.length > 1 || !activeCampaign) && 
             <div className={styles.campaign_dropdown}>
-              {campaigns.length > 0 &&
-                campaigns.map((campaign) => (
+                {campaigns.map((campaign) => (
                   activeCampaign != campaign 
                     ? <div 
                         className={styles.campaign_dropdown_option}
@@ -141,8 +153,7 @@ const DashboardNavigation = () => {
                         <p>{campaign.name}</p>
                       </div>
                     : <></>
-                ))
-              }
+                ))}
             </div>
           }
         </div>
