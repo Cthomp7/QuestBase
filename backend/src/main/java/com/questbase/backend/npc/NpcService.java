@@ -7,28 +7,33 @@ import org.springframework.stereotype.Service;
 import com.questbase.backend.auth.User;
 import com.questbase.backend.auth.service.AuthService;
 import com.questbase.backend.campaign.Campaign;
+import com.questbase.backend.campaign.CampaignAccessService;
 import com.questbase.backend.campaign.CampaignRepository;
 import com.questbase.backend.exception.ResourceNotFoundException;
 import com.questbase.backend.npc.dto.CreateNpcRequest;
 import com.questbase.backend.npc.dto.NpcQuestResponse;
 import com.questbase.backend.npc.dto.NpcResponse;
+import com.questbase.backend.relationship.questnpc.QuestNpc;
 import com.questbase.backend.relationship.questnpc.QuestNpcRepository;
 
 @Service
 public class NpcService {
     
     private final AuthService authService;
+    private final CampaignAccessService campaignAccessService;
     private final CampaignRepository campaignRepository;
     private final NpcRepository npcRepository;
     private final QuestNpcRepository questNpcRepository;
 
     public NpcService(
         AuthService authService,
+        CampaignAccessService campaignAccessService,
         CampaignRepository campaignRepository,
         NpcRepository npcRepository,
         QuestNpcRepository questNpcRepository
     ) {
         this.authService = authService;
+        this.campaignAccessService = campaignAccessService;
         this.campaignRepository = campaignRepository;
         this.npcRepository = npcRepository;
         this.questNpcRepository = questNpcRepository;
@@ -37,8 +42,13 @@ public class NpcService {
     public NpcResponse getNpcById(Long id) {
         User currentUser = authService.getCurrentUser();
 
-        Npc npc = npcRepository.findByIdAndCampaignUser(id, currentUser)
-            .orElseThrow(() -> new RuntimeException("NPC not found"));
+        Npc npc = npcRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("NPC"));
+
+        campaignAccessService.requireAccess(
+            npc.getCampaign().getId(),
+            currentUser.getId()
+        );
 
         return toResponse(npc);
     }
@@ -79,29 +89,22 @@ public class NpcService {
 
     public List<NpcResponse> getNpcsByCampaignId(
         Long campaignId,
-        Long userId,
         String sort
     ) {
-        boolean ownsCampaign = 
-            campaignRepository.existsByIdAndUserId(campaignId, userId);
-        
-        if (!ownsCampaign) {
-            throw new RuntimeException("Campaign not found");
-        }
+        User currentUser = authService.getCurrentUser();
+
+        campaignAccessService.requireAccess(
+            campaignId,
+            currentUser.getId()
+        );
 
         List<Npc> npcs;
         if ("asc".equalsIgnoreCase(sort)) {
             npcs = npcRepository
-                .findByCampaignIdAndCampaignUserIdOrderByCreatedAtAsc(
-                    campaignId,
-                    userId
-                );
+                .findByCampaignIdOrderByCreatedAtAsc(campaignId);
         } else {
             npcs = npcRepository
-                .findByCampaignIdAndCampaignUserIdOrderByCreatedAtDesc(
-                    campaignId,
-                    userId
-                );
+                .findByCampaignIdOrderByCreatedAtDesc(campaignId);
         }
 
         return npcs.stream()
@@ -167,20 +170,24 @@ public class NpcService {
     public List<NpcQuestResponse> getQuestsByNpcId (Long npcId) {
         User currentUser = authService.getCurrentUser();
 
-        if (!npcRepository.existsByIdAndCampaignUserId(npcId, currentUser.getId())) {
-            throw new ResourceNotFoundException("NPC");
-        }
+        Npc npc = npcRepository.findById(npcId)
+            .orElseThrow(() -> new ResourceNotFoundException("NPC"));
 
-        return questNpcRepository
-            .findByNpcIdAndNpcCampaignUserId(npcId, currentUser.getId())
-            .stream()
+        campaignAccessService.requireAccess(
+            npc.getCampaign().getId(),
+            currentUser.getId()
+        );
+
+        List<QuestNpc> questNpcs = questNpcRepository.findByNpcId(npcId);
+
+        return questNpcs.stream()
             .map(NpcQuestResponse::from)
             .toList();
     }
 
     // =========================================================================
     // HELPER FUNCTIONS
-    // =========================================================================
+    // =========================================================================\
 
     private NpcResponse toResponse(Npc npc) {
         return NpcResponse.builder()

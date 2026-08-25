@@ -9,7 +9,8 @@ interface DetailPageProps {
   title: string
   children: React.ReactNode
   dropdownOptions?: DetailDropdownOption[]
-  editting: boolean
+  editable?: boolean
+  editting?: boolean
   onAdd?: (option: string) => void
   onEdit: (active: boolean) => void
   onDelete: () => void
@@ -19,6 +20,7 @@ export default function DetailPage ({
   title,
   children,
   dropdownOptions,
+  editable,
   editting,
   onAdd,
   onEdit,
@@ -40,7 +42,7 @@ export default function DetailPage ({
     <>
       <div className={styles.header}>
         <PageHeader title={title}/>
-        <div className={styles.toolbar}>
+        {editable && <div className={styles.toolbar}>
           {(onAdd && dropdownOptions) && 
            <>
               <Plus 
@@ -60,7 +62,7 @@ export default function DetailPage ({
             onClick={toggleEdit}
           />
           <TrashButton onDelete={onDelete}/>
-        </div>
+        </div>}
       </div>
       {children}
     </>

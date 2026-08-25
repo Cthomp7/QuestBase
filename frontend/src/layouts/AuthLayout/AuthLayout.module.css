@@ -194,3 +194,19 @@ textarea.dark_input {
   border-color: var(--qb-pixie-dust);
   color: var(--qb-pixie-dust);
 }
+
+.editor_notes {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.editor_notes ol,
+.editor_notes ul {
+  margin-left: 1rem;
+}
+
+.editor_notes ol p,
+.editor_notes ul p {
+  margin-left: 0.2rem;
+}

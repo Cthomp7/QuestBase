@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface QuestNpcRepository extends JpaRepository<QuestNpc, Long> {
     List<QuestNpc> findByQuestId(Long questId);
 
+    List<QuestNpc> findByNpcId(Long npcId);
+
     Optional<QuestNpc> findById(Long questId);
 
     List<QuestNpc> findByNpcIdAndNpcCampaignUserId(Long npcId, Long userId);

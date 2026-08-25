@@ -10,10 +10,12 @@ import PageHeader from "@/components/ui/PageHeader/PageHeader"
 import CreateButton from "@/components/ui/CreateButton/CreateButton"
 import Quest from "./Quest"
 import { fetchQuests } from "@/api/quests"
+import { CampaignMemberRole } from "@/types/api/campaignMember"
 
 const Quests = () => {
   const { user } = useAuth()
   const { activeCampaign } = useCampaign()
+  const [ owner ] = useState<boolean>(activeCampaign?.role === CampaignMemberRole.OWNER)
   const [quests, setQuests] = useState<QuestType[]>([])
   const noResultsRef = useRef<HTMLDivElement | null>(null)
   const createDivRef = useRef<HTMLDivElement | null>(null)
@@ -124,7 +126,7 @@ const Quests = () => {
                     key={i}
                     quest={quest}
                     index={i}
-                    editable={true}
+                    editable={owner}
                     fetchQuests={handleFetchQuests}
                     editing={editing}
                     setEditing={setEditing}

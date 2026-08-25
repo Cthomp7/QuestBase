@@ -15,9 +15,14 @@ import QuestNpcEditor, { QuestNpcEditorAction } from "../npcs/QuestNpcEditor"
 interface QuestNpcProps {
   questNpc: QuestNpc
   fetchNpcs: () => void
+  editable?: boolean
 }
 
-export default function QuestNpc ({ questNpc, fetchNpcs }: QuestNpcProps) {
+export default function QuestNpc ({ 
+  questNpc, 
+  fetchNpcs, 
+  editable = false
+}: QuestNpcProps) {
   const navigate = useNavigate()
   const [ showNpcQuestEditor, setShowNpcQuestEditor ] = useState<boolean>(false)
 
@@ -61,14 +66,18 @@ export default function QuestNpc ({ questNpc, fetchNpcs }: QuestNpcProps) {
                 {questNpc.npc.status}
               </p>
             }
-            <SquarePen
-              className={detailPageStyles.green_icon}
-              onClick={(e) => {
-                e.stopPropagation()
-                setShowNpcQuestEditor(true)
-              }}
-            />
-            <TrashIcon onDelete={onDelete}/>
+            {editable && 
+              <>
+                <SquarePen
+                  className={detailPageStyles.green_icon}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setShowNpcQuestEditor(true)
+                  }}
+                />
+                <TrashIcon onDelete={onDelete}/>
+              </>
+            }
           </div>
         </div>
         {questNpc.notes && 

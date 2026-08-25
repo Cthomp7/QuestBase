@@ -19,13 +19,7 @@ public interface QuestRepository extends JpaRepository<Quest, Long> {
         Long userId
     );
 
-    List<Quest> findByCampaignIdAndCampaignUserIdOrderByCreatedAtAsc(
-        Long campaignId,
-        Long userId
-    );
+    List<Quest> findByCampaignIdOrderByCreatedAtAsc(Long campaignId);
 
-    List<Quest> findByCampaignIdAndCampaignUserIdOrderByCreatedAtDesc(
-        Long campaignId,
-        Long userId
-    );
+    List<Quest> findByCampaignIdOrderByCreatedAtDesc(Long campaignId);
 }

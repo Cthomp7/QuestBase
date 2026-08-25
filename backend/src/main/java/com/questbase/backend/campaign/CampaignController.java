@@ -4,7 +4,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.questbase.backend.auth.dto.CustomUserDetails;
 import com.questbase.backend.campaign.dto.CampaignResponse;
 import com.questbase.backend.campaign.dto.CreateCampaignRequest;
 import com.questbase.backend.npc.NpcService;
@@ -22,7 +21,6 @@ import jakarta.validation.Valid;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -101,16 +99,11 @@ public class CampaignController {
     @GetMapping("/{campaignId}/npcs")
     public ResponseEntity<List<NpcResponse>> getCampaignNpcs(
         @PathVariable Long campaignId,
-        @RequestParam(defaultValue = "desc") String sort,
-        Authentication authentication
+        @RequestParam(defaultValue = "desc") String sort
     ) {
-        CustomUserDetails userDetails =
-            (CustomUserDetails) authentication.getPrincipal();
-
         List<NpcResponse> npcs =
             npcService.getNpcsByCampaignId(
                 campaignId,
-                userDetails.getId(),
                 sort
             );
 
@@ -120,16 +113,12 @@ public class CampaignController {
     @GetMapping("/{campaignId}/quests")
     public ResponseEntity<List<QuestResponse>> getCampaignQuests(
         @PathVariable Long campaignId,
-        @RequestParam(defaultValue = "desc") String sort,
-        Authentication authentication
+        @RequestParam(defaultValue = "desc") String sort
     ) {
-        CustomUserDetails userDetails =
-            (CustomUserDetails) authentication.getPrincipal();
 
         List<QuestResponse> quests =
             questService.getQuestsByCampaignId(
                 campaignId,
-                userDetails.getId(),
                 sort
             );
 

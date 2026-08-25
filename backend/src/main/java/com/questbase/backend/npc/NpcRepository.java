@@ -14,13 +14,7 @@ public interface NpcRepository extends JpaRepository<Npc, Long> {
 
     Boolean existsByIdAndCampaignUserId(Long npcId, Long userId);
 
-    List<Npc> findByCampaignIdAndCampaignUserIdOrderByCreatedAtAsc(
-        Long campaignId,
-        Long userId
-    );
+    List<Npc> findByCampaignIdOrderByCreatedAtAsc(Long campaignId);
 
-    List<Npc> findByCampaignIdAndCampaignUserIdOrderByCreatedAtDesc(
-        Long campaignId,
-        Long userId
-    );
+    List<Npc> findByCampaignIdOrderByCreatedAtDesc(Long campaignId);
 }

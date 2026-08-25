@@ -3,11 +3,13 @@ package com.questbase.backend.quest;
 import com.questbase.backend.auth.User;
 import com.questbase.backend.auth.service.AuthService;
 import com.questbase.backend.campaign.Campaign;
+import com.questbase.backend.campaign.CampaignAccessService;
 import com.questbase.backend.campaign.CampaignRepository;
 import com.questbase.backend.exception.ResourceNotFoundException;
 import com.questbase.backend.quest.dto.CreateQuestRequest;
 import com.questbase.backend.quest.dto.QuestNpcResponse;
 import com.questbase.backend.quest.dto.QuestResponse;
+import com.questbase.backend.relationship.questnpc.QuestNpc;
 import com.questbase.backend.relationship.questnpc.QuestNpcRepository;
 
 import org.springframework.stereotype.Service;
@@ -18,17 +20,20 @@ import java.util.List;
 public class QuestService {
 
     private final AuthService authService;
+    private final CampaignAccessService campaignAccessService;
     private final CampaignRepository campaignRepository;
     private final QuestRepository questRepository;
     private final QuestNpcRepository questNpcRepository;
 
     public QuestService(
         AuthService authService,
+        CampaignAccessService campaignAccessService,
         CampaignRepository campaignRepository,
         QuestRepository questRepository,
         QuestNpcRepository questNpcRepository
     ) {
         this.authService = authService;
+        this.campaignAccessService = campaignAccessService;
         this.campaignRepository = campaignRepository;
         this.questRepository = questRepository;
         this.questNpcRepository = questNpcRepository;
@@ -37,8 +42,13 @@ public class QuestService {
     public QuestResponse getQuestById(Long id) {
         User currentUser = authService.getCurrentUser();
 
-        Quest quest = questRepository.findByIdAndCampaignUser(id, currentUser)
-            .orElseThrow(() -> new RuntimeException("Quest not found"));
+        Quest quest = questRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Quest"));
+
+        campaignAccessService.requireAccess(
+            quest.getCampaign().getId(),
+            currentUser.getId()
+        );
 
         return toResponse(quest);
     }
@@ -145,29 +155,22 @@ public class QuestService {
 
     public List<QuestResponse> getQuestsByCampaignId(
         Long campaignId,
-        Long userId,
         String sort
     ) {
-        boolean ownsCampaign = 
-            campaignRepository.existsByIdAndUserId(campaignId, userId);
-        
-        if (!ownsCampaign) {
-            throw new RuntimeException("Campaign not found");
-        }
+        User currentUser = authService.getCurrentUser();
+
+        campaignAccessService.requireAccess(
+            campaignId,
+            currentUser.getId()
+        );
 
         List<Quest> quests;
         if ("asc".equalsIgnoreCase(sort)) {
             quests = questRepository
-                .findByCampaignIdAndCampaignUserIdOrderByCreatedAtAsc(
-                    campaignId,
-                    userId
-                );
+                .findByCampaignIdOrderByCreatedAtAsc(campaignId);
         } else {
             quests = questRepository
-                .findByCampaignIdAndCampaignUserIdOrderByCreatedAtDesc(
-                    campaignId,
-                    userId
-                );
+                .findByCampaignIdOrderByCreatedAtDesc(campaignId);
         }
 
         return quests.stream()
@@ -201,15 +204,17 @@ public class QuestService {
     ) {
         User currentUser = authService.getCurrentUser();
 
-        if (!questRepository.existsByIdAndCampaignUserId(
-            questId, currentUser.getId())
-        ) {
-            throw new ResourceNotFoundException("NPC");
-        }
+        Quest quest = questRepository.findById(questId)
+            .orElseThrow(() -> new ResourceNotFoundException("Quest"));
 
-        return questNpcRepository
-            .findByQuestIdAndNpcCampaignUserId(questId, currentUser.getId())
-            .stream()
+        campaignAccessService.requireAccess(
+            quest.getCampaign().getId(),
+            currentUser.getId()
+        );
+
+        List<QuestNpc> questNpcs = questNpcRepository.findByQuestId(questId);
+
+        return questNpcs.stream()
             .map(QuestNpcResponse::from)
             .toList();
     }

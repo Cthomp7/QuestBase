@@ -1,3 +1,4 @@
+import DOMPurify from "dompurify";
 import { CreateQuestRequest, Quest } from "@/types/api/quest"
 import { useCallback, useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
@@ -16,11 +17,13 @@ import QuestNpc from "./QuestNpc"
 import { DetailDropdownOption } from "@/components/ui/DetailPage/DetailDropdown"
 import { UserPlus } from "lucide-react"
 import QuestNpcEditor, { QuestNpcEditorAction } from "../npcs/QuestNpcEditor"
+import { CampaignMemberRole } from "@/types/api/campaignMember"
 
 export default function QuestDetails () {
   const { questId } = useParams()
   const navigate = useNavigate()
   const { activeCampaign } = useCampaign()
+  const [ owner ] = useState<boolean>(activeCampaign?.role === CampaignMemberRole.OWNER)
   const [ quest, setQuest ] = useState<Quest | null>(null)
   const [ notes, setNotes ] = useState<string>("")
   const [ questNpcs, setQuestNpcs ] = useState<QuestNpcType[]>([])
@@ -81,13 +84,15 @@ export default function QuestDetails () {
   }, [questId])
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (!notes) return
-      saveNotes(notes)
-    }, 1500)
+    if (owner) {
+      const timeout = setTimeout(() => {
+        if (!notes) return
+        saveNotes(notes)
+      }, 1500)
 
-    return () => clearTimeout(timeout)
-  }, [notes, saveNotes])
+      return () => clearTimeout(timeout)
+    }
+  }, [notes, saveNotes, owner])
 
   const updateQuest = async (
     id: number, 
@@ -135,6 +140,7 @@ export default function QuestDetails () {
       {quest ? (
         <DetailPage
           title={quest.title}
+          editable={owner}
           editting={editting}
           dropdownOptions={dropdownOptions}
           onAdd={onAdd}
@@ -186,18 +192,30 @@ export default function QuestDetails () {
                               key={questNpc.id}
                               questNpc={questNpc}
                               fetchNpcs={fetchNpcs}
+                              editable={owner}
                             />
                           ))}
                         </div>
                     </div>
                   }
-                  <div>
-                    <p className={DetailPageStyles.text_label}>Notes:</p>
-                    <TextEditor
-                      value={notes}
-                      onChange={setNotes}
-                    />
-                  </div>
+                  {(notes || owner) && 
+                    <div>
+                      <p className={DetailPageStyles.text_label}>General Notes:</p>
+                      {owner ? (
+                        <TextEditor
+                          value={notes}
+                          onChange={setNotes}
+                        />
+                      ) : (
+                        <div 
+                          className={layoutStyles.editor_notes}
+                          dangerouslySetInnerHTML={{
+                            __html: DOMPurify.sanitize(notes)
+                          }}
+                        />
+                      )}
+                    </div>
+                  }
                 </>
               )}
             </div>

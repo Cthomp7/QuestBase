@@ -1,3 +1,4 @@
+import DOMPurify from "dompurify";
 import { CreateNpcRequest, Npc } from "@/types/api/npc"
 import { useCallback, useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
@@ -15,10 +16,14 @@ import QuestNpcEditor, { QuestNpcEditorAction } from "./QuestNpcEditor"
 import { fetchQuestsForNpc } from "@/api/npcs"
 import { type NpcQuest as NpcQuestType } from "@/types/api/questnpc"
 import NpcQuest from "./NpcQuest"
+import { useCampaign } from "@/context/campaign/useCampaign"
+import { CampaignMemberRole } from "@/types/api/campaignMember"
 
 export default function NpcsDetails () {
+  const { activeCampaign } = useCampaign()
   const { npcId } = useParams()
   const navigate = useNavigate()
+  const [ owner ] = useState<boolean>(activeCampaign?.role === CampaignMemberRole.OWNER)
   const [ npc, setNpc ] = useState<Npc | null>(null)
   const [ notes, setNotes ] = useState<string>("")
   const [ npcQuests, setNpcQuests ] = useState<NpcQuestType[]>([])
@@ -120,13 +125,15 @@ export default function NpcsDetails () {
   }, [npcId])
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (!notes) return
-      saveNotes(notes)
-    }, 1500)
+    if (owner) {
+      const timeout = setTimeout(() => {
+        if (!notes) return
+        saveNotes(notes)
+      }, 1500)
 
-    return () => clearTimeout(timeout)
-  }, [notes, saveNotes])
+      return () => clearTimeout(timeout)
+    }
+  }, [notes, saveNotes, owner])
 
   // ===========================================================================
   // Add Dropdown Functionality 
@@ -148,6 +155,7 @@ export default function NpcsDetails () {
           <DetailPage
             title={npc.name}
             dropdownOptions={dropdownOptions}
+            editable={owner}
             editting={editting}
             onAdd={onAdd}
             onEdit={(active) => setEditting(active)}
@@ -222,13 +230,22 @@ export default function NpcsDetails () {
                       </div>
                   </div>
                 }
-                <div>
-                  <p className={DetailPageStyles.text_label}>Notes:</p>
-                  <TextEditor
-                    value={notes}
-                    onChange={setNotes}
-                  />
-                </div>
+                {(notes || owner) && <div>
+                  <p className={DetailPageStyles.text_label}>General Notes:</p>
+                  {owner ? (
+                    <TextEditor
+                      value={notes}
+                      onChange={setNotes}
+                    />
+                  ) : (
+                    <div 
+                      className={layoutStyles.editor_notes}
+                      dangerouslySetInnerHTML={{
+                        __html: DOMPurify.sanitize(notes)
+                      }}
+                    />
+                  )}
+                </div>}
               </div>
             }
           />
