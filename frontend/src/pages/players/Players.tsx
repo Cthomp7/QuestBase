@@ -5,20 +5,20 @@ import styles from "./Players.module.css"
 import layoutStyles from "@/layouts/AuthLayout/AuthLayout.module.css"
 import { useCallback, useEffect, useState } from "react"
 import Editor from "@/components/Editor/Editor"
-import { CampaignInvite } from "@/types/api/campaignInvite"
+import { CampaignInvite, CampaignInviteStatus } from "@/types/api/campaignInvite"
 import Loader from "@/components/ui/Loader/Loader"
-import { Astroid, CircleAlert, Flag, PartyPopper, UserRound } from "lucide-react"
+import { Astroid, CircleAlert, Flag, PartyPopper, Send, Trash2, UserRound } from "lucide-react"
 import { CampaignMember } from "@/types/api/campaignMember"
 
 export default function Players () {
   const { activeCampaign } = useCampaign()
-  const [ sending, setSending ] = useState<boolean>()
   const [ sendStatus, setSendStatus ] = 
     useState<{ message: string, type: string } | null>(null)
   const [ players, setPlayers ] = useState<CampaignMember[]>([])
   const [ invites, setInvites ] = useState<CampaignInvite[]>([])
   const [ inviteEmail, setInviteEmail ] = useState<string>("")
   const [ openEditor, setOpenEditor ] = useState<boolean>(false)
+  const [ loading, setLoading ] = useState<{ id: number, action: string } | null>(null)
 
   const fetchPlayers = useCallback(async () => {
     try {
@@ -71,11 +71,12 @@ export default function Players () {
 
   const sendInvite = async () => {
     if (!activeCampaign) return
+    setSendStatus(null)
     try {
       if (!inviteEmail)
         throw new Error("An email address is required to send a campaign invitation.")
 
-      setSending(true)
+      setLoading({ id: 0, action: "CREATE" })
       const response = await fetch(`/api/campaigns/${activeCampaign?.id}/invites`, { 
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -101,7 +102,63 @@ export default function Players () {
         console.error("Failed to send invitation: ", error)
       }
     } finally {
-      setSending(false)
+      setLoading(null)
+    }
+  }
+
+  const resendInvite = async (id: number) => {
+    setSendStatus(null)
+    try {
+      setLoading({ id, action: "RESEND" })
+      const response = await fetch(
+        `/api/campaign-invites/${id}/resend`, 
+        { method: "POST"}
+      )
+      if (response.ok) {
+        const resentInvite = await response.json()
+        setInvites((prev) => 
+          prev.map((invite) => 
+            invite.id === resentInvite.id ? resentInvite : invite
+          )
+        )
+        setSendStatus({ message: "Invitation Resent!", type: "success" })
+      } else {
+        const error = await response.json()
+        if (error.message) throw new Error(error.message)
+        else throw new Error("Failed for unknown reason. Try again later.")
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error("Failed to resend invitation: ", error.message)
+        setSendStatus({ message: error.message, type: "error" })
+      } else {
+        console.error("Failed to resend invitation: ", error)
+      }
+    } finally {
+      setLoading(null)
+    }
+  }
+
+  const deleteInvite = async (id: number) => {
+    setSendStatus(null)
+    try {
+      setLoading({ id, action: "DELETE" })
+      const response = await fetch(
+        `/api/campaign-invites/${id}`, 
+        { method: "DELETE"}
+      )
+      if (response.ok) {
+        fetchInvites()
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error("Failed to delete invitation: ", error.message)
+        setSendStatus({ message: error.message, type: "error" })
+      } else {
+        console.error("Failed to delete invitation: ", error)
+      }
+    } finally {
+      setLoading(null)
     }
   }
 
@@ -113,9 +170,9 @@ export default function Players () {
     if (diff <= 0) return "Expired"
 
     const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-    if (days < 1) return "< 1 day"
+    if (days < 1) return "Expires in < 1 day"
 
-    return `${days} ${days === 1 ? "day" : "days"}`
+    return `Expires in ${days} ${days === 1 ? "day" : "days"}`
   }
 
   return (
@@ -153,7 +210,7 @@ export default function Players () {
                 className={layoutStyles.dark_input}
               />
             </div>
-            {sending 
+            {loading?.action === "CREATE"
               ? <Loader/>
               : <button 
                   className={layoutStyles.green_button}
@@ -198,9 +255,25 @@ export default function Players () {
               <div className={layoutStyles.card_properties}>
                 <div className={`${layoutStyles.card_flex} ${styles.expires_at}`}>
                   <Flag size={20}/>
-                  <p>Expires in {getTimeUntilExpiration(invite.expiresAt)}</p>
+                  <p>{getTimeUntilExpiration(invite.expiresAt)}</p>
                 </div>
                 <p className={styles[invite.status]}>{invite.status}</p>
+                {loading?.id === invite.id && loading?.action === "RESEND" ? (
+                  <Loader/>
+                ) : (
+                  invite.status != CampaignInviteStatus.ACCEPTED && 
+                    <div 
+                      className={`${layoutStyles.card_flex} ${styles.resend}`}
+                      onClick={() => resendInvite(invite.id)}
+                    ><Send/>Resend</div>
+                )}
+                {loading?.id === invite.id && loading?.action === "DELETE" 
+                  ? <Loader/>
+                  : <Trash2
+                      className={layoutStyles.trash_icon}
+                      onClick={() => deleteInvite(invite.id)}
+                    />
+                }
               </div>
             </div>
           </div>

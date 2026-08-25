@@ -100,10 +100,12 @@
 }
 
 .trash_icon {
-  stroke: rgb(199, 62, 62);
+  stroke: white;
+  transition: stroke 0.2s ease-in-out;
+  cursor: pointer;
 }
 .trash_icon:hover {
-  stroke: rgb(255, 68, 68);
+  stroke: var(--qb-error-red)
 }
 
 /* ========================================================================== */

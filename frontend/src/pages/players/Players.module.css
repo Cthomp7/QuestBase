@@ -78,11 +78,19 @@
   width: fit-content;
 }
 
-.npc_role.ENEMY {
+.resend {
   padding: 0.3rem 0.5rem;
   border-radius: 25px;
-  background-color: var(--qb-error-red-trans);
-  border: 2px solid var(--qb-error-red);
-  color: var(--qb-error-red);
+  background-color: var(--qb-periwinkle-trans);
+  border: 2px solid var(--qb-periwinkle);
+  color: var(--qb-periwinkle);
   width: fit-content;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.resend:hover {
+  background-color: var(--qb-alien-green-trans);
+  border: 2px solid var(--qb-alien-green);
+  color: var(--qb-alien-green);
 }

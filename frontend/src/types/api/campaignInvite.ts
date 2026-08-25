@@ -6,10 +6,10 @@ export interface CampaignInvite {
   createdAt: string
 }
 
-enum CampaignInviteStatus {
-  PENDING,
-  ACCEPTED,
-  DECLINED
+export enum CampaignInviteStatus {
+  PENDING = "PENDING",
+  ACCEPTED = "ACCEPTED",
+  DECLINED = "DECLINED"
 }
 
 export interface CampaignInviteDetails {

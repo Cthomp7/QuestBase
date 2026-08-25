@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.questbase.backend.auth.User;
 import com.questbase.backend.auth.service.AuthService;
 import com.questbase.backend.campaign.Campaign;
+import com.questbase.backend.campaign.CampaignAccessService;
 import com.questbase.backend.campaign.CampaignRepository;
 import com.questbase.backend.email.EmailService;
 import com.questbase.backend.exception.CustomIllegalStateException;
@@ -26,6 +27,7 @@ import com.questbase.backend.security.secureToken.SecureTokenService;
 public class CampaignInviteService {
 
     private final AuthService authService;
+    private final CampaignAccessService campaignAccessService;
     private final CampaignRepository campaignRepository;
     private final CampaignInviteRepository campaignInviteRepository;
     private final CampaignMemberRepository campaignMemberRepository;
@@ -34,6 +36,7 @@ public class CampaignInviteService {
 
     public CampaignInviteService(
         AuthService authService,
+        CampaignAccessService campaignAccessService,
         CampaignRepository campaignRepository,
         CampaignInviteRepository campaignInviteRepository,
         CampaignMemberRepository campaignMemberRepository,
@@ -41,6 +44,7 @@ public class CampaignInviteService {
         SecureTokenService secureTokenService
     ) {
         this.authService = authService;
+        this.campaignAccessService = campaignAccessService;
         this.campaignRepository = campaignRepository;
         this.campaignInviteRepository = campaignInviteRepository;
         this.campaignMemberRepository = campaignMemberRepository;
@@ -88,6 +92,20 @@ public class CampaignInviteService {
         return CampaignInviteResponse.from(savedInvite);
     }
 
+    public void deleteInvite(Long id) {
+        User currentUser = authService.getCurrentUser();
+
+        CampaignInvite invite = campaignInviteRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Invite"));
+
+        campaignAccessService.requireOwner(
+            invite.getCampaign().getId(), 
+            currentUser.getId()
+        );
+
+        campaignInviteRepository.delete(invite);
+    }
+
     public CampaignMemberResponse acceptInvite(String token) {
         User currentUser = authService.getCurrentUser();
 
@@ -124,6 +142,35 @@ public class CampaignInviteService {
         campaignInviteRepository.save(invite);
 
         return CampaignMemberResponse.from(savedMember);
+    }
+
+    public CampaignInviteResponse resendInvite(Long id) {
+        User currentUser = authService.getCurrentUser();
+
+        CampaignInvite invite = campaignInviteRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Invite"));
+
+        campaignAccessService.requireOwner(
+            invite.getCampaign().getId(), 
+            currentUser.getId()
+        );
+
+        String token = secureTokenService.generateToken();
+        String tokenHash = secureTokenService.hashToken(token);
+
+        invite.setTokenHash(tokenHash);
+        invite.setExpiresAt(LocalDateTime.now().plusDays(7));
+        invite.setStatus(CampaignInviteStatus.PENDING);
+
+        CampaignInvite savedInvite = campaignInviteRepository.save(invite);
+
+        emailService.sendCampaignInvite(
+            invite.getEmail(), 
+            invite.getCampaign().getName(), 
+            token
+        );
+
+        return CampaignInviteResponse.from(savedInvite);
     }
 
     public CampaignInviteDetailsResponse getInviteDetails(String token) {
