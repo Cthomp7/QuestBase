@@ -4,7 +4,7 @@ import Sparkle from "@/assets/svgs/sparkle.svg?react"
 import SmallSparkle from "@/assets/svgs/small-sparkle.svg?react"
 import MediumSparkle from "@/assets/svgs/medium-sparkle.svg?react"
 import LargeSparkle from "@/assets/svgs/large-sparkle.svg?react"
-import { Book, CircleAlert, CircleX, FolderBookmarkIcon, FolderGit2, PartyPopper, Send, User } from "lucide-react"
+import { Book, BookUser, CircleAlert, CircleX, FolderGit2, Map, PartyPopper, Send, UsersRound } from "lucide-react"
 import React, { useEffect, useState } from "react"
 import { HashLink } from "react-router-hash-link";
 import Loader from "@/components/ui/Loader/Loader"
@@ -22,13 +22,13 @@ function Home() {
 
   const features = [
     {
-      icon: <FolderBookmarkIcon/>,
+      icon: <Map/>,
       color: "var(--qb-mimic-coin)",
       title: "Campaigns",
       description: "Give every adventure a home. Keep your quests, characters, notes, and campaign details organized in one shared space."
     },
     { 
-      icon: <User/>,
+      icon: <BookUser/>,
       color: "var(--qb-alien-green)",
       title: "NPCs", 
       description: "Build memorable NPCs with their roles, personalities, details, and notes all in one place." 
@@ -38,6 +38,12 @@ function Home() {
       color: "var(--qb-blue-slime)",
       title: "Quests", 
       description: "Create and organize quests, track their progress, set rewards, and keep every adventure moving forward." 
+    },
+    { 
+      icon: <UsersRound/>,
+      color: "var(--qb-periwinkle)",
+      title: "Players", 
+      description: "Invite players to your campaign and share the adventures, characters, and stories that bring your world to life." 
     }
   ]
 
