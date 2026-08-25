@@ -10,14 +10,21 @@ As the project evolves, QuestBase aims to become a hub for creating and sharing 
 
 ### Current
 
-- Create and manage campaign quests
-- Track quest status: available, active, completed, failed
+- **Campaign Management** — Create and manage campaigns to keep your adventures organized in one place.
+- **Quest Tracking** — Create quests, track their status and difficulty, assign rewards, and organize them within a campaign.
+- **NPC Management** — Build and manage NPCs with details such as roles, descriptions, levels, notes, and other character information.
+- **Quest & NPC Relationships** — Associate NPCs with quests and view those relationships from either side, making it easier to keep track of who is involved in each storyline.
+- **Player Invitations** — Invite players to campaigns through secure invitation links, allowing them to join and view shared campaign content.
+- **Role-Based Campaign Access** — Campaign owners retain management controls while invited players receive access to view campaign content.
 
 ### Planned
 
-- Add NPCs, locations, and rewards to quests
-- Organize notes by campaign/session
-- Player-facing quest board
 - DM-only private notes
+- Add locations + relationship between quests and NPCs
 - Session recap tools
 - Party inventory and rewards
+- Party/Characters + assign players permission to edit their character
+- Character sheets + dice rolling tool
+- Items / Inventory
+
+Have a question, found a bug, or have an idea for QuestBase? We'd love to hear from you. Feel free to reach out anytime at support@questbase.net
